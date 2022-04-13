@@ -4,7 +4,7 @@ classdef Dobot < handle
         model;
         
         %>
-        workspace = [-1 1 -1 1 -0.3 1];   
+        workspace = [-0.6 0.6 -0.6 0.6 -0.3 0.6];   
         
         %> Flag to indicate if gripper is used
         useGripper = false;
@@ -39,7 +39,8 @@ classdef Dobot < handle
             L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi/2, 'offset', 0);
             L(2) = Link('d', 0, 'a', 0.135, 'alpha',0,'offset', 0);
             L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset',0);
-            L(4) = Link('d', 0.041, 'a', 0, 'alpha', -pi/2, 'offset', 0);
+            L(4) = Link('d', 0, 'a', 0.061, 'alpha',pi/2, 'offset', 0);
+            L(5) = Link('d', 0.09, 'a', 0, 'alpha',0, 'offset', 0);
             self.model = SerialLink(L, 'name', name, 'base', self.base);
            end
         %% PlotAndColourRobot
