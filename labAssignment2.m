@@ -5,7 +5,7 @@ close all;
 clc;
 
 %Add logfile
-logFile = log4matlab('13213537.log');
+logFile = log4matlab('labAssignment2.log');
 
 % Add ground image and set the size of the world
 hold on;
@@ -119,14 +119,6 @@ robotUR5 = LinearUR5(transl(baseUR5) * trotz(-pi / 2), qIntermediaryUR5);
 % robotUR3.model.teach();
 %robotUR5.model.teach();
 
-% %*Given an end effector pose, determine a joint state
-% transformEndEffector = transl([0.2, -0.8, 1.2]) * trotx(pi) * troty(pi / 6);
-% posePlot = trplot(transformEndEffector, 'length', 0.3);
-% qDemo = robotUR5.model.ikcon(transformEndEffector);
-% AnimateRobots(logFile, robotUR5, robotUR5.model.getpos(), qDemo);
-% pause(6);
-% try delete(posePlot); end
-
 %Find current q to move robots to intermediary pose
 qCurrentUR3 = robotUR3.model.getpos();
 qCurrentUR5 = robotUR5.model.getpos();
@@ -139,8 +131,3 @@ AnimateRobots(logFile, robotUR5, qCurrentUR5, robotUR5.qIntermediary, robotUR3, 
 
 % PlaceBricks(logFile, robotUR5, brickContainerUR5(5));
 PlaceBrick(robotUR5, brickContainerUR5(5));
-
-% %* Demonstrate Workspace
-% pause(3);
-% robotUR3.ShowReach();
-% robotUR5.ShowReach();
