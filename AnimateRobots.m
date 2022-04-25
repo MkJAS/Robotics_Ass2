@@ -10,7 +10,7 @@ function AnimateRobots(logFile, robot1, qCurrent1, qTarget1, robot2, qCurrent2, 
             %Log Transforms
             EasyLogger(logFile, robot1, qCurrent1, qTarget1);
 
-            %Find q trajectory
+            %Find q trajectory %* Implement
             qTrajectory1 = jtraj(qCurrent1, qTarget1, steps); %(current q, target q, steps)
 
             for i = 1:steps
