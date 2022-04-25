@@ -1,4 +1,4 @@
-function PlaceObject(logFile, robot, object)
+function MoveObject(logFile, robot, object)
     %Function that takes one or two robots/objects and animates the robot
     %collecting and depositing the objects using the AnimateRobots function
 

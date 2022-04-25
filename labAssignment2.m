@@ -26,10 +26,14 @@ baseDobot = [0, 0, tableHeight];
 %Add Safety Equipment
 offsetLightCurtain = 0.35;
 PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
-PlaceObject('lightCurtain.ply', [-offsetLightCurtain, offsetLightCurtain, tableHeight]);
-PlaceObject('lightCurtain.ply', [offsetLightCurtain, offsetLightCurtain, tableHeight]);
-PlaceObject('lightCurtain.ply', [-offsetLightCurtain, -offsetLightCurtain, tableHeight]);
-PlaceObject('lightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableHeight]);
+PlaceObject('LightCurtain.ply', [-offsetLightCurtain, offsetLightCurtain, tableHeight]);
+PlaceObject('LightCurtain.ply', [offsetLightCurtain, offsetLightCurtain, tableHeight]);
+PlaceObject('LightCurtain.ply', [-offsetLightCurtain, -offsetLightCurtain, tableHeight]);
+PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableHeight]);
+
+%% Objects
+PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
+PlaceObject('Sphere.ply', [0.2, 0.2, tableHeight]);
 
 %% Robots
 %Set intermediary poses - found using teach
