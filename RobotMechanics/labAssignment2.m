@@ -46,4 +46,4 @@ AnimateRobots(logFile, robotDobot, qCurrentDobot, robotDobot.qIntermediary);
 placeMentLocation = [0, -0.3, tableHeight];
 MoveFruit(logFile, robotDobot, grape, placeMentLocation);
 
-% robotDobot.model.teach();
+%robotDobot.model.teach();
