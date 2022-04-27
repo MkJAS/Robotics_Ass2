@@ -34,7 +34,7 @@ PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableH
 %% Objects
 % PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
 % PlaceObject('Grape.ply', [0.2, 0.2, tableHeight]);
-grape = Fruit([0.3, 0, tableHeight]);
+grape = Fruit([0.3, 0.2, tableHeight]);
 
 %% Robots
 robotDobot = Dobot(transl(baseDobot));
@@ -43,7 +43,7 @@ robotDobot = Dobot(transl(baseDobot));
 qCurrentDobot = robotDobot.model.getpos();
 AnimateRobots(logFile, robotDobot, qCurrentDobot, robotDobot.qIntermediary);
 
-placeMentLocation = [0, -0.3, tableHeight];
+placeMentLocation = [0.1, -0.2, tableHeight];
 MoveFruit(logFile, robotDobot, grape, placeMentLocation);
 
 %robotDobot.model.teach();

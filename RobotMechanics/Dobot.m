@@ -35,19 +35,12 @@ classdef Dobot < handle
             name = ['Dobot', datestr(now, 'yyyymmddTHHMMSSFFF')];
             %     end
 
-            %* Simulation joint limits
+            %* Suggested Actual joint limits - use with real robot
             L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi / 2, 'offset', 0, 'qlim', [deg2rad(-135) deg2rad(135)]);
             L(2) = Link('d', 0, 'a', 0.135, 'alpha', 0, 'offset', -pi / 2, 'qlim', [deg2rad(5) deg2rad(80)]);
-            L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset', 0, 'qlim', [deg2rad(-5) deg2rad(130)]);
-            L(4) = Link('d', 0, 'a', 0.041, 'alpha', pi / 2, 'offset', 0, 'qlim', [deg2rad(-90) deg2rad(65)]);
-            L(5) = Link('d', 0.09, 'a', 0, 'alpha', 0, 'offset', 0, 'qlim', [deg2rad(-90) deg2rad(90)]);
-
-            %* Suggested Actual joint limits - use with real robot
-            % L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi / 2, 'offset', 0, 'qlim', [deg2rad(-135) deg2rad(135)]);
-            % L(2) = Link('d', 0, 'a', 0.135, 'alpha', 0, 'offset', -pi / 2, 'qlim', [deg2rad(5) deg2rad(80)]);
-            % L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset', 0, 'qlim', [deg2rad(-5) deg2rad(85)]);
-            % L(4) = Link('d', 0, 'a', 0.041, 'alpha', pi / 2, 'offset', 0, 'qlim', [deg2rad(-90) deg2rad(90)]);
-            % L(5) = Link('d', 0.09, 'a', 0, 'alpha', 0, 'offset', 0, 'qlim', [deg2rad(-85) deg2rad(85)]);
+            L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset', 0, 'qlim', [deg2rad(-5) deg2rad(85)]);
+            L(4) = Link('d', 0, 'a', 0.041, 'alpha', pi / 2, 'offset', 0, 'qlim', [deg2rad(-90) deg2rad(90)]);
+            L(5) = Link('d', 0.09, 'a', 0, 'alpha', 0, 'offset', 0, 'qlim', [deg2rad(-85) deg2rad(85)]);
 
             self.model = SerialLink(L, 'name', name, 'base', self.base);
         end
