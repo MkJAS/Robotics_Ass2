@@ -1,63 +1,63 @@
-2022-04-27 16:08:18,601 DEBUG in func AnimateRobots - Dobot
-2022-04-27 16:08:18,606 DEBUG in func AnimateRobots - Current transform is:
+2022-04-27 16:12:35,197 DEBUG in func AnimateRobots - Dobot
+2022-04-27 16:12:35,203 DEBUG in func AnimateRobots - Current transform is:
     0.0000      -0.0000       1.0000       0.0900   
    -0.0000      -1.0000      -0.0000      -0.0000   
     1.0000      -0.0000      -0.0000       1.1725   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:18,610 DEBUG in func AnimateRobots - Target transform is: 
+2022-04-27 16:12:35,206 DEBUG in func AnimateRobots - Target transform is: 
     1.0000       0.0000       0.0000       0.2835   
     0.0000      -1.0000      -0.0000      -0.0000   
     0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:22,273 DEBUG in func AnimateRobots - Dobot
-2022-04-27 16:08:22,303 DEBUG in func AnimateRobots - Current transform is:
+2022-04-27 16:12:38,553 DEBUG in func AnimateRobots - Dobot
+2022-04-27 16:12:38,580 DEBUG in func AnimateRobots - Current transform is:
     1.0000       0.0000      -0.0000       0.2835   
     0.0000      -1.0000      -0.0000      -0.0000   
    -0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:22,312 DEBUG in func AnimateRobots - Target transform is: 
+2022-04-27 16:12:38,589 DEBUG in func AnimateRobots - Target transform is: 
     0.9981       0.0000      -0.0614       0.3000   
     0.0000      -1.0000      -0.0000      -0.0000   
    -0.0614       0.0000      -0.9981       0.7366   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:23,415 DEBUG in func AnimateRobots - Dobot
-2022-04-27 16:08:23,423 DEBUG in func AnimateRobots - Current transform is:
+2022-04-27 16:12:40,554 DEBUG in func AnimateRobots - Dobot
+2022-04-27 16:12:40,557 DEBUG in func AnimateRobots - Current transform is:
     0.9981       0.0000      -0.0614       0.3000   
     0.0000      -1.0000      -0.0000      -0.0000   
    -0.0614       0.0000      -0.9981       0.7366   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:23,426 DEBUG in func AnimateRobots - Target transform is: 
+2022-04-27 16:12:40,560 DEBUG in func AnimateRobots - Target transform is: 
     1.0000       0.0000       0.0000       0.2835   
     0.0000      -1.0000      -0.0000      -0.0000   
     0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:24,751 DEBUG in func AnimateRobots - Dobot
-2022-04-27 16:08:24,756 DEBUG in func AnimateRobots - Current transform is:
+2022-04-27 16:12:42,796 DEBUG in func AnimateRobots - Dobot
+2022-04-27 16:12:42,799 DEBUG in func AnimateRobots - Current transform is:
     1.0000       0.0000       0.0000       0.2835   
     0.0000      -1.0000      -0.0000      -0.0000   
     0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:24,757 DEBUG in func AnimateRobots - Target transform is: 
+2022-04-27 16:12:42,800 DEBUG in func AnimateRobots - Target transform is: 
    -1.0000      -0.0001      -0.0001      -0.0000   
     0.0001       0.0000      -1.0000      -0.0759   
     0.0001      -1.0000      -0.0000       0.9140   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:26,324 DEBUG in func AnimateRobots - Dobot
-2022-04-27 16:08:26,326 DEBUG in func AnimateRobots - Current transform is:
+2022-04-27 16:12:45,161 DEBUG in func AnimateRobots - Dobot
+2022-04-27 16:12:45,167 DEBUG in func AnimateRobots - Current transform is:
    -1.0000      -0.0001      -0.0001      -0.0000   
     0.0001       0.0000      -1.0000      -0.0759   
     0.0001      -1.0000      -0.0000       0.9140   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-04-27 16:08:26,328 DEBUG in func AnimateRobots - Target transform is: 
+2022-04-27 16:12:45,169 DEBUG in func AnimateRobots - Target transform is: 
     1.0000       0.0000       0.0000       0.2835   
     0.0000      -1.0000      -0.0000      -0.0000   
     0.0000       0.0000      -1.0000       0.8550   
