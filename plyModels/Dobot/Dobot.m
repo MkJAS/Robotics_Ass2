@@ -5,9 +5,8 @@ classdef Dobot < handle
         
         %>
         workspace = [-1 1 -1 1 -0.3 1];   
-        
-        %> Flag to indicate if gripper is used
-        useGripper = false;
+        name = 'Dobot';
+        qIntermediary = deg2rad([0 45 45 0 0]);
         base;
                
     end
