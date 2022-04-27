@@ -32,18 +32,18 @@ PlaceObject('LightCurtain.ply', [-offsetLightCurtain, -offsetLightCurtain, table
 PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableHeight]);
 
 %% Objects
-PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
-PlaceObject('Sphere.ply', [0.2, 0.2, tableHeight]);
+% PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
+% PlaceObject('Grape.ply', [0.2, 0.2, tableHeight]);
+grape = Fruit([0.2, -0.2, tableHeight]);
 
 %% Robots
-%Set intermediary poses - found using teach
-%qIntermediaryDobot = deg2rad([0 -90 -45 225 90 0]);
-
-%Instantiate robots
 robotDobot = Dobot(transl(baseDobot));
 
-robotDobot.model.teach();
+%*Find current q to move robots to intermediary pose
+qCurrentDobot = robotDobot.model.getpos();
+AnimateRobots(logFile, robotDobot, qCurrentDobot, robotDobot.qIntermediary);
 
-%Find current q to move robots to intermediary pose
-%qCurrentDobot = robotDobot.model.getpos();
-%AnimateRobots(logFile, robotDobot, qCurrentDobot, robotDobot.qIntermediary);
+placeMentLocation = [0.2, 0.2, tableHeight];
+MoveFruit(logFile, robotDobot, grape, placeMentLocation);
+
+% robotDobot.model.teach();

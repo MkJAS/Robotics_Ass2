@@ -5,7 +5,7 @@ clc % clear command window
 clf %clears all children of figure
 
 %DISPLAYs msg in command window
-display('this is a message');
+disp('this is a message');
 input('press enter to continue');
 error('stops running');
 warning('warns in command window');

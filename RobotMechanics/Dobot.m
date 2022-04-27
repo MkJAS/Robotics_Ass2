@@ -3,12 +3,9 @@ classdef Dobot < handle
     properties
         %> Robot model
         model;
-
-        %>
+        name = 'Dobot';
         workspace = [-1 1 -1 1 -0.3 1];
-
-        %> Flag to indicate if gripper is used
-        useGripper = false;
+        qIntermediary = deg2rad([0 45 45 0 0]);
         base;
 
     end
@@ -20,8 +17,6 @@ classdef Dobot < handle
             if nargin < 1
                 base = transl(0, 0, 0);
             end
-
-            %self.useGripper = useGripper;
 
             %> Define the boundaries of the workspace
 
@@ -41,6 +36,13 @@ classdef Dobot < handle
             %     end
 
             %* Simulation joint limits
+            % L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi / 2, 'offset', 0, 'qlim', [deg2rad(-135) deg2rad(135)]);
+            % L(2) = Link('d', 0, 'a', 0.135, 'alpha', 0, 'offset', -pi / 2, 'qlim', [deg2rad(5) deg2rad(80)]);
+            % L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset', 0, 'qlim', [deg2rad(-5) deg2rad(190)]);
+            % L(4) = Link('d', 0, 'a', 0.041, 'alpha', pi / 2, 'offset', 0, 'qlim', [deg2rad(-90) deg2rad(90)]);
+            % L(5) = Link('d', 0.09, 'a', 0, 'alpha', 0, 'offset', 0, 'qlim', [deg2rad(-90) deg2rad(90)]);
+
+            %* Test DH
             L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi / 2, 'offset', 0, 'qlim', [deg2rad(-135) deg2rad(135)]);
             L(2) = Link('d', 0, 'a', 0.135, 'alpha', 0, 'offset', -pi / 2, 'qlim', [deg2rad(5) deg2rad(80)]);
             L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset', 0, 'qlim', [deg2rad(-5) deg2rad(190)]);
