@@ -24,19 +24,20 @@ robot.teach;
 %%
 clc 
 
+%End effector pos
 Ex = 0.22
 Ey = 0
 Ez = 0.1
 
-theta = atan(Ey/Ex)
+theta = atan(Ey/Ex)         %Angle of arm rotation from global x, assuming robot starts 0 deg facing x axis
 
-Tx = 0.05*cos(theta)
+Tx = 0.05*cos(theta)        %Joint4 from end effector in end effectors local coords
 Ty = 0.05*sin(theta)
 
+%Joint4 pos
 x = Ex - Tx
 y = Ey - Ty
-z = Ez + 0.09;
-z = z - 0.138
+
 
 if Ex < 0
     x = Ex + Tx
@@ -45,19 +46,15 @@ if Ey < 0
     y = Ey + Ty
 end 
 
-
-
-
-% x = 0.25;
-% y = 0;
-% z = 0;
+z = Ez + 0.09;          %0.09 = end effector length
+z = z - 0.138           %0.138 = length from base to joint 2
 
 
 l = (x^2+y^2)^0.5
 D = (l^2+z^2)^0.5
 
-a2 = 0.135;
-a3 = 0.147;
+a2 = 0.135;             %Joint 2 link
+a3 = 0.147;             %Joint 3 link
 
 
 t1 = rad2deg(atan(z/l))
