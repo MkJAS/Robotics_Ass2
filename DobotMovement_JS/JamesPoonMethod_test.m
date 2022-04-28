@@ -18,13 +18,39 @@ robot = SerialLink(L);
 
 q = zeros(1,5);
 robot.plot(q);
- robot.teach;
+robot.teach;
+
+
 %%
+clc 
+
+Ex = 0.22
+Ey = 0
+Ez = 0.1
+
+theta = atan(Ey/Ex)
+
+Tx = 0.05*cos(theta)
+Ty = 0.05*sin(theta)
+
+x = Ex - Tx
+y = Ey - Ty
+z = Ez + 0.09;
+z = z - 0.138
+
+if Ex < 0
+    x = Ex + Tx
+end
+if Ey < 0
+    y = Ey + Ty
+end 
 
 
-x = 0.25;
-y = 0;
-z = 0;
+
+
+% x = 0.25;
+% y = 0;
+% z = 0;
 
 
 l = (x^2+y^2)^0.5
@@ -57,6 +83,16 @@ robot.plot(deg2rad([q1 q2 q3r q4 0]));
 t = robot.fkine(robot.getpos());
 
 t(1:3,4)
+
+q = deg2rad([q1 q2 q3r q4 0]);
+
+tr = zeros(4,4,robot.n+1);
+tr(:,:,1) = robot.base;
+L = robot.links;
+for i = 1 : robot.n
+    tr(:,:,i+1) = tr(:,:,i) * trotz(q(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
+end
+tr
 
 %%
 figure (2)
