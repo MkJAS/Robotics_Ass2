@@ -3,7 +3,7 @@ function AnimateRobots(logFile, robot1, qCurrent1, qTarget1, robot2, qCurrent2, 
     %trajectory. Takes one or two robots, their current joint configurations
     %and their desired joint configurations.
 
-    steps = 50;
+    steps = 100;
 
     switch (nargin)
         case 4

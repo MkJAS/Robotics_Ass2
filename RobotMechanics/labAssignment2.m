@@ -2,7 +2,7 @@
 %code is run.
 clear all;
 close all;
-clc;
+
 
 %Add logfile
 logFile = log4matlab('labAssignment2.log');
@@ -34,14 +34,15 @@ PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableH
 %% Objects
 % PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
 % PlaceObject('Grape.ply', [0.2, 0.2, tableHeight]);
-grape = Fruit([0.3, 0.2, tableHeight]);
+grape = Fruit([0.2, 0.15, tableHeight]);
 
 %% Robots
 robotDobot = Dobot(transl(baseDobot));
 
 %*Find current q to move robots to intermediary pose
+
 qCurrentDobot = robotDobot.model.getpos();
-AnimateRobots(logFile, robotDobot, qCurrentDobot, robotDobot.qIntermediary);
+AnimateRobots(logFile, robotDobot, qCurrentDobot, q);
 
 placeMentLocation = [0.1, -0.2, tableHeight];
 MoveFruit(logFile, robotDobot, grape, placeMentLocation);
