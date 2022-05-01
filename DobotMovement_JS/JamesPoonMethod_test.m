@@ -86,8 +86,8 @@ try delete(r1cloud); end;
 clc 
 
 %End effector pos
-Ex = 0.2;
-Ey = 0;
+Ex = 0;
+Ey = 0.2;
 Ez = 0.1;
 
 theta = atan(Ey/Ex);         %Angle of arm rotation from global x, assuming robot starts 0 deg facing x axis
@@ -126,7 +126,7 @@ alpha = t1 + t2;
 
 beta = rad2deg( acos ( ( a2^2 + a3^2 - D^2) / (2*a2*a3) ) );
 
-q1 = rad2deg(atan(y/x));
+q1 = rad2deg(atan2(y,x));
 
 q2 =  (90 - alpha);
 
@@ -137,7 +137,7 @@ q3r = (180 - beta);
 q4 = -(90 - q2 - q3r);
 
 
-
+robot.plot(deg2rad([q1 q2 q3r q4 0]))
 % t = robot.fkine(robot.getpos());
 
 % t(1:3,4)
@@ -154,19 +154,20 @@ end
 
 %%
 % figure (1)
-robot.plot(deg2rad([q1 q2 q3r q4 0]));
+;
 
 t = 2.5;             % Total time (s)
 deltaT = 0.05;      % Control frequency
 steps = t/deltaT;   % No. of steps for simulation
-delta = 2*pi/steps; % Small angle change
+delta = pi/steps; % Small angle change
+d2 = 2*pi/steps;
 epsilon = 0.01;      % Threshold value for manipulability/Damped Least Squares
-W = diag([1 1 1 0.1 0.1 0.1]);    % Weighting matrix for the velocity vector
+W = diag([1 1 1]);    % Weighting matrix for the velocity vector
 
 % 1.2) Allocate array data
 m = zeros(steps,1);             % Array for Measure of Manipulability
 qMatrix = zeros(steps,5);       % Array for joint anglesR
-qdot = zeros(steps,5);          % Array for joint velocities
+qdot = zeros(steps,3);          % Array for joint velocities
 theta = zeros(3,steps);         % Array for roll-pitch-yaw angles
 x = zeros(3,steps);             % Array for x-y-z trajectory
 positionError = zeros(3,steps); % For plotting trajectory error
@@ -175,11 +176,13 @@ angleError = zeros(3,steps);    % For plotting trajectory error
 % 1.3) Set up trajectory, initial pose
 s = lspb(0,1,steps);                % Trapezoidal trajectory scalar
 for i=1:steps
-    x(1,i) = (1-s(i))*0.2 + s(i)*0.3; % Points in x
-    x(2,i) = (1-s(i))*0 + s(i)*0; % Points in y
-    x(3,i) = (1-s(i))*0.1 + s(i)*0.1; % Points in z
+    
+    x(1,i) = 0.2*cos(pi/2 - delta*(i-1));
+%     x(1,i) = (1-s(i))*0.2 + s(i)*0.3;                                       % Points in x
+    x(2,i) = 0.2*sin(pi/2 - delta*(i-1));                                           % Points in y
+    x(3,i) = 0.1 + 0.05*sin(i*d2);                                       % Points in z
     theta(1,i) = 0;                 % Roll angle 
-    theta(2,i) = 0;            % Pitch angle
+    theta(2,i) = 0;                 % Pitch angle
     theta(3,i) = 0;                 % Yaw angle
 end
  
@@ -198,22 +201,23 @@ for i = 1:steps-1
     linear_velocity = (1/deltaT)*deltaX;
     angular_velocity = [S(3,2);S(1,3);S(2,1)];                              % Check the structure of Skew Symmetric matrix!!
     deltaTheta = tr2rpy(Rd*Ra');                                            % Convert rotation matrix to RPY angles
-    xdot = W*[linear_velocity;angular_velocity];                          	% Calculate end-effector velocity to reach next waypoint.
+    xdot = W*[linear_velocity];                          	% Calculate end-effector velocity to reach next waypoint.
     J = robot.jacob0(qMatrix(i,:));                                          % Get Jacobian at current joint state
-    m(i) = real(sqrt(det(J*J')));
-    if m(i) < epsilon                                                       % If manipulability is less than given threshold
+    J = J(1:3,1:3);
+    m(i) = sqrt(det(J*J'));
+    if m(i) < epsilon                                      % If manipulability is less than given threshold
         lambda = (1 - m(i)/epsilon)*5E-2;
-        lambda = real(lambda);
+        
     else
         lambda = 0;
     end
-    invJ = inv(J'*J + lambda *eye(5))*J';                                   % DLS Inverse
+    invJ = inv(J'*J + lambda *eye(3))*J';                                   % DLS Inverse
     qdot(i,:) = (invJ*xdot)';                                                % Solve the RMRC equation (you may need to transpose the         vector)
     
     qlim = robot.qlim;
     
     
-    for j = 1:5                                                             % Loop through joints 1 to 6
+    for j = 1:3                                                             % Loop through joints 1 to 6
         if j == 3
             [~, index] = min(abs(lowerLimit(:,1)-qMatrix(i,2)));
             [~, index2] = min(abs(upperLimit(:,1)-qMatrix(i,2)));
@@ -226,7 +230,7 @@ for i = 1:steps-1
             qdot(i,j) = 0; % Stop the motor
         end
     end
-    qMatrix(i+1,:) = qMatrix(i,:) + deltaT*qdot(i,:);                       % Update next joint state based on joint velocities
+    qMatrix(i+1,1:3) = qMatrix(i,1:3) + deltaT*qdot(i,:);                       % Update next joint state based on joint velocities
     qMatrix(i+1,4) = -(pi/2 - qMatrix(i+1,2) - qMatrix(i+1,3));
     
     positionError(:,i) = x(:,i+1) - T(1:3,4);                               % For plotting
@@ -240,7 +244,7 @@ robot.plot(qMatrix,'trail','r-')
 
 
 
-for i = 1:5
+for i = 1:3
     figure(2)
     subplot(3,2,i)
     plot(qMatrix(:,i),'k','LineWidth',1)
@@ -274,7 +278,7 @@ legend('Roll','Pitch','Yaw')
 
 figure(5)
 plot(m,'k','LineWidth',1)
-% refline(0,epsilon)
+refline(0,epsilon)
 title('Manipulability')
 
 robot.teach();
