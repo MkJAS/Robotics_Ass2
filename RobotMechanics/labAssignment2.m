@@ -34,6 +34,8 @@ PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableH
 %% Objects
 % PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
 % PlaceObject('Grape.ply', [0.2, 0.2, tableHeight]);
+PlaceObject('Basket.ply', [0.1, 0.2, tableHeight]);
+
 locationGrape = [0, -0.15, tableHeight];
 %grape = Grape(locationGrape);
 
