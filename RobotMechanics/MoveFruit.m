@@ -27,7 +27,12 @@ function MoveFruit(logFile, robot, fruit, locationFinal)
     qTarget = robot.model.ikcon(fruitFinalPose, qCurrent); %(target pose, current joint angles, mask)
 
     AnimateRobots(logFile, robot, qCurrent, qTarget);
-    Fruit(locationFinal); % todo may need to adjust this so there is a handle for placed fruit
+
+    if fruit.type == "grape" %todo may need to adjust so there is handle for placed fruit - ie update the current fruits location and have it re-draw itself
+        Grape(locationFinal);
+    else
+        Strawberry(locationFinal);
+    end
 
     %*go from final fruit position back to intermediary position
     qCurrent = robot.model.getpos();
