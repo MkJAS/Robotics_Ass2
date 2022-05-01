@@ -7,6 +7,7 @@ function EasyLogger(logFile, robot, qCurrent, qTarget)
     logFile.mlog = {logFile.DEBUG, scriptName, name};
     logFile.mlog = {logFile.DEBUG, scriptName, ['Current transform is:', logFile.MatrixToString(transformCurrent)]};
     logFile.mlog = {logFile.DEBUG, scriptName, ['Target transform is: ', logFile.MatrixToString(transformTarget)]};
+
     % todo uncomment for working log msgs
     %disp([newline,name]);
     %disp(strcat('Current transform is: ',logFile.MatrixToString(transformCurrent)));
