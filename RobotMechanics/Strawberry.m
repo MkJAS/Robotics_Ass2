@@ -1,30 +1,26 @@
 classdef Strawberry < Fruit
-    %!Brick class which stores key brick attributes and places at brick at
+    %!Strawberry class
 
     properties (Constant)
-        % length = 0.275;
-        % width = 0.1335;
-        % height = 0.0735;
+        diameter = 0.05; % todo update
     end
 
     properties
-        location;
         strawberry;
         vertices;
     end
 
     methods
         %% Constructor
-        function self = Fruit(location)
-
-            self.location = location;
-            self.fruit = PlaceObject('Grape.ply', self.location);
-            self.vertices = get(self.fruit, 'Vertices');
+        function self = Strawberry(location)
+            self = self@Fruit(location);
+            self.strawberry = PlaceObject('Strawberry.ply', self.location);
+            self.vertices = get(self.strawberry, 'Vertices');
         end
 
         %% Destructor
         function delete(self)
-            try delete(self.fruit); end
+            try delete(self.strawberry); end
         end
 
     end
