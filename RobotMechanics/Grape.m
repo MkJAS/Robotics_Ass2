@@ -2,10 +2,11 @@ classdef Grape < Fruit
     %!Grape class
 
     properties (Constant)
-        diameter = 0.05; % todo update
+        diameter = 0.025;
     end
 
     properties
+        type = "grape";
         grape;
         vertices;
     end

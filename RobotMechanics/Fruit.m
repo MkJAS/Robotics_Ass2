@@ -2,7 +2,7 @@ classdef Fruit
     %!Fruit class which stores key Fruit attributes
 
     properties (Constant)
-        height = 0.05;
+        height = 0.03;
     end
 
     properties
