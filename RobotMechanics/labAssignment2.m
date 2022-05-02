@@ -34,14 +34,6 @@ PlaceObject('LightCurtain.ply', [-offsetLightCurtain, -offsetLightCurtain, table
 PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableHeight]);
 
 %% Plot lines between lightcurtains
-% offsetVertical = 0.1;
-% 
-% for index = 1:4
-%     startP = ([-offsetLightCurtain, offsetLightCurtain, tableHeight + 0.05 + offsetVertical]);
-%     endP = ([offsetLightCurtain, offsetLightCurtain, tableHeight + 0.05 + offsetVertical]);
-%     plot3([startP(1), endP(1)], [startP(2), endP(2)], [startP(3), endP(3)], 'r');
-%     offsetVertical = offsetVertical + 0.1;
-% end
 
 LightCurtainLasers;
 
