@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 2022-05-02 17:00:30,471 DEBUG in func AnimateRobots - Dobot
 2022-05-02 17:00:30,476 DEBUG in func AnimateRobots - Current transform is:
     0.0000      -0.0000       1.0000       0.0900   
@@ -63,3 +65,4 @@
     0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
+>>>>>>> 7f24403a6c98966cfab16e3049c38e69f781eaa7
