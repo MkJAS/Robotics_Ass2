@@ -5,7 +5,7 @@ clear all;
 close all;
 
 %Add logfile
-logFile = log4matlab('labAssignment2.log');
+logFile = log4matlab('assignment2.log');
 
 % Add ground image and set the size of the world
 hold on;
