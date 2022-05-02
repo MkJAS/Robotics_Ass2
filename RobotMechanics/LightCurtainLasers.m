@@ -1,7 +1,7 @@
 function LightCurtainLasers %[outputArg1,outputArg2] = untitled(inputArg1,inputArg2)
     %UNTITLED Summary of this function goes here
     %   Detailed explanation goes here
-    offsetLightCurtain = 0.35;
+    offsetLightCurtain = 0.4;
     tableHeight = 0.711547;
     offsetVertical = 0.05;
 

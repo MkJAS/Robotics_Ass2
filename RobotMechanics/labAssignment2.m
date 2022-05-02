@@ -10,7 +10,7 @@ logFile = log4matlab('assignment2.log');
 % Add ground image and set the size of the world
 hold on;
 worldCoords = 0.6;
-axis([-worldCoords worldCoords -worldCoords worldCoords 0.6 worldCoords + 1.0]); %minX maxX minY maxY minZ maxZ
+axis([-worldCoords worldCoords -worldCoords worldCoords 0.6 1.3]); %minX maxX minY maxY minZ maxZ
 surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
 
 % Adding objects to scene
@@ -24,7 +24,7 @@ PlaceObject('Table.ply', [0, 0, 0]);
 baseDobot = [0, 0, tableHeight];
 
 %Add Safety Equipment
-offsetLightCurtain = 0.35;
+offsetLightCurtain = 0.4;
 PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
 PlaceObject('LightCurtain.ply', [-offsetLightCurtain, offsetLightCurtain, tableHeight]);
 PlaceObject('LightCurtain.ply', [offsetLightCurtain, offsetLightCurtain, tableHeight]);
