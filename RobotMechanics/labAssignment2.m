@@ -1,6 +1,5 @@
 %Close figures, clear command window and clear all variables every time the
 %code is run.
-%test
 clc;
 clear all;
 close all;
@@ -33,8 +32,7 @@ PlaceObject('LightCurtain.ply', [offsetLightCurtain, offsetLightCurtain, tableHe
 PlaceObject('LightCurtain.ply', [-offsetLightCurtain, -offsetLightCurtain, tableHeight]);
 PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableHeight]);
 
-%% Plot lines between lightcurtains
-
+% Plot lines between lightcurtains
 LightCurtainLasers;
 
 %% Objects
