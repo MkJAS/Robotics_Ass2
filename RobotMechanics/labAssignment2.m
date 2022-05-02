@@ -31,6 +31,28 @@ PlaceObject('LightCurtain.ply', [offsetLightCurtain, offsetLightCurtain, tableHe
 PlaceObject('LightCurtain.ply', [-offsetLightCurtain, -offsetLightCurtain, tableHeight]);
 PlaceObject('LightCurtain.ply', [offsetLightCurtain, -offsetLightCurtain, tableHeight]);
 
+%Plot lines between lightcurtains
+startP = ([-offsetLightCurtain, offsetLightCurtain, tableHeight+0.05]);
+endP = ([offsetLightCurtain, offsetLightCurtain, tableHeight+0.05]);
+line1_h = plot3([startP(1), endP(1)], [startP(2), endP(2)], [startP(3), endP(3)], 'r');
+
+startP = ([-offsetLightCurtain, offsetLightCurtain, tableHeight+0.15]);
+endP = ([offsetLightCurtain, offsetLightCurtain, tableHeight+0.15]);
+line2_h = plot3([startP(1), endP(1)], [startP(2), endP(2)], [startP(3), endP(3)], 'r');
+
+startP = ([-offsetLightCurtain, offsetLightCurtain, tableHeight+0.25]);
+endP = ([offsetLightCurtain, offsetLightCurtain, tableHeight+0.25]);
+line3_h = plot3([startP(1), endP(1)], [startP(2), endP(2)], [startP(3), endP(3)], 'r');
+
+startP = ([-offsetLightCurtain, offsetLightCurtain, tableHeight+0.35]);
+endP = ([offsetLightCurtain, offsetLightCurtain, tableHeight+0.35]);
+line4_h = plot3([startP(1), endP(1)], [startP(2), endP(2)], [startP(3), endP(3)], 'r');
+
+startP = ([-offsetLightCurtain, offsetLightCurtain, tableHeight+0.45]);
+endP = ([offsetLightCurtain, offsetLightCurtain, tableHeight+0.45]);
+line5_h = plot3([startP(1), endP(1)], [startP(2), endP(2)], [startP(3), endP(3)], 'r');
+
+
 %% Objects
 % PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
 % PlaceObject('Grape.ply', [0.2, 0.2, tableHeight]);
