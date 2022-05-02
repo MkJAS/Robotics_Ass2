@@ -1,5 +1,6 @@
 %Close figures, clear command window and clear all variables every time the
 %code is run.
+%test
 clc;
 clear all;
 close all;
