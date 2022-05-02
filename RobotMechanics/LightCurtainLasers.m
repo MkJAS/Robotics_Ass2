@@ -1,6 +1,6 @@
 function LightCurtainLasers %[outputArg1,outputArg2] = untitled(inputArg1,inputArg2)
-    %UNTITLED Summary of this function goes here
-    %   Detailed explanation goes here
+    %LightCurtainLasers function that plots a line between two points on
+    %the lightcurtains to create a light barrier between robot and user
     offsetLightCurtain = 0.4;
     tableHeight = 0.711547;
     offsetVertical = 0.05;
