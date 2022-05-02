@@ -10,7 +10,7 @@ logFile = log4matlab('labAssignment2.log');
 % Add ground image and set the size of the world
 hold on;
 worldCoords = 0.6;
-axis([-worldCoords worldCoords -worldCoords worldCoords 0.6 worldCoords + 0.6]); %minX maxX minY maxY minZ maxZ
+axis([-worldCoords worldCoords -worldCoords worldCoords 0.6 worldCoords + 0.8]); %minX maxX minY maxY minZ maxZ
 surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
 
 % Adding objects to scene

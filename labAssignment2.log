@@ -1,26 +1,65 @@
-2022-05-02 16:44:46,059 DEBUG in func AnimateRobots - Dobot
-2022-05-02 16:44:46,063 DEBUG in func AnimateRobots - Current transform is:
+2022-05-02 17:00:30,471 DEBUG in func AnimateRobots - Dobot
+2022-05-02 17:00:30,476 DEBUG in func AnimateRobots - Current transform is:
     0.0000      -0.0000       1.0000       0.0900   
    -0.0000      -1.0000      -0.0000      -0.0000   
     1.0000      -0.0000      -0.0000       1.1725   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-05-02 16:44:46,066 DEBUG in func AnimateRobots - Target transform is: 
+2022-05-02 17:00:30,479 DEBUG in func AnimateRobots - Target transform is: 
     1.0000       0.0000       0.0000       0.2835   
     0.0000      -1.0000      -0.0000      -0.0000   
     0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-05-02 16:44:56,952 DEBUG in func AnimateRobots - Dobot
-2022-05-02 16:44:56,971 DEBUG in func AnimateRobots - Current transform is:
+2022-05-02 17:00:37,318 DEBUG in func AnimateRobots - Dobot
+2022-05-02 17:00:37,340 DEBUG in func AnimateRobots - Current transform is:
     1.0000       0.0000      -0.0000       0.2835   
     0.0000      -1.0000      -0.0000      -0.0000   
    -0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
-2022-05-02 16:44:56,978 DEBUG in func AnimateRobots - Target transform is: 
+2022-05-02 17:00:37,347 DEBUG in func AnimateRobots - Target transform is: 
     0.4497       0.0000      -0.8932       0.2001   
     0.0001      -1.0000      -0.0000       0.0000   
    -0.8932      -0.0000      -0.4497       0.7266   
+    0.0000       0.0000       0.0000       1.0000   
+
+2022-05-02 17:00:45,660 DEBUG in func AnimateRobots - Dobot
+2022-05-02 17:00:45,668 DEBUG in func AnimateRobots - Current transform is:
+    0.4497       0.0000      -0.8932       0.2001   
+    0.0001      -1.0000      -0.0000       0.0000   
+   -0.8932      -0.0000      -0.4497       0.7266   
+    0.0000       0.0000       0.0000       1.0000   
+
+2022-05-02 17:00:45,670 DEBUG in func AnimateRobots - Target transform is: 
+    1.0000       0.0000       0.0000       0.2835   
+    0.0000      -1.0000      -0.0000      -0.0000   
+    0.0000       0.0000      -1.0000       0.8550   
+    0.0000       0.0000       0.0000       1.0000   
+
+2022-05-02 17:00:49,257 DEBUG in func AnimateRobots - Dobot
+2022-05-02 17:00:49,260 DEBUG in func AnimateRobots - Current transform is:
+    1.0000      -0.0000       0.0000       0.2835   
+   -0.0000      -1.0000      -0.0000      -0.0000   
+    0.0000       0.0000      -1.0000       0.8550   
+    0.0000       0.0000       0.0000       1.0000   
+
+2022-05-02 17:00:49,260 DEBUG in func AnimateRobots - Target transform is: 
+   -0.9995      -0.0302       0.0061      -0.0134   
+   -0.0294       0.9939       0.1067      -0.2328   
+   -0.0093       0.1065      -0.9943       0.7061   
+    0.0000       0.0000       0.0000       1.0000   
+
+2022-05-02 17:00:53,620 DEBUG in func AnimateRobots - Dobot
+2022-05-02 17:00:53,625 DEBUG in func AnimateRobots - Current transform is:
+   -0.9995      -0.0302       0.0061      -0.0134   
+   -0.0294       0.9939       0.1067      -0.2328   
+   -0.0093       0.1065      -0.9943       0.7061   
+    0.0000       0.0000       0.0000       1.0000   
+
+2022-05-02 17:00:53,627 DEBUG in func AnimateRobots - Target transform is: 
+    1.0000       0.0000       0.0000       0.2835   
+    0.0000      -1.0000      -0.0000      -0.0000   
+    0.0000       0.0000      -1.0000       0.8550   
     0.0000       0.0000       0.0000       1.0000   
 
