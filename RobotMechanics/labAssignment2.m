@@ -33,7 +33,7 @@ PlaceObject('LightCurtainFlipped.ply', [offsetLightCurtain, -offsetLightCurtain,
 PlaceObject('Lid.ply', [0, 0, (tableHeight + 0.52)]);
 
 % Plot lines between lightcurtains
-LightCurtainLasers;
+LightCurtainLasers();
 
 %% Objects
 % PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
