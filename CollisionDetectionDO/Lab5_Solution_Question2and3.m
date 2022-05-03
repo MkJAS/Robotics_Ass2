@@ -33,23 +33,23 @@ function [] = Lab5Solution_Question2and3()
     robot.teach;
 
     % 2.4: Get the transform of every joint (i.e. start and end of every link)
-    tr = zeros(4, 4, robot.n + 1);
-    tr(:, :, 1) = robot.base;
-    L = robot.links;
+    jointTransforms = zeros(4, 4, robot.n + 1);
+    jointTransforms(:, :, 1) = robot.base;
+    linkData = robot.links;
 
-    for i = 1:robot.n
-        tr(:, :, i + 1) = tr(:, :, i) * trotz(q(i) + L(i).offset) * transl(0, 0, L(i).d) * transl(L(i).a, 0, 0) * trotx(L(i).alpha);
+    for linkNum = 1:robot.n
+        jointTransforms(:, :, linkNum + 1) = jointTransforms(:, :, linkNum) * trotz(q(linkNum) + linkData(linkNum).offset) * transl(0, 0, linkData(linkNum).d) * transl(linkData(linkNum).a, 0, 0) * trotx(linkData(linkNum).alpha);
     end
 
     % 2.5: Go through each link and also each triangle face
-    for i = 1:size(tr, 3) - 1
+    for linkNum = 1:size(jointTransforms, 3) - 1
 
         for faceIndex = 1:size(faces, 1)
-            vertOnPlane = vertex(faces(faceIndex, 1)', :);
-            [intersectP, check] = LinePlaneIntersection(faceNormals(faceIndex, :), vertOnPlane, tr(1:3, 4, i)', tr(1:3, 4, i + 1)');
+            vertexOnPlane = vertex(faces(faceIndex, 1)', :);
+            [pointIntersection, check] = LinePlaneIntersection(faceNormals(faceIndex, :), vertexOnPlane, jointTransforms(1:3, 4, linkNum)', jointTransforms(1:3, 4, linkNum + 1)');
 
-            if check == 1 && IsIntersectionPointInsideTriangle(intersectP, vertex(faces(faceIndex, :)', :))
-                plot3(intersectP(1), intersectP(2), intersectP(3), 'g*');
+            if check == 1 && IsIntersectionPointInsideTriangle(pointIntersection, vertex(faces(faceIndex, :)', :))
+                plot3(pointIntersection(1), pointIntersection(2), pointIntersection(3), 'g*');
                 display('Intersection');
             end
 
@@ -169,7 +169,7 @@ end
 % determine if the point is
 % inside (result == 1) or
 % outside a triangle (result ==0 )
-function result = IsIntersectionPointInsideTriangle(intersectP, triangleVerts)
+function result = IsIntersectionPointInsideTriangle(pointIntersection, triangleVerts)
 
     u = triangleVerts(2, :) - triangleVerts(1, :);
     v = triangleVerts(3, :) - triangleVerts(1, :);
@@ -178,7 +178,7 @@ function result = IsIntersectionPointInsideTriangle(intersectP, triangleVerts)
     uv = dot(u, v);
     vv = dot(v, v);
 
-    w = intersectP - triangleVerts(1, :);
+    w = pointIntersection - triangleVerts(1, :);
     wu = dot(w, u);
     wv = dot(w, v);
 
@@ -187,19 +187,19 @@ function result = IsIntersectionPointInsideTriangle(intersectP, triangleVerts)
     % Get and test parametric coords (s and t)
     s = (uv * wv - vv * wu) / D;
 
-    if (s < 0.0 || s > 1.0) % intersectP is outside Triangle
+    if (s < 0.0 || s > 1.0) % pointIntersection is outside Triangle
         result = 0;
         return;
     end
 
     t = (uv * wu - uu * wv) / D;
 
-    if (t < 0.0 || (s + t) > 1.0) % intersectP is outside Triangle
+    if (t < 0.0 || (s + t) > 1.0) % pointIntersection is outside Triangle
         result = 0;
         return;
     end
 
-    result = 1; % intersectP is in Triangle
+    result = 1; % pointIntersection is in Triangle
 end
 
 %% IsCollision
@@ -216,17 +216,17 @@ function result = IsCollision(robot, qMatrix, faces, vertex, faceNormals, return
 
     for qIndex = 1:size(qMatrix, 1)
         % Get the transform of every joint (i.e. start and end of every link)
-        tr = GetLinkPoses(qMatrix(qIndex, :), robot);
+        jointTransforms = GetLinkPoses(qMatrix(qIndex, :), robot);
 
         % Go through each link and also each triangle face
-        for i = 1:size(tr, 3) - 1
+        for i = 1:size(jointTransforms, 3) - 1
 
             for faceIndex = 1:size(faces, 1)
-                vertOnPlane = vertex(faces(faceIndex, 1)', :);
-                [intersectP, check] = LinePlaneIntersection(faceNormals(faceIndex, :), vertOnPlane, tr(1:3, 4, i)', tr(1:3, 4, i + 1)');
+                vertexOnPlane = vertex(faces(faceIndex, 1)', :);
+                [pointIntersection, check] = LinePlaneIntersection(faceNormals(faceIndex, :), vertexOnPlane, jointTransforms(1:3, 4, i)', jointTransforms(1:3, 4, i + 1)');
 
-                if check == 1 && IsIntersectionPointInsideTriangle(intersectP, vertex(faces(faceIndex, :)', :))
-                    plot3(intersectP(1), intersectP(2), intersectP(3), 'g*');
+                if check == 1 && IsIntersectionPointInsideTriangle(pointIntersection, vertex(faces(faceIndex, :)', :))
+                    plot3(pointIntersection(1), pointIntersection(2), pointIntersection(3), 'g*');
                     display('Intersection');
                     result = true;
 
@@ -255,12 +255,12 @@ function [transforms] = GetLinkPoses(q, robot)
     transforms(:, :, 1) = robot.base;
 
     for i = 1:length(links)
-        L = links(1, i);
+        linkData = links(1, i);
 
         current_transform = transforms(:, :, i);
 
-        current_transform = current_transform * trotz(q(1, i) + L.offset) * ...
-            transl(0, 0, L.d) * transl(L.a, 0, 0) * trotx(L.alpha);
+        current_transform = current_transform * trotz(q(1, i) + linkData.offset) * ...
+            transl(0, 0, linkData.d) * transl(linkData.a, 0, 0) * trotx(linkData.alpha);
         transforms(:, :, i + 1) = current_transform;
     end
 
