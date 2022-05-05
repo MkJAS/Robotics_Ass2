@@ -154,7 +154,6 @@ end
 
 %%
 % figure (1)
-;
 
 t = 2.5;             % Total time (s)
 deltaT = 0.05;      % Control frequency
