@@ -1,9 +1,9 @@
 clear all
 close all
 
-rosbag info TopDown.bag
+rosbag info T1.bag
 
-bag = rosbag('TopDown.bag');
+bag = rosbag('T1.bag');
 
 rgb = select(bag,'Topic','/device_0/sensor_1/Color_0/image/data');
 depth = select(bag,'Topic','/device_0/sensor_0/Depth_0/image/data');
@@ -92,8 +92,8 @@ clear V;
     
     extrinsic = transl(0.0151737350970507,1.76809862750815e-05,-0.000113747271825559)*1000;
     extrinsic(1:3,1:3) = [0.99996,0.00565148,0.00696151;
-  -0.00566533,0.999982,0.00197255;
-  -0.00695024,-0.00201191,0.999974];
+                        -0.00566533,0.999982,0.00197255;
+                        -0.00695024,-0.00201191,0.999974];
     
     fx_rgb = intrinsics.FocalLength(1);
     fy_rgb = intrinsics.FocalLength(2);
@@ -160,3 +160,23 @@ for i=1:480
          count = count + 1;
     end    
 end
+
+
+%%
+
+Sd = size(depthData);
+[X,Y] = meshgrid(1:Sd(2),1:Sd(1));
+%K is calibration matrix
+X = X - cx_d + 0.5;
+Y = Y - cy_d + 0.5;
+XDf = depthData/fx_d;
+YDf = depthData/fy_d;
+X = X .* XDf;
+Y = Y .* YDf;
+XY = cat(3,X,Y);
+cloud = cat(3,XY,depthData);
+cloud = reshape(cloud,[],3)/1000;
+% if you can use matlab point cloud library
+cloud = pointCloud(cloud);
+pcshow(cloud);
+
