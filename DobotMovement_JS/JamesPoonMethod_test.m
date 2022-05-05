@@ -36,7 +36,6 @@ upperLimit = [];
  for q2 = qlim(2,1):0.01:qlim(2,2)
      for theta3 = qlim(3,1):0.01:qlim(3,2)+0.01
          q3 = pi/2 - q2 + theta3;
-        
          if theta3 <= qlim(3,1)
             lowerLimit = [lowerLimit;q2,q3]; %#ok<AGROW>
          elseif qlim(3,2) <= theta3
