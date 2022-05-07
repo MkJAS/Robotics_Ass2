@@ -214,7 +214,7 @@ function plusX_Callback(hObject, eventdata, handles)
 % hObject    handle to plusX (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-q = handles.model.getpos;
+q = handles.model.getpos();
 tr = handles.model.fkine(q);
 tr(1,4) = tr(1,4) + 0.01;
 newQ = handles.model.ikcon(tr,q);
