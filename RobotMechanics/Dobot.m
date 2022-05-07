@@ -2,6 +2,7 @@ classdef Dobot < handle
     properties
         %> Robot model
         model;
+        lims;
         
         %>
         workspace = [-1 1 -1 1 -0.3 1];   
