@@ -1,35 +1,35 @@
-function varargout = GUI_Draft(varargin)
-% GUI_DRAFT MATLAB code for GUI_Draft.fig
-%      GUI_DRAFT, by itself, creates a new GUI_DRAFT or raises the existing
+function varargout = untitledGUI(varargin)
+% UNTITLEDGUI MATLAB code for untitledGUI.fig
+%      UNTITLEDGUI, by itself, creates a new UNTITLEDGUI or raises the existing
 %      singleton*.
 %
-%      H = GUI_DRAFT returns the handle to a new GUI_DRAFT or the handle to
+%      H = UNTITLEDGUI returns the handle to a new UNTITLEDGUI or the handle to
 %      the existing singleton*.
 %
-%      GUI_DRAFT('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in GUI_DRAFT.M with the given input arguments.
+%      UNTITLEDGUI('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in UNTITLEDGUI.M with the given input arguments.
 %
-%      GUI_DRAFT('Property','Value',...) creates a new GUI_DRAFT or raises the
+%      UNTITLEDGUI('Property','Value',...) creates a new UNTITLEDGUI or raises the
 %      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before GUI_Draft_OpeningFcn gets called.  An
+%      applied to the GUI before untitledGUI_OpeningFcn gets called.  An
 %      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to GUI_Draft_OpeningFcn via varargin.
+%      stop.  All inputs are passed to untitledGUI_OpeningFcn via varargin.
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help GUI_Draft
+% Edit the above text to modify the response to help untitledGUI
 
-% Last Modified by GUIDE v2.5 05-May-2022 17:59:46
+% Last Modified by GUIDE v2.5 01-May-2021 15:23:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @GUI_Draft_OpeningFcn, ...
-                   'gui_OutputFcn',  @GUI_Draft_OutputFcn, ...
+                   'gui_OpeningFcn', @untitledGUI_OpeningFcn, ...
+                   'gui_OutputFcn',  @untitledGUI_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -43,32 +43,32 @@ else
 end
 % End initialization code - DO NOT EDIT
 
-% --- Executes just before GUI_Draft is made visible.
-function GUI_Draft_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before untitledGUI is made visible.
+function untitledGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to GUI_Draft (see VARARGIN)
+% varargin   command line arguments to untitledGUI (see VARARGIN)
 
-% Choose default command line output for GUI_Draft
+% Choose default command line output for untitledGUI
 handles.output = hObject;
 
 % Update handles structure
 guidata(hObject, handles);
 
 % This sets up the initial plot - only do when we are invisible
-% so window can get raised using GUI_Draft.
+% so window can get raised using untitledGUI.
 if strcmp(get(hObject,'Visible'),'off')
-    %plot(rand(5));
+    plot(rand(5));
 end
 
-% UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
+% UIWAIT makes untitledGUI wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = GUI_Draft_OutputFcn(hObject, eventdata, handles)
+function varargout = untitledGUI_OutputFcn(hObject, eventdata, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -79,58 +79,57 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-cla;
+cla
 axes(handles.axes1);
 
+L1 = Link('d',0.0892,'a',0,'alpha',-pi/2,'offset',0,'qlim',[deg2rad(-360),deg2rad(360)]);
+L2 = Link('d',0.1357,'a',0.425,'alpha',-pi,'offset',-pi/2,'qlim',[deg2rad(-90),deg2rad(90)]);
+L3 = Link('d',0.1197,'a',0.39243,'alpha',pi,'offset',0,'qlim',[deg2rad(-170),deg2rad(170)]);
+L4 = Link('d',0.093,'a',0,'alpha',-pi/2,'offset',-pi/2,'qlim',[deg2rad(-360),deg2rad(360)]);
+L5 = Link('d',0.093,'a',0,'alpha',-pi/2,'offset',0,'qlim',[deg2rad(-360),deg2rad(360)]);
+L6 = Link('d',0,'a',0,'alpha',0,'offset',0,'qlim',[deg2rad(-360),deg2rad(360)]);
 
-name = ['Dobot', datestr(now, 'yyyymmddTHHMMSSFFF')];
-base = [0, 0, 0.711547];
-
-L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi/2, 'offset', 0,'qlim',[-135*pi/180 135*pi/180]);
-L(2) = Link('d', 0, 'a', 0.135, 'alpha',0,'offset', -pi/2,'qlim',[5*pi/180 80*pi/180]);
-L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset',0,'qlim',[-5*pi/180 85*pi/180]);
-L(4) = Link('d', 0, 'a', 0.041, 'alpha', pi/2, 'offset', 0,'qlim',[-pi/2 pi/2]);
-L(5) = Link('d', 0.09, 'a', 0, 'alpha',0, 'offset', 0,'qlim',[-85*pi/180 85*pi/180]);
-
-model = SerialLink(L, 'name', name); %'base', base
+model = SerialLink([L1 L2 L3 L4 L5 L6],'name','UR5');
 
 for linkIndex = 0:model.n
-    [ faceData, vertexData, plyData{linkIndex + 1} ] = plyread(['DobotLink', num2str(linkIndex), '.ply'], 'tri'); %#ok<AGROW>
-    model.faces{linkIndex + 1} = faceData;
-    model.points{linkIndex + 1} = vertexData;
+    [ faceData, vertexData, plyData{linkIndex+1} ] = plyread(['UR5Link',num2str(linkIndex),'.ply'],'tri'); %#ok<AGROW>        
+    model.faces{linkIndex+1} = faceData;
+    model.points{linkIndex+1} = vertexData;
 end
 
-%Display Robot
-workspace = [-1 1 -1 1 -0.3 1];
-model.teach();
-%model.plot3d(zeros(1,model.n), 'noarrow', 'workspace', workspace);
-if isempty(findobj(get(gca, 'Children'), 'Type', 'Light'))
-     camlight
+% Display robot
+workspace = [-2 2 -2 2 -0.3 2];   
+model.plot3d(zeros(1,model.n),'noarrow','workspace',workspace);
+if isempty(findobj(get(gca,'Children'),'Type','Light'))
+    camlight
 end  
 model.delay = 0;
 
 % Try to correctly colour the arm (if colours are in ply file data)
 for linkIndex = 0:model.n
     handles = findobj('Tag', model.name);
-    h = get(handles, 'UserData');
+    h = get(handles,'UserData');
     try 
-       h.link(linkIndex + 1).Children.FaceVertexCData = [plyData{linkIndex + 1}.vertex.red ...
-                                                     , plyData{linkIndex + 1}.vertex.green ...
-                                                     , plyData{linkIndex + 1}.vertex.blue]/255;
-       h.link(linkIndex + 1).Children.FaceColor = 'interp';
+        h.link(linkIndex+1).Children.FaceVertexCData = [plyData{linkIndex+1}.vertex.red ...
+                                                      , plyData{linkIndex+1}.vertex.green ...
+                                                      , plyData{linkIndex+1}.vertex.blue]/255;
+        h.link(linkIndex+1).Children.FaceColor = 'interp';
     catch ME_1
         disp(ME_1);
         continue;
     end
 end
-
+    
 data = guidata(hObject);
 data.model = model;
 guidata(hObject,data);
+
+% hObject    handle to pushbutton1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% axes(handles.axes1);
+% cla;
+% 
 % popup_sel_index = get(handles.popupmenu1, 'Value');
 % switch popup_sel_index
 %     case 1
@@ -210,33 +209,9 @@ end
 set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)', 'plot(membrane)', 'surf(peaks)'});
 
 
-% --- Executes on button press in plusX.
-function plusX_Callback(hObject, eventdata, handles)
-% hObject    handle to plusX (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-q = handles.model.getpos();
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) + 0.01;
-newQ = handles.model.ikcon(tr,q);
-handles.model.animate(newQ);
-
-
-% --- Executes on button press in minusX.
-function minusX_Callback(hObject, eventdata, handles)
-% hObject    handle to minusX (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
-handles.model.animate(newQ);
-
-
-% --- Executes on slider movement.
-function slider1_Callback(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
+% --- Executes on button press in plusX_pushbutton.
+function plusX_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to plusX_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 q = handles.model.getpos;
@@ -245,25 +220,13 @@ tr(1,4) = tr(1,4) + 0.01;
 newQ = handles.model.ikcon(tr,q);
 handles.model.animate(newQ);
 
+% --- Executes on button press in minusX_pushbutton.
+function minusX_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to minusX_pushbutton (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 q = handles.model.getpos;
 tr = handles.model.fkine(q);
 tr(1,4) = tr(1,4) - 0.01;
 newQ = handles.model.ikcon(tr,q);
 handles.model.animate(newQ);
-
-get(hObject, 'Value');
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-
-% --- Executes during object creation, after setting all properties.
-function slider1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
