@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 07-May-2022 13:33:13
+% Last Modified by GUIDE v2.5 07-May-2022 16:26:05
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -233,55 +233,151 @@ newQ = handles.model.ikcon(tr,q);
 handles.model.animate(newQ);
 
 
-% --- Executes on slider movement.
-function slider1_Callback(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-get(hObject, 'Value');
-get(hObject, 'Min', -135*pi/180);
-get(hObject, 'Max', 135*pi/180);
-
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) + 0.01;
-newQ = handles.model.ikcon(tr,q);
-handles.model.animate(newQ);
-
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
-handles.model.animate(newQ);
-
-% get(hObject, 'Value');
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-
-% --- Executes during object creation, after setting all properties.
-function slider1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on button press in pushbutton5.
-function pushbutton5_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton5 (see GCBO)
+% --- Executes on button press in minusq1.
+function minusq1_Callback(hObject, eventdata, handles)
+% hObject    handle to minusq1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 q1 = handles.model.getpos;
-qNext = q1-deg2rad([0 15 0 0 0]);
-% tr1 = handles.model.fkine(q1);
-% tr1(1,4) = tr1(1,4) + 0.01;
-%newQ = handles.model.ikcon(qNext,q1);
+qNext = q1-deg2rad([5 0 0 0 0]);
 handles.model.animate(qNext);
+
+
+% --- Executes on button press in plusq1.
+function plusq1_Callback(hObject, eventdata, handles)
+% hObject    handle to plusq1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+q1 = handles.model.getpos;
+qNext = q1+deg2rad([5 0 0 0 0]);
+handles.model.animate(qNext);
+
+% --- Executes on button press in minusq2.
+function minusq2_Callback(hObject, eventdata, handles)
+% hObject    handle to minusq2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q2 = handles.model.getpos;
+qNext = q2-deg2rad([0 5 0 0 0]);
+handles.model.animate(qNext);
+
+
+% --- Executes on button press in plusq2.
+function plusq2_Callback(hObject, eventdata, handles)
+% hObject    handle to plusq2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q2 = handles.model.getpos;
+qNext = q2+deg2rad([0 5 0 0 0]);
+handles.model.animate(qNext);
+
+
+% --- Executes on button press in minusq3.
+function minusq3_Callback(hObject, eventdata, handles)
+% hObject    handle to minusq3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q3 = handles.model.getpos;
+qNext = q3-deg2rad([0 0 5 0 0]);
+handles.model.animate(qNext);
+
+
+% --- Executes on button press in plusq3.
+function plusq3_Callback(hObject, eventdata, handles)
+% hObject    handle to plusq3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q3 = handles.model.getpos;
+qNext = q3+deg2rad([0 0 5 0 0]);
+handles.model.animate(qNext);
+
+
+% --- Executes on button press in minusq4.
+function minusq4_Callback(hObject, eventdata, handles)
+% hObject    handle to minusq4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q4 = handles.model.getpos;
+qNext = q4-deg2rad([0 0 0 5 0]);
+handles.model.animate(qNext);
+
+
+% --- Executes on button press in plusq4.
+function plusq4_Callback(hObject, eventdata, handles)
+% hObject    handle to plusq4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q4 = handles.model.getpos;
+qNext = q4+deg2rad([0 0 0 5 0]);
+handles.model.animate(qNext);
+
+
+% --- Executes on button press in minusq5.
+function minusq5_Callback(hObject, eventdata, handles)
+% hObject    handle to minusq5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q5 = handles.model.getpos;
+qNext = q5-deg2rad([0 0 0 0 5]);
+handles.model.animate(qNext);
+
+
+% --- Executes on button press in plusq5.
+function plusq5_Callback(hObject, eventdata, handles)
+% hObject    handle to plusq5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q5 = handles.model.getpos;
+qNext = q5+deg2rad([0 0 0 0 5]);
+handles.model.animate(qNext);
+
+% % --- Executes on slider movement.
+% function slider1_Callback(hObject, eventdata, handles)
+% % hObject    handle to slider1 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% 
+% sliderValue = get(handles.slider1, 'Value');
+% % get(hObject, 'Min', -135*pi/180);
+% % get(hObject, 'Max', 135*pi/180);
+% 
+% switch sliderValue
+%     case 1
+%         q1 = handles.model.getpos;
+%         qNext = q1-deg2rad([5 0 0 0 0]);
+%         handles.model.animate(qNext);
+%     case 2
+%         q1 = handles.model.getpos;
+%         qNext = q1+deg2rad([5 0 0 0 0]);
+%         handles.model.animate(qNext);
+% end
+% % q = handles.model.getpos;
+% % tr = handles.model.fkine(q);
+% % tr(1,4) = tr(1,4) + 0.01;
+% % newQ = handles.model.ikcon(tr,q);
+% % handles.model.animate(newQ);
+% % 
+% % q = handles.model.getpos;
+% % tr = handles.model.fkine(q);
+% % tr(1,4) = tr(1,4) - 0.01;
+% % newQ = handles.model.ikcon(tr,q);
+% % handles.model.animate(newQ);
+% 
+% % get(hObject, 'Value');
+% 
+% % Hints: get(hObject,'Value') returns position of slider
+% %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+% 
+% 
+% % --- Executes during object creation, after setting all properties.
+% function slider1_CreateFcn(hObject, eventdata, handles)
+% % hObject    handle to slider1 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    empty - handles not created until after all CreateFcns called
+% 
+% % Hint: slider controls usually have a light gray background.
+% if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+%     set(hObject,'BackgroundColor',[.9 .9 .9]);
+% end
