@@ -1,6 +1,7 @@
-function [qMatrix] = Trajectory(startPoint,endPoint,traj,qcurrent,lims,robot)
+function [qMatrix] = Trajectory(startPoint,endPoint,traj,robot)
 %Uses RMRC to move robot through a specified trajectory 
 %traj = desired trajectory, lims = robot limits 
+lims = robot.lims;
 Ex = [startPoint(1) endPoint(1)];
 Ey = [startPoint(2) endPoint(2)];
 Ez = [startPoint(3) endPoint(3)];
@@ -133,7 +134,7 @@ end
  
 % T = [rpy2r(theta(1,1),theta(2,1),theta(3,1)) xyz(:,1);zeros(1,3) 1];          % Create transformation of first point and angle
 % q0 = zeros(1,5);                                                            % Initial guess for joint angles
-qMatrix(1,:) = qcurrent;                                            % Solve joint angles to achieve first waypoint
+qMatrix(1,:) = robot.getpos();                                            % Solve joint angles to achieve first waypoint
 
 % 1.4) Track the trajectory with RMRC
 for i = 1:steps-1
