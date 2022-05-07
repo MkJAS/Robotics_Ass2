@@ -2,18 +2,18 @@ close all
 clear all
 
 
-L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi/2, 'offset', 0,'qlim',[-135*pi/180 135*pi/180]);
-L(2) = Link('d', 0, 'a', 0.135, 'alpha',0,'offset', -pi/2,'qlim',[5*pi/180 80*pi/180]);
-L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset',0,'qlim',[5*pi/180 85*pi/180]);
-L(4) = Link('d', 0, 'a', 0.05, 'alpha', pi/2, 'offset', 0,'qlim',[-pi/2 pi/2]);
-L(5) = Link('d', 0.09, 'a', 0, 'alpha',0, 'offset', 0,'qlim',[-85*pi/180 85*pi/180]);
-
-robot = SerialLink(L);
-% robot = Dobot;
+% L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi/2, 'offset', 0,'qlim',[-135*pi/180 135*pi/180]);
+% L(2) = Link('d', 0, 'a', 0.135, 'alpha',0,'offset', -pi/2,'qlim',[5*pi/180 80*pi/180]);
+% L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset',0,'qlim',[5*pi/180 85*pi/180]);
+% L(4) = Link('d', 0, 'a', 0.05, 'alpha', pi/2, 'offset', 0,'qlim',[-pi/2 pi/2]);
+% L(5) = Link('d', 0.09, 'a', 0, 'alpha',0, 'offset', 0,'qlim',[-85*pi/180 85*pi/180]);
+% 
+% robot = SerialLink(L);
+robot = Dobot;
 
 
 q = zeros(1,5);
-robot.plot(q);
+robot.model.animate(q);
 hold on
 % robot.teach;
 
@@ -21,7 +21,7 @@ hold on
 
 steps = deg2rad(5);        %revolute joint increments
 
-qlim = robot.qlim;
+qlim = robot.model.qlim;
 
 qlim(2,:) = [5*pi/180 80*pi/180];
 qlim(3,:) = [5*pi/180 85*pi/180];
@@ -51,7 +51,7 @@ upperLimit = [];
 % plot(rad2deg(upperLimit(:,1)),rad2deg(upperLimit(:,2)),'r');
 
        
-qlim = robot.qlim;
+qlim = robot.model.qlim;
 
 
     for q1 = qlim(1,1):steps:qlim(1,2)
@@ -66,7 +66,7 @@ qlim = robot.qlim;
                 q4 = -(pi/2 - q2 - q3);
                 q5 = 0;
                 q = [q1,q2,q3,q4,q5];
-                tr = robot.fkine(q);                        
+                tr = robot.model.fkine(q);                        
                 pointCloud1(counter,:) = tr(1:3,4)';
                 counter = counter + 1;
             end 
@@ -136,17 +136,17 @@ q3r = (180 - beta);
 q4 = -(90 - q2 - q3r);
 
 
-robot.plot(deg2rad([q1 q2 q3r q4 0]))
+robot.model.animate(deg2rad([q1 q2 q3r q4 0]))
 % t = robot.fkine(robot.getpos());
 
 % t(1:3,4)
 
 q = deg2rad([q1 q2 q3r q4 0])
 
-tr = zeros(4,4,robot.n+1);
-tr(:,:,1) = robot.base;
-L = robot.links;
-for i = 1 : robot.n
+tr = zeros(4,4,robot.model.n+1);
+tr(:,:,1) = robot.model.base;
+L = robot.model.links;
+for i = 1 : robot.model.n
     tr(:,:,i+1) = tr(:,:,i) * trotz(q(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
 end
 
@@ -190,7 +190,7 @@ qMatrix(1,:) = q;                                            % Solve joint angle
 
 % 1.4) Track the trajectory with RMRC
 for i = 1:steps-1
-    T = robot.fkine(qMatrix(i,:));                                           % Get forward transformation at current joint state
+    T = robot.model.fkine(qMatrix(i,:));                                           % Get forward transformation at current joint state
     deltaX = x(:,i+1) - T(1:3,4);                                       	% Get position error from next waypoint
     Rd = rpy2r(theta(1,i+1),theta(2,i+1),theta(3,i+1));                     % Get next RPY angles, convert to rotation matrix
     Ra = T(1:3,1:3);                                                        % Current end-effector rotation matrix
@@ -200,7 +200,7 @@ for i = 1:steps-1
     angular_velocity = [S(3,2);S(1,3);S(2,1)];                              % Check the structure of Skew Symmetric matrix!!
     deltaTheta = tr2rpy(Rd*Ra');                                            % Convert rotation matrix to RPY angles
     xdot = W*[linear_velocity];                          	% Calculate end-effector velocity to reach next waypoint.
-    J = robot.jacob0(qMatrix(i,:));                                          % Get Jacobian at current joint state
+    J = robot.model.jacob0(qMatrix(i,:));                                          % Get Jacobian at current joint state
     J = J(1:3,1:3);
     m(i) = sqrt(det(J*J'));
     if m(i) < epsilon                                      % If manipulability is less than given threshold
@@ -212,7 +212,7 @@ for i = 1:steps-1
     invJ = inv(J'*J + lambda *eye(3))*J';                                   % DLS Inverse
     qdot(i,:) = (invJ*xdot)';                                                % Solve the RMRC equation (you may need to transpose the         vector)
     
-    qlim = robot.qlim;
+    qlim = robot.model.qlim;
     
     
     for j = 1:3                                                             % Loop through joints 1 to 6
@@ -236,20 +236,25 @@ for i = 1:steps-1
 end
 
 
+%%
+% plot3(x(1,:),x(2,:),x(3,:),'k.','LineWidth',1)
+for i=1:size(qMatrix,1)
+    robot.model.animate(qMatrix(i,:))
+    pause(0.05);
 
-plot3(x(1,:),x(2,:),x(3,:),'k.','LineWidth',1)
-robot.plot(qMatrix,'trail','r-')
+end
 
 
 
+%%
 for i = 1:3
     figure(2)
     subplot(3,2,i)
     plot(qMatrix(:,i),'k','LineWidth',1)
     title(['Joint ', num2str(i)])
     ylabel('Angle (rad)')
-    refline(0,robot.qlim(i,1));
-    refline(0,robot.qlim(i,2));
+    refline(0,robot.model.qlim(i,1));
+    refline(0,robot.model.qlim(i,2));
     
     figure(3)
     subplot(3,2,i)
@@ -279,7 +284,7 @@ plot(m,'k','LineWidth',1)
 refline(0,epsilon)
 title('Manipulability')
 
-robot.teach();
+robot.model.teach();
 
 
 
