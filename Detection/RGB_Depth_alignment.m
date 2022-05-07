@@ -164,19 +164,19 @@ end
 
 %%
 
-Sd = size(depthData);
-[X,Y] = meshgrid(1:Sd(2),1:Sd(1));
-%K is calibration matrix
-X = X - cx_d + 0.5;
-Y = Y - cy_d + 0.5;
-XDf = depthData/fx_d;
-YDf = depthData/fy_d;
-X = X .* XDf;
-Y = Y .* YDf;
-XY = cat(3,X,Y);
-cloud = cat(3,XY,depthData);
-cloud = reshape(cloud,[],3)/1000;
-% if you can use matlab point cloud library
-cloud = pointCloud(cloud);
-pcshow(cloud);
+% Sd = size(depthData);
+% [X,Y] = meshgrid(1:Sd(2),1:Sd(1));
+% %K is calibration matrix
+% X = X - cx_d + 0.5;
+% Y = Y - cy_d + 0.5;
+% XDf = depthData/fx_d;
+% YDf = depthData/fy_d;
+% X = X .* XDf;
+% Y = Y .* YDf;
+% XY = cat(3,X,Y);
+% cloud = cat(3,XY,depthData);
+% cloud = reshape(cloud,[],3)/1000;
+% % if you can use matlab point cloud library
+% cloud = pointCloud(cloud);
+% pcshow(cloud);
 
