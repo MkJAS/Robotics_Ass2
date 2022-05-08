@@ -24,10 +24,11 @@ Ez = [startPoint(3) endPoint(3)];
 %     if Ey(i) < 0
 %         y(i) = Ey(i) + Ty;
 %     end 
-% 
+%     down = false;  
 %     z(i) = Ez(i) + 0.09;          %0.09 = end effector length
-%     if z(i) < 0
-%         0.138 - z(i);
+%     if z(i) - 0.138 < 0
+%         z(i) = 0.138 - z(i);
+%         down = true;
 %     else
 %         z(i) = z(i) - 0.138;         %0.138 = length from base to joint 2
 %     end 
@@ -42,17 +43,25 @@ Ez = [startPoint(3) endPoint(3)];
 %     a3 = 0.147;             %Joint 3 link
 %     
 %     
-%     t1 = rad2deg(atan(z(1)/l));
-%     
 %     t2 = rad2deg(acos((a2^2 + D^2 - a3^2)/(2*a2*D)));
+
+%     if down
+%       t1 = 90 - rad2deg(atan(z(1)/l));
+%       alpha = t1 + t2;
+%       q2 =  (180 - alpha);
+%     else
+%       t1 = rad2deg(atan(z(1)/l));
+%       alpha = t1 + t2;
+%       q2 =  (90 - alpha);
+%     end
 %     
-%     alpha = t1 + t2;
+%
 % 
 %     beta = rad2deg( acos ( ( a2^2 + a3^2 - D^2) / (2*a2*a3) ) );
 %     
 %     q1 = rad2deg(atan2(y(1),x(1)));
 %     
-%     q2 =  (90 - alpha);
+
 %     
 %     q3r = (180 - beta);
 %     
