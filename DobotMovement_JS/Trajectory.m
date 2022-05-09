@@ -90,7 +90,7 @@ Ez = [startPoint(3) endPoint(3)];
 %%
 % figure (1)
 
-t = 2.5;             % Total time (s)
+t = 5;             % Total time (s)
 deltaT = 0.05;      % Control frequency
 steps = t/deltaT;   % No. of steps for simulation
 delta = pi/steps; % Small angle change
@@ -198,8 +198,8 @@ for i = 1:steps-1
     qMatrix(i+1,1:3) = qMatrix(i,1:3) + deltaT*qdot(i,:);                       % Update next joint state based on joint velocities
     qMatrix(i+1,4) = -(pi/2 - qMatrix(i+1,2) - qMatrix(i+1,3));
     
-    positionError(:,i) = xyz(:,i+1) - T(1:3,4);                               % For plotting
-    angleError(:,i) = deltaTheta;                                           % For plotting
+%     positionError(:,i) = xyz(:,i+1) - T(1:3,4);                               % For plotting
+%     angleError(:,i) = deltaTheta;                                           % For plotting
 end
 
 plot3(xyz(1,:),xyz(2,:),xyz(3,:),'k.','LineWidth',1)

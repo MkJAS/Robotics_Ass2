@@ -85,9 +85,9 @@ try delete(r1cloud); end;
 clc 
 
 %End effector pos
-Ex = 0;
-Ey = 0.2;
-Ez = 0.1;
+Ex = 0.2;
+Ey = -0.1;
+Ez = 0.094;
 
 theta = atan(Ey/Ex);         %Angle of arm rotation from global x, assuming robot starts 0 deg facing x axis
 
@@ -175,10 +175,10 @@ angleError = zeros(3,steps);    % For plotting trajectory error
 s = lspb(0,1,steps);                % Trapezoidal trajectory scalar
 for i=1:steps
     
-    x(1,i) = 0.2*cos(pi/2 - delta*(i-1));
-%     x(1,i) = (1-s(i))*0.2 + s(i)*0.3;                                       % Points in x
-    x(2,i) = 0.2*sin(pi/2 - delta*(i-1));                                           % Points in y
-    x(3,i) = 0.1 + 0.05*sin(i*d2);                                       % Points in z
+    x(1,i) = (1-s(i))*0.2 + s(i)*0.2;
+    x(2,i) = (1-s(i))*-0.1 + s(i)*0.1;                                       % Points in x
+    x(3,i) = (1-s(i))*0.094 + s(i)*0.15;                                          % Points in y
+%     x(3,i) = 0.1 + 0.05*sin(i*d2);                                       % Points in z
     theta(1,i) = 0;                 % Roll angle 
     theta(2,i) = 0;                 % Pitch angle
     theta(3,i) = 0;                 % Yaw angle
@@ -237,7 +237,7 @@ end
 
 
 %%
-% plot3(x(1,:),x(2,:),x(3,:),'k.','LineWidth',1)
+plot3(x(1,:),x(2,:),x(3,:),'k.','LineWidth',1)
 for i=1:size(qMatrix,1)
     robot.model.animate(qMatrix(i,:))
     pause(0.05);
