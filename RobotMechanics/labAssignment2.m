@@ -9,8 +9,8 @@ logFile = log4matlab('assignment2.log');
 
 % Add ground image and set the size of the world
 hold on;
-worldCoords = 0.6;
-axis([-worldCoords worldCoords -worldCoords worldCoords 0.4 1.3]); %minX maxX minY maxY minZ maxZ
+worldCoords = 0.4;
+axis([-worldCoords worldCoords -worldCoords worldCoords 0.7 1.3]); %minX maxX minY maxY minZ maxZ
 surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
 
 % Adding objects to scene
@@ -40,14 +40,19 @@ strawberry = Strawberry(locationStrawberry);
 robotDobot = Dobot(transl(baseDobot));
 
 % *Find current q to move robots to intermediary pose
-qTarget = deg2rad([-30 40 60 12.5 0]);
-AnimateRobots(logFile, robotDobot, qTarget);
+AnimateRobots(logFile, robotDobot, robotDobot.qIntermediary);
 RotateRobot(logFile, robotDobot, 0);
 
-%% Simulation movements
+%%* Simulation movements
+%!strawberry
 PickupObject(robotDobot, strawberry);
 RotateRobot(logFile, robotDobot, -90);
 PositionObject(robotDobot, [0, -0.2, tableHeight], 'strawberry');
+
+%!grape
+PickupObject(robotDobot, grape);
+RotateRobot(logFile, robotDobot, 0);
+PositionObject(robotDobot, locationStrawberry, 'grape');
 
 % RMRC(locationStrawberry, 1, robotDobot);
 % robotDobot.model.teach();

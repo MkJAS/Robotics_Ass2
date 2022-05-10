@@ -6,7 +6,7 @@ classdef Dobot < handle
         jointLimits;
         workspace = [-1 1 -1 1 -0.3 1];
         name = 'Dobot';
-        qIntermediary = deg2rad([0 45 45 0 0]);
+        qIntermediary = deg2rad([-15 40 60 12.5 0]);
         base;
 
     end
