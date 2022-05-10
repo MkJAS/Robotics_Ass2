@@ -19,22 +19,11 @@ classdef Dobot < handle
                 base = transl(0, 0, 0);
             end
 
-<<<<<<< HEAD
-        %> Define the boundaries of the workspace
-    
-        self.base = base;
-        % robot = 
-        self.GetDobotRobot();
-        self.PlotAndColourRobot();
-        self.GetLims();
-      
-=======
             self.base = base;
             self.GetDobotRobot();
             self.PlotAndColourRobot();
             self.GetJointLimits();
 
->>>>>>> 199cdb5603647f2b7bc92110c051680a001113db
         end
 
         %% GetDobotRobot
@@ -89,27 +78,6 @@ classdef Dobot < handle
                 end
 
             end
-<<<<<<< HEAD
-        end
-        function GetLims(self)
-            qlim = self.model.qlim;
-            qlim(2,:) = [5*pi/180 80*pi/180];
-            qlim(3,:) = [5*pi/180 85*pi/180];
-            lowerLimit = [];
-            upperLimit = [];
-             for q2 = qlim(2,1):0.01:qlim(2,2)
-                 for theta3 = qlim(3,1):0.01:qlim(3,2)+0.01
-                     q3 = pi/2 - q2 + theta3;
-                     if theta3 <= qlim(3,1)
-                        lowerLimit = [lowerLimit;q2,q3]; %#ok<AGROW>
-                     elseif qlim(3,2) <= theta3
-                        upperLimit = [upperLimit;q2,q3]; %#ok<AGROW>
-                     end
-                 end
-             end
-             self.lims = [lowerLimit upperLimit];
-=======
->>>>>>> 199cdb5603647f2b7bc92110c051680a001113db
 
         end
 
