@@ -43,7 +43,7 @@ PlaceObject('Basket.ply', [0.1, 0.2, tableHeight]);
 locationGrape = [0, -0.15, tableHeight];
 %grape = Grape(locationGrape);
 
-locationStrawberry = [0.2, 0, tableHeight];
+locationStrawberry = [0.15, 0, tableHeight];
 strawberry = Strawberry(locationStrawberry);
 
 %% Robots
@@ -51,14 +51,14 @@ robotDobot = Dobot(transl(baseDobot));
 
 % *Find current q to move robots to intermediary pose
 qCurrentDobot = robotDobot.model.getpos();
+qTarget = deg2rad([0 45 45 0 0]);
+AnimateRobots(logFile, robotDobot, qCurrentDobot, qTarget);
+
+qCurrentDobot = robotDobot.model.getpos();
 pointCurrent = robotDobot.model.fkine(qCurrentDobot);
-Trajectory(pointCurrent,locationStrawberry,1,robotDobot);
+RMRC(pointCurrent, locationStrawberry, 1, robotDobot);
 
-
-% qTarget = deg2rad([0 45 45 0 0]);
-% AnimateRobots(logFile, robotDobot, qCurrentDobot, qTarget);
-% 
-% % placeMentLocation = [0.1, -0.2, tableHeight];
-% % MoveFruit(logFile, robotDobot, strawberry, locationGrape);
-% 
+% placeMentLocation = [0.1, -0.2, tableHeight];
+% MoveFruit(logFile, robotDobot, strawberry, locationGrape);
+%
 % robotDobot.model.teach();
