@@ -1,7 +1,7 @@
 function [qMatrix] = RMRC(startPoint, endPoint, traj, robot)
     %Uses RMRC to move robot through a specified trajectory
     %traj = desired trajectory, lims = robot limits
-    lims = robot.lims;
+    lims = robot.jointLimits;
     Ex = [startPoint(1) endPoint(1)];
     Ey = [startPoint(2) endPoint(2)];
     Ez = [startPoint(3) endPoint(3)];
