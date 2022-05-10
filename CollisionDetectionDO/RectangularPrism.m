@@ -3,8 +3,8 @@ if nargin<4
         axis_h=gca;
     if nargin<3
         plotOptions.plotVerts=false;
-        plotOptions.plotEdges=true;
-        plotOptions.plotFaces=true;
+        plotOptions.plotEdges=true; %true
+        plotOptions.plotFaces=true; %true
     end
 end
 hold on
@@ -66,10 +66,10 @@ if isfield(plotOptions,'plotEdges') && plotOptions.plotEdges
 end
 
 %% If you want to plot the edges
-if isfield(plotOptions,'plotFaces') && plotOptions.plotFaces
-    tcolor = [.2 .2 .8];
-    
-    patch('Faces',face,'Vertices',vertex,'FaceVertexCData',tcolor,'FaceColor','flat','lineStyle','none');
-end
+% if isfield(plotOptions,'plotFaces') && plotOptions.plotFaces
+%     tcolor = [.2 .2 .8];
+%     
+%     patch('Faces',face,'Vertices',vertex,'FaceVertexCData',tcolor,'FaceColor','flat','lineStyle','none');
+% end
 
 end
