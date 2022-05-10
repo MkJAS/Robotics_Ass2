@@ -7,7 +7,7 @@ classdef Strawberry < Fruit
 
     properties
         type = "strawberry";
-        strawberry;
+        object;
         vertices;
     end
 
@@ -15,13 +15,13 @@ classdef Strawberry < Fruit
         %% Constructor
         function self = Strawberry(location)
             self = self@Fruit(location);
-            self.strawberry = PlaceObject('Strawberry.ply', self.location);
-            self.vertices = get(self.strawberry, 'Vertices');
+            self.object = PlaceObject('Strawberry.ply', self.location);
+            self.vertices = get(self.object, 'Vertices');
         end
 
         %% Destructor
         function delete(self)
-            try delete(self.strawberry); end
+            try delete(self.object); end
         end
 
     end

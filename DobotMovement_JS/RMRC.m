@@ -95,7 +95,7 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
 
     t = 5; % Total time (s)
     deltaT = 0.05; % Control frequency
-    steps = t / deltaT; % No. of steps for simulation
+    steps = 70; % steps = t / deltaT; % No. of steps for simulation
     delta = pi / steps; % Small angle change
 
     epsilon = 0.01; % Threshold value for manipulability/Damped Least Squares
@@ -218,7 +218,8 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
         %     angleError(:,i) = deltaTheta;                                           % For plotting
     end
 
-    plot3(xyz(1, :), xyz(2, :), xyz(3, :), 'k.', 'LineWidth', 1)
+    %! uncomment for plot line on trajectory
+    % plot3(xyz(1, :), xyz(2, :), xyz(3, :), 'k.', 'LineWidth', 1)
 
     for i = 1:size(qMatrix, 1)
         robot.model.animate(qMatrix(i, :))

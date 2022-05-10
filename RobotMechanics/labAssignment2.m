@@ -10,7 +10,7 @@ logFile = log4matlab('assignment2.log');
 % Add ground image and set the size of the world
 hold on;
 worldCoords = 0.6;
-axis([-worldCoords worldCoords -worldCoords worldCoords 0.6 1.3]); %minX maxX minY maxY minZ maxZ
+axis([-worldCoords worldCoords -worldCoords worldCoords 0.4 1.3]); %minX maxX minY maxY minZ maxZ
 surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
 
 % Adding objects to scene
@@ -30,27 +30,24 @@ PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
 % LightCurtain(tableHeight);
 
 %% Objects
-% PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
-% PlaceObject('Grape.ply', [0.2, 0.2, tableHeight]);
-PlaceObject('Basket.ply', [0.1, 0.2, tableHeight]);
-
-locationGrape = [0, -0.15, tableHeight];
-%grape = Grape(locationGrape);
-
-locationStrawberry = [0.15, 0, tableHeight];
+PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
+locationGrape = [0.05, -0.15, tableHeight];
+locationStrawberry = [0.22, 0, tableHeight];
+grape = Grape(locationGrape);
 strawberry = Strawberry(locationStrawberry);
 
 %% Robots
 robotDobot = Dobot(transl(baseDobot));
 
 % *Find current q to move robots to intermediary pose
-qCurrentDobot = robotDobot.model.getpos();
-qTarget = deg2rad([0 45 45 0 0]);
-AnimateRobots(logFile, robotDobot, qCurrentDobot, qTarget);
+qTarget = deg2rad([-30 40 60 12.5 0]);
+AnimateRobots(logFile, robotDobot, qTarget);
+RotateRobot(logFile, robotDobot, 0);
 
-RMRC(locationStrawberry, 1, robotDobot);
+%% Simulation movements
+PickupObject(robotDobot, strawberry);
+RotateRobot(logFile, robotDobot, -90);
+PositionObject(robotDobot, [0, -0.2, tableHeight], 'strawberry');
 
-% placeMentLocation = [0.1, -0.2, tableHeight];
-% MoveFruit(logFile, robotDobot, strawberry, locationGrape);
-%
+% RMRC(locationStrawberry, 1, robotDobot);
 % robotDobot.model.teach();
