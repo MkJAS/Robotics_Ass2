@@ -24,16 +24,10 @@ PlaceObject('Table.ply', [0, 0, 0]);
 baseDobot = [0, 0, tableHeight];
 
 %Add Safety Equipment
-offsetLightCurtain = 0.4;
 PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
-PlaceObject('LightCurtain.ply', [-offsetLightCurtain, offsetLightCurtain, tableHeight]);
-PlaceObject('LightCurtain.ply', [offsetLightCurtain, offsetLightCurtain, tableHeight]);
-PlaceObject('LightCurtainFlipped.ply', [-offsetLightCurtain, -offsetLightCurtain, tableHeight]);
-PlaceObject('LightCurtainFlipped.ply', [offsetLightCurtain, -offsetLightCurtain, tableHeight]);
-PlaceObject('Lid.ply', [0, 0, (tableHeight + 0.52)]);
 
 % Plot lines between lightcurtains
-LightCurtainLasers();
+% LightCurtain(tableHeight);
 
 %% Objects
 % PlaceObject('Strawberry.ply', [-0.2, -0.2, tableHeight]);
@@ -54,9 +48,7 @@ qCurrentDobot = robotDobot.model.getpos();
 qTarget = deg2rad([0 45 45 0 0]);
 AnimateRobots(logFile, robotDobot, qCurrentDobot, qTarget);
 
-qCurrentDobot = robotDobot.model.getpos();
-pointCurrent = robotDobot.model.fkine(qCurrentDobot);
-RMRC(pointCurrent, locationStrawberry, 1, robotDobot);
+RMRC(locationStrawberry, 1, robotDobot);
 
 % placeMentLocation = [0.1, -0.2, tableHeight];
 % MoveFruit(logFile, robotDobot, strawberry, locationGrape);
