@@ -51,11 +51,14 @@ robotDobot = Dobot(transl(baseDobot));
 
 % *Find current q to move robots to intermediary pose
 qCurrentDobot = robotDobot.model.getpos();
-qTarget = deg2rad([0 45 45 0 0]);
-AnimateRobots(logFile, robotDobot, qCurrentDobot, qTarget);
-qCurrentDobot = robotDobot.model.getpos();
 pointCurrent = robotDobot.model.fkine(qCurrentDobot);
+Trajectory(pointCurrent,locationStrawberry,1,robotDobot);
 
-RMRC(pointCurrent, locationStrawberry, 1, robotDobot);
 
+% qTarget = deg2rad([0 45 45 0 0]);
+% AnimateRobots(logFile, robotDobot, qCurrentDobot, qTarget);
+% 
+% % placeMentLocation = [0.1, -0.2, tableHeight];
+% % MoveFruit(logFile, robotDobot, strawberry, locationGrape);
+% 
 % robotDobot.model.teach();
