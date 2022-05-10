@@ -135,7 +135,7 @@ classdef Dobot < handle
 
             end
 
-            self.lims = [lowerLimit upperLimit];
+            self.jointLimits = [lowerLimit upperLimit];
 
         end
 
