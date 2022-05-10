@@ -25,6 +25,7 @@ classdef Dobot < handle
         % robot = 
         self.GetDobotRobot();
         self.PlotAndColourRobot();
+        self.GetLims();
       
         end
 
@@ -75,7 +76,7 @@ classdef Dobot < handle
                 end
             end
         end
-                function GetLims(self)
+        function GetLims(self)
             qlim = self.model.qlim;
             qlim(2,:) = [5*pi/180 80*pi/180];
             qlim(3,:) = [5*pi/180 85*pi/180];
