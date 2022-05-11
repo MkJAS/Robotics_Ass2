@@ -1,13 +1,10 @@
-function AnimateRobots(logFile, robot, qTarget)
+function AnimateRobots(robot, qTarget)
     %Function that animates one or both of their robots on a desired
     %trajectory. Takes one or two robots, their current joint configurations
     %and their desired joint configurations.
 
     steps = 100;
     qCurrent = robot.model.getpos();
-
-    %Log Transforms
-    EasyLogger(logFile, robot, qCurrent, qTarget);
 
     %Find q trajectory
     qTrajectory = jtraj(qCurrent, qTarget, steps); %(current q, target q, steps)
