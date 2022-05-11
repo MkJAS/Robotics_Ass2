@@ -1,4 +1,4 @@
-function Spin(robot)
+function SpinTEST(robot)
     %Function that animates a robot rotating to a desired joint state
     %Takes a robot and the desired joint configuration.
     % angle needs to be -135 -> 135 degrees
