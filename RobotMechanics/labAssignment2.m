@@ -47,26 +47,28 @@ pill = Pill(locationPill);
 %% Robots
 robotDobot = Dobot(transl(baseDobot));
 
-% *Find current q to move robots to intermediary pose
-AnimateRobots(logFile, robotDobot, robotDobot.qIntermediary);
-RotateRobot(logFile, robotDobot, 0);
+Spin(robotDobot);
 
-%%* Simulation movements
-%!strawberry
-PickupObject(robotDobot, strawberry);
-RotateRobot(logFile, robotDobot, -90);
-PositionObject(robotDobot, strawberry.location, 'strawberry');
+% % *Find current q to move robots to intermediary pose
+% AnimateRobots(logFile, robotDobot, robotDobot.qIntermediary);
+% RotateRobot(logFile, robotDobot, 0);
 
-%!grape
-PickupObject(robotDobot, grape);
-RotateRobot(logFile, robotDobot, 0);
-PositionObject(robotDobot, grape.location, 'grape');
+% %%* Simulation movements
+% %!strawberry
+% PickupObject(robotDobot, strawberry);
+% RotateRobot(logFile, robotDobot, -90);
+% PositionObject(robotDobot, strawberry.location, 'strawberry');
+
+% %!grape
+% PickupObject(robotDobot, grape);
+% RotateRobot(logFile, robotDobot, 0);
+% PositionObject(robotDobot, grape.location, 'grape');
 
 % %!lego
 % PickupObject(robotDobot, lego);
 % RotateRobot(logFile, robotDobot, 0);
 % PositionObject(robotDobot, pill.location, 'lego');
-% 
+%
 % %!pill
 % PickupObject(robotDobot, pill);
 % RotateRobot(logFile, robotDobot, -90);
