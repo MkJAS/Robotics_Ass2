@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 11-May-2022 15:56:39
+% Last Modified by GUIDE v2.5 11-May-2022 16:56:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -196,31 +196,6 @@ end
 
 set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)', 'plot(membrane)', 'surf(peaks)'});
 
-
-% --- Executes on button press in plusX.
-function plusX_Callback(hObject, eventdata, handles)
-% hObject    handle to plusX (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-q = handles.model.getpos();
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) + 0.01;
-newQ = handles.model.ikcon(tr,q);
-handles.model.animate(newQ);
-
-
-% --- Executes on button press in minusX.
-function minusX_Callback(hObject, eventdata, handles)
-% hObject    handle to minusX (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
-handles.model.animate(newQ);
-
-
 % --- Executes on button press in minusq1.
 function minusq1_Callback(hObject, eventdata, handles)
 % hObject    handle to minusq1 (see GCBO)
@@ -321,6 +296,63 @@ q5 = handles.model.getpos;
 qNext = q5+deg2rad([0 0 0 0 5]);
 handles.model.animate(qNext);
 
+% --- Executes on button press in pushbutton16.
+function pushbutton16_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% --- Executes on button press in plusX.
+function plusX_Callback(hObject, eventdata, handles)
+% hObject    handle to plusX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q = handles.model.getpos();
+tr = handles.model.fkine(q);
+tr(1,4) = tr(1,4) + 0.01;
+newQ = handles.model.ikcon(tr,q);
+handles.model.animate(newQ);
+
+
+% --- Executes on button press in minusX.
+function minusX_Callback(hObject, eventdata, handles)
+% hObject    handle to minusX (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+q = handles.model.getpos;
+tr = handles.model.fkine(q);
+tr(1,4) = tr(1,4) - 0.01;
+newQ = handles.model.ikcon(tr,q);
+handles.model.animate(newQ);
+
+% --- Executes on button press in minusY.
+function minusY_Callback(hObject, eventdata, handles)
+% hObject    handle to minusY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in plusY.
+function plusY_Callback(hObject, eventdata, handles)
+% hObject    handle to plusY (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in minusZ.
+function minusZ_Callback(hObject, eventdata, handles)
+% hObject    handle to minusZ (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in plusZ.
+function plusZ_Callback(hObject, eventdata, handles)
+% hObject    handle to plusZ (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
 % % --- Executes on slider movement.
 % function slider1_Callback(hObject, eventdata, handles)
 % % hObject    handle to slider1 (see GCBO)
@@ -369,10 +401,3 @@ handles.model.animate(qNext);
 % if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
 %     set(hObject,'BackgroundColor',[.9 .9 .9]);
 % end
-
-
-% --- Executes on button press in pushbutton16.
-function pushbutton16_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton16 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
