@@ -9,7 +9,7 @@ logFile = log4matlab('assignment2.log');
 
 % Add ground image and set the size of the world
 hold on;
-worldCoords = 0.4;
+worldCoords = 0.6;
 axis([-worldCoords worldCoords -worldCoords worldCoords 0.7 1.3]); %minX maxX minY maxY minZ maxZ
 surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
 
@@ -34,7 +34,7 @@ PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
 % locationStrawberry = [0.22, 0, tableHeight];
 % strawberry = Strawberry(locationStrawberry);
-
+% 
 % locationGrape = [0.05, -0.15, tableHeight];
 % grape = Grape(locationGrape);
 
@@ -51,26 +51,26 @@ robotDobot = Dobot(transl(baseDobot));
 AnimateRobots(logFile, robotDobot, robotDobot.qIntermediary);
 RotateRobot(logFile, robotDobot, 0);
 
-%%* Simulation movements
-% %!strawberry
-% PickupObject(robotDobot, strawberry);
-% RotateRobot(logFile, robotDobot, -90);
-% PositionObject(robotDobot, strawberry.location, 'strawberry');
+%* Simulation movements
+%!strawberry
+PickupObject(robotDobot, strawberry);
+RotateRobot(logFile, robotDobot, -90);
+PositionObject(robotDobot, strawberry.location, 'strawberry');
 
-% %!grape
-% PickupObject(robotDobot, grape);
-% RotateRobot(logFile, robotDobot, 0);
-% PositionObject(robotDobot, grape.location, 'grape');
+%!grape
+PickupObject(robotDobot, grape);
+RotateRobot(logFile, robotDobot, 0);
+PositionObject(robotDobot, grape.location, 'grape');
 
 %!lego
-PickupObject(robotDobot, lego);
-RotateRobot(logFile, robotDobot, 0);
-PositionObject(robotDobot, pill.location, 'lego');
-
-%!pill
-PickupObject(robotDobot, pill);
-RotateRobot(logFile, robotDobot, -90);
-PositionObject(robotDobot, lego.location, 'pill');
+% PickupObject(robotDobot, lego);
+% RotateRobot(logFile, robotDobot, 0);
+% PositionObject(robotDobot, pill.location, 'lego');
+% 
+% %!pill
+% PickupObject(robotDobot, pill);
+% RotateRobot(logFile, robotDobot, -90);
+% PositionObject(robotDobot, lego.location, 'pill');
 
 % RMRC(locationStrawberry, 1, robotDobot);
 % robotDobot.model.teach();
