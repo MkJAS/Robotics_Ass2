@@ -13,6 +13,10 @@ function PositionObject(robot, placementLocation, objectType)
             Strawberry(placementLocation);
         case 'grape'
             Grape(placementLocation);
+        case 'pill'
+            Pill(placementLocation);
+        case 'lego'
+            Lego(placementLocation);
     end
 
     RMRC(startPoint, 1, robot);
