@@ -32,6 +32,18 @@ PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
 %% Objects
 PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
+% locationStrawberry = [0.22, 0, tableHeight];
+% strawberry = Strawberry(locationStrawberry);
+
+% locationGrape = [0.05, -0.15, tableHeight];
+% grape = Grape(locationGrape);
+
+locationLego = [0.22, 0, tableHeight];
+lego = Lego(locationLego);
+
+locationPill = [0.05, -0.15, tableHeight];
+pill = Pill(locationPill);
+
 %% Robots
 robotDobot = Dobot(transl(baseDobot));
 
@@ -41,32 +53,24 @@ RotateRobot(logFile, robotDobot, 0);
 
 %%* Simulation movements
 % %!strawberry
-% locationStrawberry = [0.22, 0, tableHeight];
-% strawberry = Strawberry(locationStrawberry);
 % PickupObject(robotDobot, strawberry);
 % RotateRobot(logFile, robotDobot, -90);
-% PositionObject(robotDobot, [0, -0.2, tableHeight], 'strawberry');
+% PositionObject(robotDobot, strawberry.location, 'strawberry');
 
 % %!grape
-% locationGrape = [0.05, -0.15, tableHeight];
-% grape = Grape(locationGrape);
 % PickupObject(robotDobot, grape);
 % RotateRobot(logFile, robotDobot, 0);
-% PositionObject(robotDobot, locationStrawberry, 'grape');
-
-%!pill
-locationPill = [0.05, -0.15, tableHeight];
-pill = Pill(locationPill);
-PickupObject(robotDobot, pill);
-RotateRobot(logFile, robotDobot, -90);
-PositionObject(robotDobot, [0, -0.2, tableHeight], 'pill');
+% PositionObject(robotDobot, grape.location, 'grape');
 
 %!lego
-locationLego = [0.22, 0, tableHeight];
-lego = Grape(locationLego);
 PickupObject(robotDobot, lego);
 RotateRobot(logFile, robotDobot, 0);
-PositionObject(robotDobot, locationStrawberry, 'lego');
+PositionObject(robotDobot, pill.location, 'lego');
+
+%!pill
+PickupObject(robotDobot, pill);
+RotateRobot(logFile, robotDobot, -90);
+PositionObject(robotDobot, lego.location, 'pill');
 
 % RMRC(locationStrawberry, 1, robotDobot);
 % robotDobot.model.teach();
