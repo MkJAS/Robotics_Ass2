@@ -309,10 +309,14 @@ function plusX_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 q = handles.model.getpos();
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) + 0.01;
-newQ = handles.model.ikcon(tr,q);
+startPoint = handles.model.fkine(q);
+startPoint = startPoint(1:3,4);
+endPoint = startPoint;
+endPoint(1) = endPoint(1) + 0.01;
+newQ = XYZtoQ(endPoint,handles);
+
 handles.model.animate(newQ);
+
 
 
 % --- Executes on button press in minusX.

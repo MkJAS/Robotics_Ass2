@@ -22,8 +22,10 @@ if Ey < 0
     y = Ey + Ty;
 end 
 
-z = Ez + 0.09;          %0.09 = end effector length
-z = z - 0.138;           %0.138 = length from base to joint 2
+z = (Ez - (0.138+0.711547)) + 0.09;
+
+% z = Ez + 0.09+0.711547;          %0.09 = end effector length
+% z = z - (0.138+0.711547);           %0.138 = length from base to joint 2
 
 
 l = (x^2+y^2)^0.5;
