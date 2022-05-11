@@ -291,6 +291,7 @@ function minusq2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 q2 = handles.model.getpos;
 qNext = q2-deg2rad([0 5 0 0 0]);
+qNext(4) = -(90 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
@@ -301,6 +302,7 @@ function plusq2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 q2 = handles.model.getpos;
 qNext = q2+deg2rad([0 5 0 0 0]);
+qNext(4) = -(90 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
@@ -310,7 +312,13 @@ function minusq3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 q3 = handles.model.getpos;
+lims = handles.jointLimits;
+[~, index] = min(abs(lims(:, 1) - q3(1, 2)));
+[~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
+qlim(1, 1) = lims(index, 2);
+qlim(1, 2) = lims(index2, 4);
 qNext = q3-deg2rad([0 0 5 0 0]);
+qNext(4) = -(90 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
@@ -320,27 +328,13 @@ function plusq3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 q3 = handles.model.getpos;
+lims = handles.jointLimits;
+[~, index] = min(abs(lims(:, 1) - q3(1, 2)));
+[~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
+qlim(1, 1) = lims(index, 2);
+qlim(1, 2) = lims(index2, 4);
 qNext = q3+deg2rad([0 0 5 0 0]);
-handles.model.animate(qNext);
-
-
-% --- Executes on button press in minusq4.
-function minusq4_Callback(hObject, eventdata, handles)
-% hObject    handle to minusq4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-q4 = handles.model.getpos;
-qNext = q4-deg2rad([0 0 0 5 0]);
-handles.model.animate(qNext);
-
-
-% --- Executes on button press in plusq4.
-function plusq4_Callback(hObject, eventdata, handles)
-% hObject    handle to plusq4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-q4 = handles.model.getpos;
-qNext = q4+deg2rad([0 0 0 5 0]);
+qNext(4) = -(90 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
