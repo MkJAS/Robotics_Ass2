@@ -4,6 +4,9 @@ clc;
 clear all;
 close all;
 
+%Add logfile
+logFile = log4matlab('assignment2.log');
+
 % Add ground image and set the size of the world
 hold on;
 worldCoords = 0.6;
@@ -31,7 +34,7 @@ PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
 % locationStrawberry = [0.22, 0, tableHeight];
 % strawberry = Strawberry(locationStrawberry);
-% 
+
 % locationGrape = [0.05, -0.15, tableHeight];
 % grape = Grape(locationGrape);
 
@@ -44,53 +47,32 @@ pill = Pill(locationPill);
 %% Robots
 robotDobot = Dobot(transl(baseDobot));
 
-% *Find current q to move robots to intermediary pose
-AnimateRobots(robotDobot, robotDobot.qIntermediary);
-RotateRobot(robotDobot, 0);
+Spin(robotDobot);
 
-<<<<<<< HEAD
-%* Simulation movements
-%!strawberry
-PickupObject(robotDobot, strawberry);
-RotateRobot(logFile, robotDobot, -90);
-PositionObject(robotDobot, strawberry.location, 'strawberry');
-
-%!grape
-PickupObject(robotDobot, grape);
-RotateRobot(logFile, robotDobot, 0);
-PositionObject(robotDobot, grape.location, 'grape');
-
-%!lego
-% PickupObject(robotDobot, lego);
+% % *Find current q to move robots to intermediary pose
+% AnimateRobots(logFile, robotDobot, robotDobot.qIntermediary);
 % RotateRobot(logFile, robotDobot, 0);
-% PositionObject(robotDobot, pill.location, 'lego');
-% 
-% %!pill
-% PickupObject(robotDobot, pill);
-% RotateRobot(logFile, robotDobot, -90);
-% PositionObject(robotDobot, lego.location, 'pill');
-=======
-%%* Simulation movements
+
+% %%* Simulation movements
 % %!strawberry
 % PickupObject(robotDobot, strawberry);
-% RotateRobot(robotDobot, -90);
+% RotateRobot(logFile, robotDobot, -90);
 % PositionObject(robotDobot, strawberry.location, 'strawberry');
 
 % %!grape
 % PickupObject(robotDobot, grape);
-% RotateRobot(robotDobot, 0);
+% RotateRobot(logFile, robotDobot, 0);
 % PositionObject(robotDobot, grape.location, 'grape');
 
-%!lego
-PickupObject(robotDobot, lego);
-RotateRobot(robotDobot, 0);
-PositionObject(robotDobot, pill.location, 'lego');
-
-%!pill
-PickupObject(robotDobot, pill);
-RotateRobot(robotDobot, -90);
-PositionObject(robotDobot, lego.location, 'pill');
->>>>>>> 1295d8dbff9554df98d22ca8fc3482fd98489282
+% %!lego
+% PickupObject(robotDobot, lego);
+% RotateRobot(logFile, robotDobot, 0);
+% PositionObject(robotDobot, pill.location, 'lego');
+%
+% %!pill
+% PickupObject(robotDobot, pill);
+% RotateRobot(logFile, robotDobot, -90);
+% PositionObject(robotDobot, lego.location, 'pill');
 
 % RMRC(locationStrawberry, 1, robotDobot);
 % robotDobot.model.teach();
