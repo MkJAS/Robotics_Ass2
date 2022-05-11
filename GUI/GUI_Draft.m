@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 07-May-2022 16:26:05
+% Last Modified by GUIDE v2.5 11-May-2022 15:20:43
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -77,6 +77,34 @@ function varargout = GUI_Draft_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
+% --- Executes on button press in pushbutton15.
+function pushbutton15_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton15 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% Add ground image and set the size of the world
+hold on;
+worldCoords = 0.4;
+axis([-worldCoords worldCoords -worldCoords worldCoords 0.7 1.3]); %minX maxX minY maxY minZ maxZ
+surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
+
+% Adding objects to scene
+tableHeight = 0.711547;
+tableLength = 1.181 * 2;
+tableWidth = 0.7387 * 2;
+tablegapX = 0.005;
+PlaceObject('Table.ply', [0, 0, 0]);
+
+%Set robot base locations
+baseDobot = [0, 0, tableHeight];
+
+%Add Safety Equipment
+PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
+
+% Plot lines between lightcurtains
+% LightCurtain(tableHeight);
+
+
 % --- Executes on button press in pushbutton1.
 function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
@@ -126,6 +154,8 @@ for linkIndex = 0:model.n
         continue;
     end
 end
+tableHeight = 0.711547;
+PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
 data = guidata(hObject);
 data.model = model;
@@ -381,3 +411,6 @@ handles.model.animate(qNext);
 % if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
 %     set(hObject,'BackgroundColor',[.9 .9 .9]);
 % end
+
+
+
