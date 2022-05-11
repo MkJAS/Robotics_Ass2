@@ -4,9 +4,6 @@ clc;
 clear all;
 close all;
 
-%Add logfile
-logFile = log4matlab('assignment2.log');
-
 % Add ground image and set the size of the world
 hold on;
 worldCoords = 0.6;
@@ -48,9 +45,10 @@ pill = Pill(locationPill);
 robotDobot = Dobot(transl(baseDobot));
 
 % *Find current q to move robots to intermediary pose
-AnimateRobots(logFile, robotDobot, robotDobot.qIntermediary);
-RotateRobot(logFile, robotDobot, 0);
+AnimateRobots(robotDobot, robotDobot.qIntermediary);
+RotateRobot(robotDobot, 0);
 
+<<<<<<< HEAD
 %* Simulation movements
 %!strawberry
 PickupObject(robotDobot, strawberry);
@@ -71,6 +69,28 @@ PositionObject(robotDobot, grape.location, 'grape');
 % PickupObject(robotDobot, pill);
 % RotateRobot(logFile, robotDobot, -90);
 % PositionObject(robotDobot, lego.location, 'pill');
+=======
+%%* Simulation movements
+% %!strawberry
+% PickupObject(robotDobot, strawberry);
+% RotateRobot(robotDobot, -90);
+% PositionObject(robotDobot, strawberry.location, 'strawberry');
+
+% %!grape
+% PickupObject(robotDobot, grape);
+% RotateRobot(robotDobot, 0);
+% PositionObject(robotDobot, grape.location, 'grape');
+
+%!lego
+PickupObject(robotDobot, lego);
+RotateRobot(robotDobot, 0);
+PositionObject(robotDobot, pill.location, 'lego');
+
+%!pill
+PickupObject(robotDobot, pill);
+RotateRobot(robotDobot, -90);
+PositionObject(robotDobot, lego.location, 'pill');
+>>>>>>> 1295d8dbff9554df98d22ca8fc3482fd98489282
 
 % RMRC(locationStrawberry, 1, robotDobot);
 % robotDobot.model.teach();
