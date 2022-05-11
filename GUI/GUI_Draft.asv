@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 11-May-2022 17:05:54
+% Last Modified by GUIDE v2.5 11-May-2022 18:38:38
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,7 +84,7 @@ function load_workspace_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % Add ground image and set the size of the world
 cla
-figure (1)
+fig = figure (1)
 %axes(handles.axes1);
 hold on
 
@@ -116,6 +116,10 @@ robot = Dobot(transl(baseDobot));
 
 data = guidata(hObject);
 data.model = robot.model;
+data.robot = robot;
+% data.fig = fig;
+data.stop = false;
+
 guidata(hObject,data);
 
 % popup_sel_index = get(handles.popupmenu1, 'Value');
@@ -201,10 +205,11 @@ function minusq1_Callback(hObject, eventdata, handles)
 % hObject    handle to minusq1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-q1 = handles.model.getpos;
-qNext = q1-deg2rad([5 0 0 0 0]);
-handles.model.animate(qNext);
+if(handles.stop = false)
+    q1 = handles.model.getpos;
+    qNext = q1-deg2rad([5 0 0 0 0]);
+    handles.model.animate(qNext);
+end
 
 
 % --- Executes on button press in plusq1.
@@ -301,7 +306,34 @@ function RotateRobot_Callback(hObject, eventdata, handles)
 % hObject    handle to RotateRobot (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-Spin(
+
+handles.robot.Spin();
+
+% UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+% --- Executes on button press in e_stop.
+function e_stop_Callback(hObject, eventdata, handles)
+% hObject    handle to e_stop (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% f = figure(f);
+% c = uicontrol('String','Continue','Callback','uiresume(f)');
+% uiwait(f)
+% disp('Program execution has resumed');
+uiwait(handles.fig);
+
+% --- Executes on button press in resume_function.
+function resume_function_Callback(hObject, eventdata, handles)
+% hObject    handle to resume_function (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+uiresume();
+
+
+%handles.model.Spin;
+% q = handles.model.getpos;
+% qspin = Spin(robot);
 
 % --- Executes on button press in plusX.
 function plusX_Callback(hObject, eventdata, handles)
@@ -414,3 +446,6 @@ function edit1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
