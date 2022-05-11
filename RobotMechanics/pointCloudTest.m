@@ -1,3 +1,3 @@
 %ptCloud = pcread('BasketTest.ply');
-ptCloud = pcread('Basket.ply');
+ptCloud = pcread('untitled2.ply');
 pcshow(ptCloud);
