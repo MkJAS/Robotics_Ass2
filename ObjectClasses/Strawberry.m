@@ -1,4 +1,4 @@
-classdef Strawberry < Fruit
+classdef Strawberry < Item
     %!Strawberry class
 
     properties (Constant)
@@ -14,7 +14,7 @@ classdef Strawberry < Fruit
     methods
         %% Constructor
         function self = Strawberry(location)
-            self = self@Fruit(location);
+            self = self@Item(location);
             self.object = PlaceObject('Strawberry.ply', self.location);
             self.vertices = get(self.object, 'Vertices');
         end

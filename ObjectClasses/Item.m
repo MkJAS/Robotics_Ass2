@@ -1,8 +1,8 @@
-classdef Fruit
-    %!Fruit class which stores key Fruit attributes
+classdef Item
+    %!Item class which stores key Fruit attributes
 
     properties (Constant)
-        height = 0.03;
+        % height = 0.03;
     end
 
     properties
@@ -11,7 +11,7 @@ classdef Fruit
 
     methods
         %% Constructor
-        function self = Fruit(location)
+        function self = Item(location)
             self.location = location;
         end
 
