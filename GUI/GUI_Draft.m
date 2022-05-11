@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 11-May-2022 15:20:43
+% Last Modified by GUIDE v2.5 11-May-2022 15:56:39
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -77,14 +77,18 @@ function varargout = GUI_Draft_OutputFcn(hObject, eventdata, handles)
 % Get default command line output from handles structure
 varargout{1} = handles.output;
 
-% --- Executes on button press in pushbutton15.
-function pushbutton15_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton15 (see GCBO)
+% --- Executes on button press in load_workspace.
+function load_workspace_Callback(hObject, eventdata, handles)
+% hObject    handle to load_workspace (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % Add ground image and set the size of the world
-hold on;
-worldCoords = 0.4;
+cla
+figure (1)
+%axes(handles.axes1);
+hold on
+
+worldCoords = 0.6;
 axis([-worldCoords worldCoords -worldCoords worldCoords 0.7 1.3]); %minX maxX minY maxY minZ maxZ
 surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
 
@@ -102,64 +106,18 @@ baseDobot = [0, 0, tableHeight];
 PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
 
 % Plot lines between lightcurtains
-% LightCurtain(tableHeight);
+LightCurtain(tableHeight);
 
-
-% --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-cla;
-axes(handles.axes1);
-
-
-name = ['Dobot', datestr(now, 'yyyymmddTHHMMSSFFF')];
-base = [0, 0, 0.711547];
-
-L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi/2, 'offset', 0,'qlim',[-135*pi/180 135*pi/180]);
-L(2) = Link('d', 0, 'a', 0.135, 'alpha',0,'offset', -pi/2,'qlim',[5*pi/180 80*pi/180]);
-L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset',0,'qlim',[-5*pi/180 85*pi/180]);
-L(4) = Link('d', 0, 'a', 0.041, 'alpha', pi/2, 'offset', 0,'qlim',[-pi/2 pi/2]);
-L(5) = Link('d', 0.09, 'a', 0, 'alpha',0, 'offset', 0,'qlim',[-85*pi/180 85*pi/180]);
-
-model = SerialLink(L, 'name', name); %'base', base
-
-for linkIndex = 0:model.n
-    [ faceData, vertexData, plyData{linkIndex + 1} ] = plyread(['DobotLink', num2str(linkIndex), '.ply'], 'tri'); %#ok<AGROW>
-    model.faces{linkIndex + 1} = faceData;
-    model.points{linkIndex + 1} = vertexData;
-end
-
-%Display Robot
-workspace = [-1 1 -1 1 -0.3 1];
-model.plot3d(zeros(1,model.n), 'noarrow', 'workspace', workspace);
-if isempty(findobj(get(gca, 'Children'), 'Type', 'Light'))
-     camlight
-end  
-model.delay = 0;
-
-% Try to correctly colour the arm (if colours are in ply file data)
-for linkIndex = 0:model.n
-    handles = findobj('Tag', model.name);
-    h = get(handles, 'UserData');
-    try 
-       h.link(linkIndex + 1).Children.FaceVertexCData = [plyData{linkIndex + 1}.vertex.red ...
-                                                     , plyData{linkIndex + 1}.vertex.green ...
-                                                     , plyData{linkIndex + 1}.vertex.blue]/255;
-       h.link(linkIndex + 1).Children.FaceColor = 'interp';
-    catch ME_1
-        disp(ME_1);
-        continue;
-    end
-end
-tableHeight = 0.711547;
 PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
+%robot = Dobot;
+robot = Dobot(transl(baseDobot));
+
+
 data = guidata(hObject);
-data.model = model;
+data.model = robot.model;
 guidata(hObject,data);
+
 % popup_sel_index = get(handles.popupmenu1, 'Value');
 % switch popup_sel_index
 %     case 1
@@ -413,4 +371,8 @@ handles.model.animate(qNext);
 % end
 
 
-
+% --- Executes on button press in pushbutton16.
+function pushbutton16_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton16 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
