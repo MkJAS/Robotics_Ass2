@@ -8,6 +8,7 @@ function [collision] = willCollide(robot, q, points)
     tr = zeros(4, 4, robot.n + 1);
     tr(:, :, 1) = robot.base;
     L = robot.links;
+    collision = false;
 
     for i = 1:robot.n
         tr(:, :, i + 1) = tr(:, :, i) * trotz(q(i) + L(i).offset) * transl(0, 0, L(i).d) * transl(L(i).a, 0, 0) * trotx(L(i).alpha);
