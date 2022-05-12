@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 11-May-2022 15:20:43
+% Last Modified by GUIDE v2.5 12-May-2022 14:13:41
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -62,6 +62,10 @@ guidata(hObject, handles);
 if strcmp(get(hObject,'Visible'),'off')
     %plot(rand(5));
 end
+[x,map]=imread('estop.jpg');
+I2=imresize(x, [42 113]);
+set(handles.e_stop,'cdata',I2);
+
 
 % UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -78,13 +82,13 @@ function varargout = GUI_Draft_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
 
 % --- Executes on button press in pushbutton15.
-function pushbutton15_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton15 (see GCBO)
+function load_workspace_Callback(hObject, eventdata, handles)
+% hObject    handle to load_workspace (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % Add ground image and set the size of the world
 cla
-figure (1)
+fig = figure (1)
 %axes(handles.axes1);
 hold on
 
@@ -112,11 +116,17 @@ PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
 %robot = Dobot;
 robot = Dobot(transl(baseDobot));
+robot.model.animate(deg2rad([-15 40 60 12.5 0]));
 
 
 data = guidata(hObject);
 data.model = robot.model;
+data.robot = robot;
+% data.fig = fig;
+data.stop = false;
+
 guidata(hObject,data);
+
 
 
 % --------------------------------------------------------------------
@@ -211,7 +221,7 @@ function minusq2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 q2 = handles.model.getpos;
 qNext = q2-deg2rad([0 5 0 0 0]);
-qNext(4) = -(90 - qNext(2) - qNext(3));
+qNext(4) = -(pi/2 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
@@ -222,7 +232,7 @@ function plusq2_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 q2 = handles.model.getpos;
 qNext = q2+deg2rad([0 5 0 0 0]);
-qNext(4) = -(90 - qNext(2) - qNext(3));
+qNext(4) = -(pi/2 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
@@ -232,13 +242,13 @@ function minusq3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 q3 = handles.model.getpos;
-lims = handles.jointLimits;
+lims = handles.robot.jointLimits;
 [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
 [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
 qlim(1, 1) = lims(index, 2);
 qlim(1, 2) = lims(index2, 4);
 qNext = q3-deg2rad([0 0 5 0 0]);
-qNext(4) = -(90 - qNext(2) - qNext(3));
+qNext(4) = -(pi/2 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
@@ -248,13 +258,13 @@ function plusq3_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 q3 = handles.model.getpos;
-lims = handles.jointLimits;
+lims = handles.robot.jointLimits;
 [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
 [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
 qlim(1, 1) = lims(index, 2);
 qlim(1, 2) = lims(index2, 4);
 qNext = q3+deg2rad([0 0 5 0 0]);
-qNext(4) = -(90 - qNext(2) - qNext(3));
+qNext(4) = -(pi/2 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
 
 
@@ -287,7 +297,7 @@ startPoint = handles.model.fkine(q);
 startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(1) = endPoint(1) + 0.01;
-newQ = XYZtoQ(point,handles);
+newQ = XYZtoQ(endPoint);
 
 handles.model.animate(newQ);
 
@@ -333,3 +343,10 @@ function plusZ_Callback(hObject, eventdata, handles)
 
 
 
+
+
+% --- Executes on button press in pushbutton25.
+function pushbutton25_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton25 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
