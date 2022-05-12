@@ -338,7 +338,7 @@ function plusX_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos();
+aaq = handles.model.getpos();
 startPoint = handles.model.fkine(q);
 startPoint = startPoint(1:3,4);
 endPoint = startPoint;
