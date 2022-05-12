@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 11-May-2022 18:38:38
+% Last Modified by GUIDE v2.5 12-May-2022 16:03:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -62,6 +62,9 @@ guidata(hObject, handles);
 if strcmp(get(hObject,'Visible'),'off')
     %plot(rand(5));
 end
+[x,map]=imread('estop.jpg');
+I2=imresize(x, [90 90]);
+set(handles.e_stop,'cdata',I2);
 
 % UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -83,7 +86,7 @@ function load_workspace_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % Add ground image and set the size of the world
-cla
+% cla
 fig = figure (1)
 %axes(handles.axes1);
 hold on
@@ -112,16 +115,25 @@ PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
 %robot = Dobot;
 robot = Dobot(transl(baseDobot));
+robot.model.animate(deg2rad([-15 40 60 12.5 0]));
+
+estop_count = 0;
+
+estopON = imread("estopON.jpg");
+
 
 
 data = guidata(hObject);
 data.model = robot.model;
 data.robot = robot;
+data.estop_count = estop_count;
+data.estopON = estopON;
 % data.fig = fig;
 data.stop = false;
 %data.jointLimits = jointLimits;
 
 guidata(hObject,data);
+
 
 % --------------------------------------------------------------------
 function FileMenu_Callback(hObject, eventdata, handles)
@@ -186,176 +198,137 @@ end
 
 set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)', 'plot(membrane)', 'surf(peaks)'});
 
-% --- Executes on button press in minusq1.
-function minusq1_Callback(hObject, eventdata, handles)
-% hObject    handle to minusq1 (see GCBO)
+
+
+% --- Executes on slider movement.
+function Q1slider_Callback(hObject, eventdata, handles)
+% hObject    handle to Q1slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-    q1 = handles.model.getpos;
-    qNext = q1-deg2rad([5 0 0 0 0]);
-    handles.model.animate(qNext);
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+if (handles.stop == false)
+val = get(hObject,'Value');
+val = round(val);
+q = handles.model.getpos();
+q(1) = deg2rad(val);
+handles.model.animate(q);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
 end
 
 
-% --- Executes on button press in plusq1.
-function plusq1_Callback(hObject, eventdata, handles)
-% hObject    handle to plusq1 (see GCBO)
+% --- Executes during object creation, after setting all properties.
+function Q1slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Q1slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-q1 = handles.model.getpos;
-qNext = q1+deg2rad([5 0 0 0 0]);
-handles.model.animate(qNext);
+% handles    empty - handles not created until after all CreateFcns called
+set(hObject,'Max',130,'Min',-130);
+set(hObject,'SliderStep',[1/259 1]);
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-% --- Executes on button press in minusq2.
-function minusq2_Callback(hObject, eventdata, handles)
-% hObject    handle to minusq2 (see GCBO)
+
+% --- Executes on slider movement.
+function Q2slider_Callback(hObject, eventdata, handles)
+% hObject    handle to Q2slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-% q2 = handles.model.getpos;
-% qNext = q2-deg2rad([0 5 0 0 0]);
-% handles.model.animate(qNext);
-q2 = handles.model.getpos;
-qNext = q2-deg2rad([0 5 0 0 0]);
-qNext(4) = -(90 - qNext(2) - qNext(3));
-handles.model.animate(qNext);
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+if (handles.stop == false)
+val = get(hObject,'Value');
+val = round(val);
+q = handles.model.getpos();
+q(2) = deg2rad(val);
+q(4) = -(pi/2 - q(2) - q(3));
+handles.model.animate(q);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
 end
 
-% --- Executes on button press in plusq2.
-function plusq2_Callback(hObject, eventdata, handles)
-% hObject    handle to plusq2 (see GCBO)
+% --- Executes during object creation, after setting all properties.
+function Q2slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Q2slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-% q2 = handles.model.getpos;
-% qNext = q2+deg2rad([0 5 0 0 0]);
-% handles.model.animate(qNext);
-q2 = handles.model.getpos;
-qNext = q2+deg2rad([0 5 0 0 0]);
-qNext(4) = -(90 - qNext(2) - qNext(3));
-handles.model.animate(qNext);
+% handles    empty - handles not created until after all CreateFcns called
+set(hObject,'Max',80,'Min',5);
+set(hObject,'SliderStep',[1/74 1]);
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-% --- Executes on button press in minusq3.
-function minusq3_Callback(hObject, eventdata, handles)
-% hObject    handle to minusq3 (see GCBO)
+
+% --- Executes on slider movement.
+function Q3slider_Callback(hObject, eventdata, handles)
+% hObject    handle to Q3slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-q3 = handles.model.getpos;
-qNext = q3-deg2rad([0 0 5 0 0]);
-handles.model.animate(qNext);
-% q3 = handles.model.getpos;
-% lims = handles.jointLimits;
-% [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
-% [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
-% qlim(1, 1) = lims(index, 2);
-% qlim(1, 2) = lims(index2, 4);
-% qNext = q3-deg2rad([0 0 5 0 0]);
-% qNext(4) = -(90 - qNext(2) - qNext(3));
-% handles.model.animate(qNext);
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+if (handles.stop == false)
+val = get(hObject,'Value');
+val = round(val);
+q = handles.model.getpos();
+q(3) = deg2rad(val);
+q(4) = -(pi/2 - q(2) - q(3));
+handles.model.animate(q);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
 end
 
-% --- Executes on button press in plusq3.
-function plusq3_Callback(hObject, eventdata, handles)
-% hObject    handle to plusq3 (see GCBO)
+% --- Executes during object creation, after setting all properties.
+function Q3slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Q3slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-q3 = handles.model.getpos;
-qNext = q3+deg2rad([0 0 5 0 0]);
-handles.model.animate(qNext);
-% q3 = handles.model.getpos;
-% lims = handles.jointLimits;
-% [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
-% [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
-% qlim(1, 1) = lims(index, 2);
-% qlim(1, 2) = lims(index2, 4);
-% qNext = q3+deg2rad([0 0 5 0 0]);
-% qNext(4) = -(90 - qNext(2) - qNext(3));
-% handles.model.animate(qNext);
+% handles    empty - handles not created until after all CreateFcns called
+set(hObject,'Max',85,'Min',-5);
+set(hObject,'SliderStep',[1/89 1]);
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
-% --- Executes on button press in minusq4.
-function minusq4_Callback(hObject, eventdata, handles)
-% hObject    handle to minusq4 (see GCBO)
+
+% --- Executes on slider movement.
+function Q5slider_Callback(hObject, eventdata, handles)
+% hObject    handle to Q5slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-q4 = handles.model.getpos;
-qNext = q4-deg2rad([0 0 0 5 0]);
-handles.model.animate(qNext);
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+if (handles.stop == false)
+val = get(hObject,'Value');
+val = round(val);
+q = handles.model.getpos();
+q(5) = deg2rad(val);
+handles.model.animate(q);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
 end
 
-% --- Executes on button press in plusq4.
-function plusq4_Callback(hObject, eventdata, handles)
-% hObject    handle to plusq4 (see GCBO)
+% --- Executes during object creation, after setting all properties.
+function Q5slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Q5slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-q4 = handles.model.getpos;
-qNext = q4+deg2rad([0 0 0 5 0]);
-handles.model.animate(qNext);
+% handles    empty - handles not created until after all CreateFcns called
+set(hObject,'Max',85,'Min',-185);
+set(hObject,'SliderStep',[1/169 1]);
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
-
-% --- Executes on button press in minusq5.
-function minusq5_Callback(hObject, eventdata, handles)
-% hObject    handle to minusq5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-q5 = handles.model.getpos;
-qNext = q5-deg2rad([0 0 0 0 5]);
-handles.model.animate(qNext);
-end
-
-% --- Executes on button press in plusq5.
-function plusq5_Callback(hObject, eventdata, handles)
-% hObject    handle to plusq5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-q5 = handles.model.getpos;
-qNext = q5+deg2rad([0 0 0 0 5]);
-handles.model.animate(qNext);
-end
-
-% --- Executes on button press in RotateRobot.
-function RotateRobot_Callback(hObject, eventdata, handles)
-% hObject    handle to RotateRobot (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if(handles.stop == false)
-handles.robot.Spin();
-end
-
-% UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
-
-% --- Executes on button press in e_stop.
-function e_stop_Callback(hObject, eventdata, handles)
-% hObject    handle to e_stop (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% f = figure(f);
-% c = uicontrol('String','Continue','Callback','uiresume(f)');
-% uiwait(f)
-% disp('Program execution has resumed');
-handles.stop = true;
-guidata(hObject,handles);
-uiwait();
-
-% --- Executes on button press in resume_function.
-function resume_function_Callback(hObject, eventdata, handles)
-% hObject    handle to resume_function (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-handles.stop = false;
-guidata(hObject,handles);
-uiresume();
 
 % --- Executes on button press in plusX.
 function plusX_Callback(hObject, eventdata, handles)
@@ -369,9 +342,12 @@ startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(1) = endPoint(1) + 0.01;
 newQ = XYZtoQ(endPoint,handles);
-
 handles.model.animate(newQ);
+else
+    msgbox('Warning! Please release E-stop and then resume');
+    beep;
 end
+
 
 
 
@@ -386,6 +362,9 @@ tr = handles.model.fkine(q);
 tr(1,4) = tr(1,4) - 0.01;
 newQ = handles.model.ikcon(tr,q);
 handles.model.animate(newQ);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
 end
 
 % --- Executes on button press in minusY.
@@ -393,27 +372,143 @@ function minusY_Callback(hObject, eventdata, handles)
 % hObject    handle to minusY (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+if (handles.stop == false)
+q = handles.model.getpos;
+tr = handles.model.fkine(q);
+tr(1,4) = tr(1,4) - 0.01;
+newQ = handles.model.ikcon(tr,q);
+handles.model.animate(newQ);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
+end
 
 % --- Executes on button press in plusY.
 function plusY_Callback(hObject, eventdata, handles)
 % hObject    handle to plusY (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+if (handles.stop == false)
+q = handles.model.getpos;
+tr = handles.model.fkine(q);
+tr(1,4) = tr(1,4) - 0.01;
+newQ = handles.model.ikcon(tr,q);
+handles.model.animate(newQ);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
+end
 
 % --- Executes on button press in minusZ.
 function minusZ_Callback(hObject, eventdata, handles)
 % hObject    handle to minusZ (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+if (handles.stop == false)
+q = handles.model.getpos;
+tr = handles.model.fkine(q);
+tr(1,4) = tr(1,4) - 0.01;
+newQ = handles.model.ikcon(tr,q);
+handles.model.animate(newQ);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
+end
 
 % --- Executes on button press in plusZ.
 function plusZ_Callback(hObject, eventdata, handles)
 % hObject    handle to plusZ (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if (handles.stop == false)
+q = handles.model.getpos;
+tr = handles.model.fkine(q);
+tr(1,4) = tr(1,4) - 0.01;
+newQ = handles.model.ikcon(tr,q);
+handles.model.animate(newQ);
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
+end
+
+
+
+
+
+
+
+% --- Executes on button press in RotateRobot.
+function RotateRobot_Callback(hObject, eventdata, handles)
+% hObject    handle to RotateRobot (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
+handles.robot.Spin();
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    beep;
+end
+
+% UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+% --- Executes on button press in e_stop.
+function e_stop_Callback(hObject, eventdata, handles)
+% hObject    handle to e_stop (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% f = figure(f);
+% c = uicontrol('String','Continue','Callback','uiresume(f)');
+
+% disp('Program execution has resumed');
+if handles.estop_count == 0  || handles.estop_count == 2
+    handles.estop_count = 1;
+    handles.stop = true;
+    beep;
+    [x,map]=imread('estopON.jpg');
+    I2=imresize(x, [90 90]);
+    set(handles.e_stop,'cdata',I2);
+    guidata(hObject,handles);
+    uiwait();
+    handles.estop_count = 0;
+end
+if handles.estop_count == 1
+    if handles.estop_count == 1
+        msgbox("        !E-STOP RELEASED!","Caution","warn",'modal');
+        beep;
+    end
+    handles.estop_count = 2;
+    [x,map]=imread('estop.jpg');
+    I=imresize(x, [90 90]);
+    set(handles.e_stop,'cdata',I);
+    
+    guidata(hObject,handles);
+end
+
+
+% --- Executes on button press in resume_function.
+function resume_function_Callback(hObject, eventdata, handles)
+% hObject    handle to resume_function (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if handles.estop_count == 1
+    guidata(hObject,handles);
+    msgbox("Please release E-stop before continuing","Notice","warn");
+    beep;
+%     handles.estop_count = 2;
+end
+if handles.estop_count == 2
+    disp('Resuming');
+    uiresume();
+    handles.estop_count = 0;
+    handles.stop = false;
+    guidata(hObject,handles);
+end
+
+
+
+
+
 
 
 % % --- Executes on slider movement.
@@ -478,4 +573,139 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-
+% 
+% 
+% 
+% % --- Executes on button press in minusq1.
+% function minusq1_Callback(hObject, eventdata, handles)
+% % hObject    handle to minusq1 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+%     q1 = handles.model.getpos;
+%     qNext = q1-deg2rad([1 0 0 0 0]);
+%     handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% 
+% % --- Executes on button press in plusq1.
+% function plusq1_Callback(hObject, eventdata, handles)
+% % hObject    handle to plusq1 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+% q1 = handles.model.getpos;
+% qNext = q1+deg2rad([1 0 0 0 0]);
+% handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% % --- Executes on button press in minusq2.
+% function minusq2_Callback(hObject, eventdata, handles)
+% % hObject    handle to minusq2 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+% q2 = handles.model.getpos;
+% qNext = q2-deg2rad([0 1 0 0 0]);
+% handles.model.animate(qNext);
+% q2 = handles.model.getpos;
+% qNext = q2-deg2rad([0 1 0 0 0]);
+% qNext(4) = -(pi/2 - qNext(2) - qNext(3));
+% handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% % --- Executes on button press in plusq2.
+% function plusq2_Callback(hObject, eventdata, handles)
+% % hObject    handle to plusq2 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+% q2 = handles.model.getpos;
+% qNext = q2+deg2rad([0 1 0 0 0]);
+% handles.model.animate(qNext);
+% q2 = handles.model.getpos;
+% qNext = q2+deg2rad([0 1 0 0 0]);
+% qNext(4) = -(pi/2 - qNext(2) - qNext(3));
+% handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% % --- Executes on button press in minusq3.
+% function minusq3_Callback(hObject, eventdata, handles)
+% % hObject    handle to minusq3 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+% q3 = handles.model.getpos;
+% qNext = q3-deg2rad([0 0 1 0 0]);
+% handles.model.animate(qNext);
+% q3 = handles.model.getpos;
+% lims = handles.robot.jointLimits;
+% [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
+% [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
+% qlim(1, 1) = lims(index, 2);
+% qlim(1, 2) = lims(index2, 4);
+% qNext = q3-deg2rad([0 0 1 0 0]);
+% qNext(4) = -(pi/2 - qNext(2) - qNext(3));
+% handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% % --- Executes on button press in plusq3.
+% function plusq3_Callback(hObject, eventdata, handles)
+% % hObject    handle to plusq3 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+% q3 = handles.model.getpos;
+% qNext = q3+deg2rad([0 0 1 0 0]);
+% handles.model.animate(qNext);
+% q3 = handles.model.getpos;
+% lims = handles.robot.jointLimits;
+% [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
+% [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
+% qlim(1, 1) = lims(index, 2);
+% qlim(1, 2) = lims(index2, 4);
+% qNext = q3+deg2rad([0 0 1 0 0]);
+% qNext(4) = -(pi/2 - qNext(2) - qNext(3));
+% handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% 
+% % --- Executes on button press in minusq5.
+% function minusq5_Callback(hObject, eventdata, handles)
+% % hObject    handle to minusq5 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+% q5 = handles.model.getpos;
+% qNext = q5-deg2rad([0 0 0 0 1]);
+% handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% % --- Executes on button press in plusq5.
+% function plusq5_Callback(hObject, eventdata, handles)
+% % hObject    handle to plusq5 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% if(handles.stop == false)
+% q5 = handles.model.getpos;
+% qNext = q5+deg2rad([0 0 0 0 1]);
+% handles.model.animate(qNext);
+% else
+%     msgbox('Warning! Please release E-stop and then resume');
+% end
+% 
+% 

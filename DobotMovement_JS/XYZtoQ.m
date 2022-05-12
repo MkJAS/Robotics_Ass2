@@ -1,10 +1,9 @@
-function [q] = XYZtoQ(point,robot)
+function [q] = XYZtoQ(point)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 Ex = point(1);
 Ey = point(2);
 Ez = point(3);
-robot.model.getpos()
 theta = atan(Ey/Ex);         %Angle of arm rotation from global x, assuming robot starts 0 deg facing x axis
 
 Tx = 0.05*cos(theta);        %Joint4 from end effector in end effectors local coords
