@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 12-May-2022 16:03:28
+% Last Modified by GUIDE v2.5 12-May-2022 18:08:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -92,15 +92,15 @@ fig = figure (1)
 hold on
 
 worldCoords = 0.6;
-axis([-worldCoords worldCoords -worldCoords worldCoords 0.7 1.3]); %minX maxX minY maxY minZ maxZ
+axis([-worldCoords worldCoords -worldCoords worldCoords 0 0.7]); %minX maxX minY maxY minZ maxZ
 surf([-worldCoords, -worldCoords; worldCoords, worldCoords], [-worldCoords, worldCoords; -worldCoords, worldCoords], [0, 0; 0, 0], 'CData', imread('marble.jpg'), 'FaceColor', 'texturemap');
 
 % Adding objects to scene
-tableHeight = 0.711547;
+tableHeight = 0;
 tableLength = 1.181 * 2;
 tableWidth = 0.7387 * 2;
 tablegapX = 0.005;
-PlaceObject('Table.ply', [0, 0, 0]);
+% PlaceObject('Table.ply', [0, 0, 0]);
 
 %Set robot base locations
 baseDobot = [0, 0, tableHeight];
@@ -329,7 +329,9 @@ set(hObject,'SliderStep',[1/169 1]);
 if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
-
+%-----------------------------------------------------------------------------------------------%
+%-------------------------------XYZ Buttons-----------------------------------------------------%
+%vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv%
 % --- Executes on button press in plusX.
 function plusX_Callback(hObject, eventdata, handles)
 % hObject    handle to plusX (see GCBO)
@@ -341,14 +343,12 @@ startPoint = handles.model.fkine(q);
 startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(1) = endPoint(1) + 0.01;
-newQ = XYZtoQ(endPoint,handles);
+newQ = XYZtoQ(endPoint);
 handles.model.animate(newQ);
 else
     msgbox('Warning! Please release E-stop and then resume');
     beep;
 end
-
-
 
 
 % --- Executes on button press in minusX.
@@ -357,13 +357,15 @@ function minusX_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
+q = handles.model.getpos();
+startPoint = handles.model.fkine(q);
+startPoint = startPoint(1:3,4);
+endPoint = startPoint;
+endPoint(1) = endPoint(1) - 0.01;
+newQ = XYZtoQ(endPoint);
 handles.model.animate(newQ);
 else
-    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    msgbox('Warning! Please release E-stop and then resume');
     beep;
 end
 
@@ -373,13 +375,15 @@ function minusY_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
+q = handles.model.getpos();
+startPoint = handles.model.fkine(q);
+startPoint = startPoint(1:3,4);
+endPoint = startPoint;
+endPoint(2) = endPoint(2) - 0.01;
+newQ = XYZtoQ(endPoint);
 handles.model.animate(newQ);
 else
-    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    msgbox('Warning! Please release E-stop and then resume');
     beep;
 end
 
@@ -389,13 +393,15 @@ function plusY_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
+q = handles.model.getpos();
+startPoint = handles.model.fkine(q);
+startPoint = startPoint(1:3,4);
+endPoint = startPoint;
+endPoint(2) = endPoint(2) + 0.01;
+newQ = XYZtoQ(endPoint);
 handles.model.animate(newQ);
 else
-    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    msgbox('Warning! Please release E-stop and then resume');
     beep;
 end
 
@@ -405,13 +411,15 @@ function minusZ_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
+q = handles.model.getpos();
+startPoint = handles.model.fkine(q);
+startPoint = startPoint(1:3,4);
+endPoint = startPoint;
+endPoint(3) = endPoint(3) - 0.01;
+newQ = XYZtoQ(endPoint);
 handles.model.animate(newQ);
 else
-    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    msgbox('Warning! Please release E-stop and then resume');
     beep;
 end
 
@@ -421,16 +429,20 @@ function plusZ_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos;
-tr = handles.model.fkine(q);
-tr(1,4) = tr(1,4) - 0.01;
-newQ = handles.model.ikcon(tr,q);
+q = handles.model.getpos();
+startPoint = handles.model.fkine(q);
+startPoint = startPoint(1:3,4);
+endPoint = startPoint;
+endPoint(3) = endPoint(3) + 0.01;
+newQ = XYZtoQ(endPoint);
 handles.model.animate(newQ);
 else
-    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
+    msgbox('Warning! Please release E-stop and then resume');
     beep;
 end
-
+%^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^%
+%-------------------------------XYZ Buttons-----------------------------------------------------%
+%-----------------------------------------------------------------------------------------------%
 
 
 
@@ -452,6 +464,10 @@ end
 % UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
+
+%-----------------------------------------------------------------------------------------------%
+%------------------------------------E-STOP-----------------------------------------------------%
+%vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv%
 % --- Executes on button press in e_stop.
 function e_stop_Callback(hObject, eventdata, handles)
 % hObject    handle to e_stop (see GCBO)
@@ -505,7 +521,9 @@ if handles.estop_count == 2
     guidata(hObject,handles);
 end
 
-
+%^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^%
+%------------------------------------E-STOP-----------------------------------------------------%
+%-----------------------------------------------------------------------------------------------%
 
 
 
@@ -709,3 +727,11 @@ end
 % end
 % 
 % 
+
+
+% --- Executes on button press in ResetRobot.
+function ResetRobot_Callback(hObject, eventdata, handles)
+% hObject    handle to ResetRobot (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.model.animate(deg2rad([0 40 60 10 0]));

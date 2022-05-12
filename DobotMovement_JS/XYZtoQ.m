@@ -21,7 +21,7 @@ if Ey < 0
     y = Ey + Ty;
 end 
 
-z = (Ez - (0.138+0.711547)) + 0.09;
+z = (Ez - (0.138)) + 0.09;
 
 % z = Ez + 0.09+0.711547;          %0.09 = end effector length
 % z = z - (0.138+0.711547);           %0.138 = length from base to joint 2
@@ -52,6 +52,6 @@ q3r = (180 - beta);
 
 q4 = -(90 - q2 - q3r);
 
-q = deg2rad([q1 q2 q3r q4 0]);
+q = deg2rad([q1 q2 q3r q4 0])
 end
 
