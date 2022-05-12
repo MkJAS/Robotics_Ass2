@@ -119,23 +119,9 @@ data.model = robot.model;
 data.robot = robot;
 % data.fig = fig;
 data.stop = false;
+%data.jointLimits = jointLimits;
 
 guidata(hObject,data);
-
-% popup_sel_index = get(handles.popupmenu1, 'Value');
-% switch popup_sel_index
-%     case 1
-%         plot(rand(5));
-%     case 2
-%         plot(sin(1:0.01:25.99));
-%     case 3
-%         bar(1:.5:10);
-%     case 4
-%         plot(membrane);
-%     case 5
-%         surf(peaks);
-% end
-
 
 % --------------------------------------------------------------------
 function FileMenu_Callback(hObject, eventdata, handles)
@@ -217,97 +203,134 @@ function plusq1_Callback(hObject, eventdata, handles)
 % hObject    handle to plusq1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+if(handles.stop == false)
 q1 = handles.model.getpos;
 qNext = q1+deg2rad([5 0 0 0 0]);
 handles.model.animate(qNext);
+end
 
 % --- Executes on button press in minusq2.
 function minusq2_Callback(hObject, eventdata, handles)
 % hObject    handle to minusq2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
+% q2 = handles.model.getpos;
+% qNext = q2-deg2rad([0 5 0 0 0]);
+% handles.model.animate(qNext);
 q2 = handles.model.getpos;
 qNext = q2-deg2rad([0 5 0 0 0]);
+qNext(4) = -(90 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
-
+end
 
 % --- Executes on button press in plusq2.
 function plusq2_Callback(hObject, eventdata, handles)
 % hObject    handle to plusq2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
+% q2 = handles.model.getpos;
+% qNext = q2+deg2rad([0 5 0 0 0]);
+% handles.model.animate(qNext);
 q2 = handles.model.getpos;
 qNext = q2+deg2rad([0 5 0 0 0]);
+qNext(4) = -(90 - qNext(2) - qNext(3));
 handles.model.animate(qNext);
-
+end
 
 % --- Executes on button press in minusq3.
 function minusq3_Callback(hObject, eventdata, handles)
 % hObject    handle to minusq3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
 q3 = handles.model.getpos;
 qNext = q3-deg2rad([0 0 5 0 0]);
 handles.model.animate(qNext);
-
+% q3 = handles.model.getpos;
+% lims = handles.jointLimits;
+% [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
+% [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
+% qlim(1, 1) = lims(index, 2);
+% qlim(1, 2) = lims(index2, 4);
+% qNext = q3-deg2rad([0 0 5 0 0]);
+% qNext(4) = -(90 - qNext(2) - qNext(3));
+% handles.model.animate(qNext);
+end
 
 % --- Executes on button press in plusq3.
 function plusq3_Callback(hObject, eventdata, handles)
 % hObject    handle to plusq3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
 q3 = handles.model.getpos;
 qNext = q3+deg2rad([0 0 5 0 0]);
 handles.model.animate(qNext);
-
+% q3 = handles.model.getpos;
+% lims = handles.jointLimits;
+% [~, index] = min(abs(lims(:, 1) - q3(1, 2)));
+% [~, index2] = min(abs(lims(:, 3) - q3(1, 2)));
+% qlim(1, 1) = lims(index, 2);
+% qlim(1, 2) = lims(index2, 4);
+% qNext = q3+deg2rad([0 0 5 0 0]);
+% qNext(4) = -(90 - qNext(2) - qNext(3));
+% handles.model.animate(qNext);
+end
 
 % --- Executes on button press in minusq4.
 function minusq4_Callback(hObject, eventdata, handles)
 % hObject    handle to minusq4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
 q4 = handles.model.getpos;
 qNext = q4-deg2rad([0 0 0 5 0]);
 handles.model.animate(qNext);
-
+end
 
 % --- Executes on button press in plusq4.
 function plusq4_Callback(hObject, eventdata, handles)
 % hObject    handle to plusq4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
 q4 = handles.model.getpos;
 qNext = q4+deg2rad([0 0 0 5 0]);
 handles.model.animate(qNext);
-
+end
 
 % --- Executes on button press in minusq5.
 function minusq5_Callback(hObject, eventdata, handles)
 % hObject    handle to minusq5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
 q5 = handles.model.getpos;
 qNext = q5-deg2rad([0 0 0 0 5]);
 handles.model.animate(qNext);
-
+end
 
 % --- Executes on button press in plusq5.
 function plusq5_Callback(hObject, eventdata, handles)
 % hObject    handle to plusq5 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if(handles.stop == false)
 q5 = handles.model.getpos;
 qNext = q5+deg2rad([0 0 0 0 5]);
 handles.model.animate(qNext);
+end
 
 % --- Executes on button press in RotateRobot.
 function RotateRobot_Callback(hObject, eventdata, handles)
 % hObject    handle to RotateRobot (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+if(handles.stop == false)
 handles.robot.Spin();
+end
 
 % UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -330,18 +353,16 @@ function resume_function_Callback(hObject, eventdata, handles)
 % hObject    handle to resume_function (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+handles.stop = false;
+guidata(hObject,handles);
 uiresume();
-
-
-%handles.model.Spin;
-% q = handles.model.getpos;
-% qspin = Spin(robot);
 
 % --- Executes on button press in plusX.
 function plusX_Callback(hObject, eventdata, handles)
 % hObject    handle to plusX (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if (handles.stop == false)
 q = handles.model.getpos();
 startPoint = handles.model.fkine(q);
 startPoint = startPoint(1:3,4);
@@ -350,6 +371,7 @@ endPoint(1) = endPoint(1) + 0.01;
 newQ = XYZtoQ(endPoint,handles);
 
 handles.model.animate(newQ);
+end
 
 
 
@@ -358,11 +380,13 @@ function minusX_Callback(hObject, eventdata, handles)
 % hObject    handle to minusX (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+if (handles.stop == false)
 q = handles.model.getpos;
 tr = handles.model.fkine(q);
 tr(1,4) = tr(1,4) - 0.01;
 newQ = handles.model.ikcon(tr,q);
 handles.model.animate(newQ);
+end
 
 % --- Executes on button press in minusY.
 function minusY_Callback(hObject, eventdata, handles)
