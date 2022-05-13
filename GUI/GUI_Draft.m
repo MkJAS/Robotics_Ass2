@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 12-May-2022 18:08:01
+% Last Modified by GUIDE v2.5 13-May-2022 21:12:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -735,3 +735,44 @@ function ResetRobot_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 handles.model.animate(deg2rad([0 40 60 10 0]));
+
+
+% --- Executes on selection change in popupmenu2.
+function popupmenu2_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu2 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupmenu2
+contents = cellstr(get(hObject,'String'));
+selection = contents{get(hObject,'Value')};
+handles.selection = selection;
+guidata(hObject,handles);
+
+
+
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+set(hObject,'String',{'Red','Green','Blue'});
+handles.selection = 'Red';
+guidata(hObject,handles);
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in getSelection.
+function getSelection_Callback(hObject, eventdata, handles)
+% hObject    handle to getSelection (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+selection = handles.selection;
+disp(selection);
