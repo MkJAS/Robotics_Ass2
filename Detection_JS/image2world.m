@@ -12,7 +12,7 @@ msg4 = receive(sub4);
 rosshutdown;
 %%
 
-I = double(msg.readImage);
+D = double(msg.readImage);
 figure (1)
 imshow(I);
 I2 = msg3.readImage;
@@ -30,9 +30,9 @@ for i=1:640
         uy = y*f;
         x = ux;
         y = uy;
-        point(j,i,1) = I(j,i) * x;
-        point(j,i,2) = I(j,i) * y;
-        point(j,i,3) = I(j,i);
+        point(j,i,1) = D(j,i) * x;
+        point(j,i,2) = D(j,i) * y;
+        point(j,i,3) = D(j,i);
     end
 end
 px = point(:,:,1);
