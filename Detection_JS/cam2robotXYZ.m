@@ -1,15 +1,15 @@
 
-rosshutdown
-rosinit
-% sub=rossubscriber("/camera/color/image_raw");
-pause(1);
+% rosshutdown
+% rosinit
+% % sub=rossubscriber("/camera/color/image_raw");
+% pause(1);
+% % [msg2] = receive(sub);
+% % close all
+% % image = msg2.readImage;
+% % % image = rgb2gray(image);
+% % % % Convert RGB image to chosen color space
+% sub=rossubscriber("/camera/color/camera_info");
 % [msg2] = receive(sub);
-% close all
-% image = msg2.readImage;
-% % image = rgb2gray(image);
-% % % Convert RGB image to chosen color space
-sub=rossubscriber("/camera/color/camera_info");
-[msg2] = receive(sub);
 
 %%
 I = rgb2hsv(image);
@@ -177,6 +177,16 @@ K = msg2.K;
 % r2c = transl(0.2275,0,0.577)*troty(pi/2);
 % xyz_World = r(1:3,4) + r2c(1:3,4);
 
+figure (2)
+hold on
+   scatter(mid(1,2,2),mid(1,1,2),'d','r')
+   scatter(mid(1,2,3),mid(1,1,3),'d','r')
+   scatter(mid(1,2,4),mid(1,1,4),'d','r')
+   scatter(mid(1,2,1),mid(1,1,1),'d','r')
+    text(mid(1,2,1),mid(1,1,1),num2str(centers(:,2:3,1)),'Color','k','LineWidth',3);
+    text(mid(1,2,2),mid(1,1,2),num2str(centers(:,2:3,2)),'Color','k','LineWidth',3);
+    text(mid(1,2,3),mid(1,1,3),num2str(centers(:,2:3,3)),'Color','k','LineWidth',3);
+    text(mid(1,2,4),mid(1,1,4),num2str(centers(:,2:3,4)),'Color','k','LineWidth',3);
 
 
 
