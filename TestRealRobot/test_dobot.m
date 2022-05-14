@@ -1,80 +1,168 @@
+% sudo chmod 666 /dev/ttyUSB0;
+% roslaunch dobot_magician_driver dobot_magician.launch
+
+%% Hardcoded Pick & Place code for Sensors & Control
+
+% Any command with send in it has issues working from within a function
+
+close all;
 clear all;
 clc;
-close all;
-rosshutdown;
-%% Start Dobot Magician Node
-rosinit;
 
-%% Start Dobot ROS
-dobot = DobotMagician();
+rosshutdown;        % Call this at the start just in case
+rosinit;            % Initialise connection
 
-%% Test Motion
-%% Publish custom joint target
-joint_target = [0.0, 0.4, 0.3, 0.0];
-dobot.PublishTargetJoint(joint_target);
+%% Initialise Dobot
 
-%% Publish custom end effector pose
-end_effector_position = [0.2, 0, 0.1];
-end_effector_rotation = [0, 0, 0];
-dobot.PublishEndEffectorPose(end_effector_position, end_effector_rotation);
+[safetyStatePublisher,safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
+safetyStateMsg.Data = 2;
+send(safetyStatePublisher,safetyStateMsg);
 
-%% Turn on tool
-dobot.PublishToolState(true);
+pause(25);          % Long pause as robot needs to be fully initialised before starting
 
-%% Turn off tool
-dobot.PublishToolState(false);
+fprintf('\nDobot is initialised with the current parameters\n');
 
-%% Test ESTOP
-%% Send this first
-for i = 0.1:0.05:1.0
-    joint_target = [0.0, i, 0.3, 0.0];
-    dobot.PublishTargetJoint(joint_target);
-    pause(0.1);
-end
+defaultEndEffectorPosition = [0.2591,0,-0.0086]    % Default end effector position
+groundLevel = -0.0419                              % Z value of the table
 
-%% When the robot is in motion, send this
-dobot.EStopRobot();
+%% Movement of the End Effector to Hover Over Object
 
-%% Reinitilise Robot
-dobot.InitaliseRobot();
+fprintf('Dobot is moving to\n');              % Display end effector target position
+target = [0.22,0.072,-0.0086]
 
-% %% Set Rail status to true
-% dobot.SetRobotOnRail(true);
+[targetEndEffectorPub,targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
 
-% %% Reinitialise robot. It should perform homing with the linear rail
-% dobot.InitaliseRobot();
+targetEndEffectorMsg.Position.X = target(1);
+targetEndEffectorMsg.Position.Y = target(2);
+targetEndEffectorMsg.Position.Z = target(3);
 
-% %% Move the rail to the position of 0.1
-% dobot.MoveRailToPosition(0.1);
+target_rotation = [0,0,0];
+qua = eul2quat(target_rotation);
+targetEndEffectorMsg.Orientation.W = qua(1);
+targetEndEffectorMsg.Orientation.X = qua(2);
+targetEndEffectorMsg.Orientation.Y = qua(3);
+targetEndEffectorMsg.Orientation.Z = qua(4);
 
-% %% Set Rail status to false
-% dobot.SetRobotOnRail(false);
+send(targetEndEffectorPub,targetEndEffectorMsg);         % Send command to move
 
-% %% Reinitialise robot. It should not perform homing with the linear rail
-% dobot.InitaliseRobot();
+pause(2)
 
-%% Test IO
-%% Get current IO status of all io pins on the robot
-[ioMux, ioData] = dobot.GetCurrentIOStatus();
+fprintf('Dobot has completed translation\n');            % Display end effector current position
 
-%% Set a particular pin a particular IO output
-address = 1;
-ioMux = 1;
-data = 1;
-dobot.SetIOData(address, ioMux, data);
+%% Movement of the End Effector to Object
 
-%% Set particular pin a particular IO input
-address = 1;
-ioMux = 3;
-data = 0;
-dobot.SetIOData(address, ioMux, data);
+fprintf('\nDobot is moving to\n');              % Display end effector target position
+target = [0.22,0.072,-0.03]
 
-% %% Set a velocity to the conveyor belt
-% enableConveyor = true;
-% conveyorVelocity = 15000; % Note: this is ticks per second
-% dobot.SetConveyorBeltVelocity(enableConveyor, conveyorVelocity);
+[targetEndEffectorPub,targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
 
-% %% Turn off conveyor belt
-% enableConveyor = false;
-% conveyorVelocity = 0; % Note: this is ticks per second
-% dobot.SetConveyorBeltVelocity(enableConveyor, conveyorVelocity);
+targetEndEffectorMsg.Position.X = target(1);
+targetEndEffectorMsg.Position.Y = target(2);
+targetEndEffectorMsg.Position.Z = target(3);
+
+target_rotation = [0,0,0];
+qua = eul2quat(target_rotation);
+targetEndEffectorMsg.Orientation.W = qua(1);
+targetEndEffectorMsg.Orientation.X = qua(2);
+targetEndEffectorMsg.Orientation.Y = qua(3);
+targetEndEffectorMsg.Orientation.Z = qua(4);
+
+send(targetEndEffectorPub,targetEndEffectorMsg);         % Send command to move
+
+pause(1)
+
+fprintf('Dobot has completed translation\n');            % Display end effector current position
+
+%% Pick Up Object
+
+state = 1;                        % Binary operator - change to toggle grip
+
+[toolStatePub, toolStateMsg] = rospublisher('/dobot_magician/target_tool_state');
+toolStateMsg.Data = [1 state];
+send(toolStatePub,toolStateMsg);  % Send command to gripper
+
+pause (2)
+
+fprintf('\nObject has been picked up\n');            % Display message for user
+
+%% Movement of the End Effector to Hover Over Object
+
+fprintf('\nDobot is moving to\n');              % Display end effector target position
+target = [0.22,0.072,-0.0086]
+
+[targetEndEffectorPub,targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
+
+targetEndEffectorMsg.Position.X = target(1);
+targetEndEffectorMsg.Position.Y = target(2);
+targetEndEffectorMsg.Position.Z = target(3);
+
+target_rotation = [0,0,0];
+qua = eul2quat(target_rotation);
+targetEndEffectorMsg.Orientation.W = qua(1);
+targetEndEffectorMsg.Orientation.X = qua(2);
+targetEndEffectorMsg.Orientation.Y = qua(3);
+targetEndEffectorMsg.Orientation.Z = qua(4);
+
+send(targetEndEffectorPub,targetEndEffectorMsg);         % Send command to move
+
+pause(1)
+
+fprintf('Dobot has completed translation\n');            % Display end effector current position
+
+%% Movement of the End Effector to Hover Over Desired Space
+
+fprintf('\nDobot is moving to\n');              % Display end effector target position
+target = [0.223,-0.068,-0.0086]
+
+[targetEndEffectorPub,targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
+
+targetEndEffectorMsg.Position.X = target(1);
+targetEndEffectorMsg.Position.Y = target(2);
+targetEndEffectorMsg.Position.Z = target(3);
+
+target_rotation = [0,0,0];
+qua = eul2quat(target_rotation);
+targetEndEffectorMsg.Orientation.W = qua(1);
+targetEndEffectorMsg.Orientation.X = qua(2);
+targetEndEffectorMsg.Orientation.Y = qua(3);
+targetEndEffectorMsg.Orientation.Z = qua(4);
+
+send(targetEndEffectorPub,targetEndEffectorMsg);         % Send command to move
+
+pause(2)
+
+fprintf('Dobot has completed translation\n');            % Display end effector current position
+
+%% Movement of the End Effector to Desired Space
+
+fprintf('\nDobot is moving to\n');              % Display end effector target position
+target = [0.223,-0.068,-0.03]
+
+[targetEndEffectorPub,targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
+
+targetEndEffectorMsg.Position.X = target(1);
+targetEndEffectorMsg.Position.Y = target(2);
+targetEndEffectorMsg.Position.Z = target(3);
+
+target_rotation = [0,0,0];
+qua = eul2quat(target_rotation);
+targetEndEffectorMsg.Orientation.W = qua(1);
+targetEndEffectorMsg.Orientation.X = qua(2);
+targetEndEffectorMsg.Orientation.Y = qua(3);
+targetEndEffectorMsg.Orientation.Z = qua(4);
+
+send(targetEndEffectorPub,targetEndEffectorMsg);         % Send command to move
+
+pause(2)
+
+fprintf('Dobot has completed translation\n');            % Display end effector current position
+
+%% Release Object
+
+state = 0;                        % Binary operator - change to toggle grip
+
+[toolStatePub, toolStateMsg] = rospublisher('/dobot_magician/target_tool_state');
+toolStateMsg.Data = [1 state];
+send(toolStatePub,toolStateMsg);  % Send command to gripper
+
+fprintf('\nObject has been placed is desired area!\n');            % Display message for user
