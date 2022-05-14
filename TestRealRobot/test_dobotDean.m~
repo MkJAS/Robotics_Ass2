@@ -1,0 +1,47 @@
+% sudo chmod 666 /dev/ttyUSB0;
+% roslaunch dobot_magician_driver dobot_magician.launch
+
+%% Hardcoded Pick & Place code for Sensors & Control
+
+% Any command with send in it has issues working from within a function
+
+close all;
+clear all;
+clc;
+
+rosshutdown; % Call this at the start just in case
+rosinit; % Initialise connection
+
+%% Initialise Dobot
+
+[safetyStatePublisher, safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
+safetyStateMsg.Data = 2;
+send(safetyStatePublisher, safetyStateMsg);
+
+disp("Pausing for 40 seconds");
+pause(30); % Long pause as robot needs to be fully initialised before starting
+
+fprintf('\nDobot is initialised with the current parameters\n');
+
+safetyStatusSubscriber = rossubscriber('/dobot_magician/safety_status');
+pause(2); %Allow some time for MATLAB to start the subscriber
+currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data
+%% Movement of the End Effector to Hover Over Object
+target = [0.32, 0.082, -0.0186];
+% [targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(target);
+rostopic pub -r 10 /dobot_magician/target_end_effector_pose geometry_msgs/Pose '{position:  {x: 0.2, y: -0.2, z: 0.08}, orientation: {x: 0.0,y: 0.0,z: 0.0,w: 1 }}'
+
+
+
+send(targetEndEffectorPub, targetEndEffectorMsg);
+
+fprintf('pause 3');
+pause(3);
+
+target = [0.32, 0.072, 0.0386];
+[targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(target);
+send(targetEndEffectorPub, targetEndEffectorMsg);
+
+rosshutdown;
+
+

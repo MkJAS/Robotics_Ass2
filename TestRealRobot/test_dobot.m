@@ -23,13 +23,10 @@ pause(25); % Long pause as robot needs to be fully initialised before starting
 
 fprintf('\nDobot is initialised with the current parameters\n');
 
-<<<<<<< HEAD
 defaultEndEffectorPosition = [0.2591,0,-0.0086];    % Default end effector position
 groundLevel = -0.0419;                              % Z value of the table
-=======
 defaultEndEffectorPosition = [0.2591, 0, -0.0086] % Default end effector position
 groundLevel = -0.0419 % Z value of the table
->>>>>>> 4e59cf38f616eca7344dc3d2909f9b83d509785b
 
 %% Movement of the End Effector to Hover Over Object
 

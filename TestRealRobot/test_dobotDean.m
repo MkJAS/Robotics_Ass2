@@ -18,13 +18,85 @@ rosinit; % Initialise connection
 safetyStateMsg.Data = 2;
 send(safetyStatePublisher, safetyStateMsg);
 
-disp("Pausing for 25 seconds");
-pause(25); % Long pause as robot needs to be fully initialised before starting
+disp("Pausing for 40 seconds");
+pause(40); % Long pause as robot needs to be fully initialised before starting
 
 fprintf('\nDobot is initialised with the current parameters\n');
 
-defaultEndEffectorPosition = [0.2591, 0, -0.0086] % Default end effector position
-groundLevel = -0.0419 % Z value of the table
-
+safetyStatusSubscriber = rossubscriber('/dobot_magician/safety_status');
+pause(2); %Allow some time for MATLAB to start the subscriber
+currentSafetyStatus = safetyStatusSubscriber.LatestMessage.Data
 %% Movement of the End Effector to Hover Over Object
-send(MoveDobot)
+target = [0.32, 0.082, -0.0186];
+   [targetEndEffectorPub, targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
+
+    targetEndEffectorMsg.Position.X = target(1);
+    targetEndEffectorMsg.Position.Y = target(2);
+    targetEndEffectorMsg.Position.Z = target(3);
+
+    target_rotation = [0, 0, 0];
+    qua = eul2quat(target_rotation);
+    targetEndEffectorMsg.Orientation.W = qua(1);
+    targetEndEffectorMsg.Orientation.X = qua(2);
+    targetEndEffectorMsg.Orientation.Y = qua(3);
+    targetEndEffectorMsg.Orientation.Z = qua(4);
+
+% [targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(target);
+send(targetEndEffectorPub, targetEndEffectorMsg);
+fprintf('pause 10');
+pause(10);
+target = [0.32, 0.072, 0.0386];
+   [targetEndEffectorPub, targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
+
+    targetEndEffectorMsg.Position.X = target(1);
+    targetEndEffectorMsg.Position.Y = target(2);
+    targetEndEffectorMsg.Position.Z = target(3);
+
+    target_rotation = [0, 0, 0];
+    qua = eul2quat(target_rotation);
+    targetEndEffectorMsg.Orientation.W = qua(1);
+    targetEndEffectorMsg.Orientation.X = qua(2);
+    targetEndEffectorMsg.Orientation.Y = qua(3);
+    targetEndEffectorMsg.Orientation.Z = qua(4);
+
+% [targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(target);
+send(targetEndEffectorPub, targetEndEffectorMsg);
+
+target = [0.32, 0.082, -0.0186];
+   [targetEndEffectorPub, targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
+
+    targetEndEffectorMsg.Position.X = target(1);
+    targetEndEffectorMsg.Position.Y = target(2);
+    targetEndEffectorMsg.Position.Z = target(3);
+
+    target_rotation = [0, 0, 0];
+    qua = eul2quat(target_rotation);
+    targetEndEffectorMsg.Orientation.W = qua(1);
+    targetEndEffectorMsg.Orientation.X = qua(2);
+    targetEndEffectorMsg.Orientation.Y = qua(3);
+    targetEndEffectorMsg.Orientation.Z = qua(4);
+
+% [targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(target);
+send(targetEndEffectorPub, targetEndEffectorMsg);
+fprintf('pause 10');
+pause(10);
+target = [0.32, 0.072, 0.0386];
+   [targetEndEffectorPub, targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
+
+    targetEndEffectorMsg.Position.X = target(1);
+    targetEndEffectorMsg.Position.Y = target(2);
+    targetEndEffectorMsg.Position.Z = target(3);
+
+    target_rotation = [0, 0, 0];
+    qua = eul2quat(target_rotation);
+    targetEndEffectorMsg.Orientation.W = qua(1);
+    targetEndEffectorMsg.Orientation.X = qua(2);
+    targetEndEffectorMsg.Orientation.Y = qua(3);
+    targetEndEffectorMsg.Orientation.Z = qua(4);
+
+% [targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(target);
+send(targetEndEffectorPub, targetEndEffectorMsg);
+
+rosshutdown;
+
+

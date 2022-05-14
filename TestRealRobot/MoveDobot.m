@@ -3,7 +3,6 @@ function [targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(locationDesire
     %   Detailed explanation goes here
 
     %% Movement of the End Effector to Hover Over Object
-    fprintf('Dobot is moving to\n'); % Display end effector target position
     target = locationDesired;
 
     [targetEndEffectorPub, targetEndEffectorMsg] = rospublisher('/dobot_magician/target_end_effector_pose');
@@ -19,5 +18,5 @@ function [targetEndEffectorPub, targetEndEffectorMsg] = MoveDobot(locationDesire
     targetEndEffectorMsg.Orientation.Y = qua(3);
     targetEndEffectorMsg.Orientation.Z = qua(4);
 
-    send(targetEndEffectorPub, targetEndEffectorMsg); % Send command to move
+%     send(targetEndEffectorPub, targetEndEffectorMsg); % Send command to move
 end
