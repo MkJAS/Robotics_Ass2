@@ -130,6 +130,10 @@ K = msg2.K;
     Worldcenters(1,:,i) = (r(1:3,4) + r2c(1:3,4))';
 
  end
+ basket = Worldcenters(:,:,1);
+ green = Worldcenters(:,:,2);
+ orange = Worldcenters(:,:,3);
+ yellow = Worldcenters(:,:,4);
 
 %         x = (i - K(3))/K(1);
 %         y = (j - K(6))/K(5);

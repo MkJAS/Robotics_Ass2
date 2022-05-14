@@ -132,6 +132,17 @@ data.estopON = estopON;
 data.stop = false;
 %data.jointLimits = jointLimits;
 
+
+rosshutdown;        % Call this at the start just in case
+rosinit;            % Initialise connection
+[safetyStatePublisher,safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
+safetyStateMsg.Data = 2;
+send(safetyStatePublisher,safetyStateMsg);
+
+pause(25);          % Long pause as robot needs to be fully initialised before starting
+
+fprintf('\nDobot is initialised with the current parameters\n');
+
 guidata(hObject,data);
 
 
@@ -338,7 +349,7 @@ function plusX_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-aaq = handles.model.getpos();
+q = handles.model.getpos();
 startPoint = handles.model.fkine(q);
 startPoint = startPoint(1:3,4);
 endPoint = startPoint;
