@@ -1,4 +1,4 @@
-function [Worldcenters] = cam2Robot(image)
+function [object] = cam2Robot(image)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 % image = load("image.mat");
@@ -93,7 +93,7 @@ K = [608.3387 0 327.5015 0 608.1425 232.3930 0 0 1];
 
  camCentersReal = zeros(1,3,size(channel3Max,2));
  Worldcenters = zeros(1,3,size(channel3Max,2));
- depth = 592.5;
+ depth = 593.5;
  for i=1:size(channel3Max,2)
     
     x = mid(1,2,i) - Camera_Principle_Point_X;
@@ -116,6 +116,12 @@ K = [608.3387 0 327.5015 0 608.1425 232.3930 0 0 1];
  green = Worldcenters(:,:,2)
  orange = Worldcenters(:,:,3)
  yellow = Worldcenters(:,:,4)
+
+ object.basket = basket/1000;
+ object.green = green/1000;
+ object.yellow = yellow/1000;
+ object.orange = orange/1000;
+
 
 
 
