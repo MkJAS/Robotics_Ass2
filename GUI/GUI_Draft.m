@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 15-May-2022 16:52:09
+% Last Modified by GUIDE v2.5 15-May-2022 17:08:03
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -779,32 +779,27 @@ function ResetRobot_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 handles.model.animate(deg2rad([0 40 60 10 0]));
 
+%-----------------------------------------------------------------------------------------------%
+%------------------------------------Item Selection-----------------------------------------------------%
+%vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv%
 
-% --- Executes on selection change in popupmenu2.
-function popupmenu2_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu2 (see GCBO)
+% --- Executes on selection change in itemSelector.
+function itemSelector_Callback(hObject, eventdata, handles)
+% hObject    handle to itemSelector (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: contents = cellstr(get(hObject,'String')) returns popupmenu2 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu2
+% Hints: contents = cellstr(get(hObject,'String')) returns itemSelector contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from itemSelector
 contents = cellstr(get(hObject,'String'));
 selection = contents{get(hObject,'Value')};
-handles.selection = selection;
+handles.selection = selection;                  %Just sets global variable to selction got Get button to read
 guidata(hObject,handles);
 
 
-
-
 % --- Executes during object creation, after setting all properties.
-function popupmenu2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-set(hObject,'String',{'Red','Green','Blue'});
+function itemSelector_CreateFcn(hObject, eventdata, handles)
+set(hObject,'String',{'Red','Green','Blue'}); %change these values to names of whatever is being picked up
 handles.selection = 'Red';
 guidata(hObject,handles);
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
@@ -817,18 +812,23 @@ function getSelection_Callback(hObject, eventdata, handles)
 % hObject    handle to getSelection (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-selection = handles.selection;
+selection = handles.selection; %gets whatever is selected in drop down box as string
 disp(selection);
 
 
+%^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^%
+%------------------------------------Item Selection-----------------------------------------------------%
+%-----------------------------------------------------------------------------------------------%
+
+
+%-----------------------------------------------------------------------------------------------%
+%-------------------------------------Collision & Lightcurtain Demoing---------------------------------------------------%
+%vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv%
 % --- Executes on button press in spawnObstacle.
 function spawnObstacle_Callback(hObject, eventdata, handles)
-% hObject    handle to spawnObstacle (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 ptCloud = pcread('square.ply');
 cubePoints = ptCloud.Location;
-move = [0,0.3,0.3];
+move = [0,0.2,0.2];
 cubePoints = cubePoints + repmat(move,size(cubePoints,1),1);
 figure (1)
 hold on
@@ -841,9 +841,6 @@ guidata(hObject,handles);
 
 % --- Executes on button press in spawnArm.
 function spawnArm_Callback(hObject, eventdata, handles)
-% hObject    handle to spawnArm (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 ptCloud = pcread('arm.ply');
 armPoints = ptCloud.Location;
 figure (1)
@@ -868,14 +865,13 @@ handles.arm = mesh_h;
 guidata(hObject,handles);
 
 
-
-
 % --- Executes on button press in clearObjs.
 function clearObjs_Callback(hObject, eventdata, handles)
-% hObject    handle to clearObjs (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 try delete(handles.arm); end;
 try delete(handles.cube); end;
 handles.pcPoints = [10,10,10];
 guidata(hObject,handles);
+
+%^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^%
+%------------------------------------Collision & Lightcurtain Demoing-----------------------------------------------------%
+%----------------------------------------------------------------------------------------------------------------------------%
