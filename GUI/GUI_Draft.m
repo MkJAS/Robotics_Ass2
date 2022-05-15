@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 15-May-2022 14:21:24
+% Last Modified by GUIDE v2.5 15-May-2022 16:52:09
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -210,17 +210,18 @@ function Q1slider_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 if (handles.stop == false)
-val = get(hObject,'Value');
-val = round(val);
-q = handles.model.getpos();
-q(1) = deg2rad(val);
-collision = willCollide(handles.robot,q,handles.pcPoints);
-if collision == false
-    handles.model.animate(q);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    val = get(hObject,'Value');
+    val = round(val);
+    q = handles.model.getpos();
+    q(1) = deg2rad(val);
+    collision = willCollide(handles.robot,q,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(q);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -249,18 +250,19 @@ function Q2slider_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 if (handles.stop == false)
-val = get(hObject,'Value');
-val = round(val);
-q = handles.model.getpos();
-q(2) = deg2rad(val);
-q(4) = -(pi/2 - q(2) - q(3));
-collision = willCollide(handles.robot,q,handles.pcPoints);
-if collision == false
-    handles.model.animate(q);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    val = get(hObject,'Value');
+    val = round(val);
+    q = handles.model.getpos();
+    q(2) = deg2rad(val);
+    q(4) = -(pi/2 - q(2) - q(3));
+    collision = willCollide(handles.robot,q,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(q);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -288,18 +290,19 @@ function Q3slider_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 if (handles.stop == false)
-val = get(hObject,'Value');
-val = round(val);
-q = handles.model.getpos();
-q(3) = deg2rad(val);
-q(4) = -(pi/2 - q(2) - q(3));
-collision = willCollide(handles.robot,q,handles.pcPoints);
-if collision == false
-    handles.model.animate(q);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    val = get(hObject,'Value');
+    val = round(val);
+    q = handles.model.getpos();
+    q(3) = deg2rad(val);
+    q(4) = -(pi/2 - q(2) - q(3));
+    collision = willCollide(handles.robot,q,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(q);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -327,17 +330,18 @@ function Q5slider_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 if (handles.stop == false)
-val = get(hObject,'Value');
-val = round(val);
-q = handles.model.getpos();
-q(5) = deg2rad(val);
-collision = willCollide(handles.robot,q,handles.pcPoints);
-if collision == false
-    handles.model.animate(q);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    val = get(hObject,'Value');
+    val = round(val);
+    q = handles.model.getpos();
+    q(5) = deg2rad(val);
+    collision = willCollide(handles.robot,q,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(q);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -363,19 +367,20 @@ function plusX_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos();
-startPoint = handles.model.fkine(q);
-startPoint = startPoint(1:3,4);
-endPoint = startPoint;
-endPoint(1) = endPoint(1) + 0.01;
-newQ = XYZtoQ(endPoint);
-collision = willCollide(handles.robot,newQ,handles.pcPoints);
-if collision == false
-    handles.model.animate(newQ);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    q = handles.model.getpos();
+    startPoint = handles.model.fkine(q);
+    startPoint = startPoint(1:3,4);
+    endPoint = startPoint;
+    endPoint(1) = endPoint(1) + 0.01;
+    newQ = XYZtoQ(endPoint);
+    collision = willCollide(handles.robot,newQ,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(newQ);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -388,19 +393,20 @@ function minusX_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos();
-startPoint = handles.model.fkine(q);
-startPoint = startPoint(1:3,4);
-endPoint = startPoint;
-endPoint(1) = endPoint(1) - 0.01;
-newQ = XYZtoQ(endPoint);
-collision = willCollide(handles.robot,newQ,handles.pcPoints);
-if collision == false
-    handles.model.animate(newQ);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    q = handles.model.getpos();
+    startPoint = handles.model.fkine(q);
+    startPoint = startPoint(1:3,4);
+    endPoint = startPoint;
+    endPoint(1) = endPoint(1) - 0.01;
+    newQ = XYZtoQ(endPoint);
+    collision = willCollide(handles.robot,newQ,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(newQ);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -412,19 +418,20 @@ function minusY_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos();
-startPoint = handles.model.fkine(q);
-startPoint = startPoint(1:3,4);
-endPoint = startPoint;
-endPoint(2) = endPoint(2) - 0.01;
-newQ = XYZtoQ(endPoint);
-collision = willCollide(handles.robot,newQ,handles.pcPoints);
-if collision == false
-    handles.model.animate(newQ);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    q = handles.model.getpos();
+    startPoint = handles.model.fkine(q);
+    startPoint = startPoint(1:3,4);
+    endPoint = startPoint;
+    endPoint(2) = endPoint(2) - 0.01;
+    newQ = XYZtoQ(endPoint);
+    collision = willCollide(handles.robot,newQ,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(newQ);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -436,19 +443,20 @@ function plusY_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos();
-startPoint = handles.model.fkine(q);
-startPoint = startPoint(1:3,4);
-endPoint = startPoint;
-endPoint(2) = endPoint(2) + 0.01;
-newQ = XYZtoQ(endPoint);
-collision = willCollide(handles.robot,newQ,handles.pcPoints);
-if collision == false
-    handles.model.animate(newQ);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    q = handles.model.getpos();
+    startPoint = handles.model.fkine(q);
+    startPoint = startPoint(1:3,4);
+    endPoint = startPoint;
+    endPoint(2) = endPoint(2) + 0.01;
+    newQ = XYZtoQ(endPoint);
+    collision = willCollide(handles.robot,newQ,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(newQ);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -460,19 +468,20 @@ function minusZ_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos();
-startPoint = handles.model.fkine(q);
-startPoint = startPoint(1:3,4);
-endPoint = startPoint;
-endPoint(3) = endPoint(3) - 0.01;
-newQ = XYZtoQ(endPoint);
-collision = willCollide(handles.robot,newQ,handles.pcPoints);
-if collision == false
-    handles.model.animate(newQ);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    q = handles.model.getpos();
+    startPoint = handles.model.fkine(q);
+    startPoint = startPoint(1:3,4);
+    endPoint = startPoint;
+    endPoint(3) = endPoint(3) - 0.01;
+    newQ = XYZtoQ(endPoint);
+    collision = willCollide(handles.robot,newQ,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(newQ);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -484,19 +493,20 @@ function plusZ_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 if (handles.stop == false)
-q = handles.model.getpos();
-startPoint = handles.model.fkine(q);
-startPoint = startPoint(1:3,4);
-endPoint = startPoint;
-endPoint(3) = endPoint(3) + 0.01;
-newQ = XYZtoQ(endPoint);
-collision = willCollide(handles.robot,newQ,handles.pcPoints);
-if collision == false
-    handles.model.animate(newQ);
-else
-    cprintf('red','Possible collision detected! Aborting move!\n');
-    beep
-end
+    q = handles.model.getpos();
+    startPoint = handles.model.fkine(q);
+    startPoint = startPoint(1:3,4);
+    endPoint = startPoint;
+    endPoint(3) = endPoint(3) + 0.01;
+    newQ = XYZtoQ(endPoint);
+    collision = willCollide(handles.robot,newQ,handles.pcPoints);
+    intruder = lightCurtainCheck(handles.pcPoints);
+    if collision == false && intruder == false
+        handles.model.animate(newQ);
+    else
+        cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -796,3 +806,55 @@ PlaceObject('square.ply', move);
 handles.pcPoints = [handles.pcPoints; cubePoints];
 guidata(hObject,handles);
 % cube_h = plot3(cubePoints(:,1),cubePoints(:,2),cubePoints(:,3),'b.');
+
+
+% --- Executes on button press in spawnArm.
+function spawnArm_Callback(hObject, eventdata, handles)
+% hObject    handle to spawnArm (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ptCloud = pcread('arm.ply');
+armPoints = ptCloud.Location;
+figure (1)
+hold on
+mesh_h = PlaceObject('arm.ply', [0.9,0,0.1]);
+vertices = get(mesh_h,'Vertices');
+steps = 50;
+t = transl(0.9,0,0.1);
+tr = t;
+for i=1:50
+    tr(1,4) = tr(1,4) - (0.001*i);
+    move = tr(1:3,4)';
+    transformedVertices = [vertices,ones(size(vertices,1),1)] * tr';
+    set(mesh_h,'Vertices',transformedVertices(:,1:3));
+    armPoints = repmat(move,size(armPoints,1),1);
+    drawnow();
+    pause(0.01);
+    handles.pcPoints = armPoints;
+    guidata(hObject,handles);
+end
+handles.arm = mesh_h;
+guidata(hObject,handles);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% --- Executes on button press in clearObjs.
+function clearObjs_Callback(hObject, eventdata, handles)
+% hObject    handle to clearObjs (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+try delete(handles.arm); end;
+handles.pcPoints = [10,10,10];
+guidata(hObject,handles);
