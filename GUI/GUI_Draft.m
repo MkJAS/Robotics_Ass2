@@ -120,7 +120,8 @@ robot.model.animate(deg2rad([-15 40 60 12.5 0]));
 estop_count = 0;
 
 estopON = imread("estopON.jpg");
-
+image = load("image.mat");
+coords = cam2Robot(image.image);
 
 
 data = guidata(hObject);
@@ -131,6 +132,7 @@ data.estopON = estopON;
 % data.fig = fig;
 data.stop = false;
 data.pcPoints = [10 10 10];
+data.objectPos = coords;
 %data.jointLimits = jointLimits;
 
 guidata(hObject,data);
