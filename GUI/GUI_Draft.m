@@ -218,8 +218,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(q);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -259,8 +262,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(q);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -299,8 +305,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(q);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -338,8 +347,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(q);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -377,8 +389,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(newQ);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -403,8 +418,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(newQ);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -428,8 +446,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(newQ);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -453,8 +474,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(newQ);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -478,8 +502,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(newQ);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
@@ -503,8 +530,11 @@ if (handles.stop == false)
     intruder = lightCurtainCheck(handles.pcPoints);
     if collision == false && intruder == false
         handles.model.animate(newQ);
-    else
+    elseif collision == true
         cprintf('red','Possible collision detected! Aborting move!\n');
+        beep
+    elseif intruder == true
+        cprintf([1,0.5,0],'Object in workspace! Halting operation!\n');
         beep
     end
 else
