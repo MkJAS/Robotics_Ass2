@@ -1,62 +1,69 @@
 
 % rosshutdown
 % rosinit
-% sub=rossubscriber("/camera/color/image_raw");
+% % sub=rossubscriber("/camera/color/image_raw");
 % pause(1);
+% % [msg2] = receive(sub);
+% % close all
+% % image = msg2.readImage;
+% % % image = rgb2gray(image);
+% % % % Convert RGB image to chosen color space
+% sub=rossubscriber("/camera/color/camera_info");
 % [msg2] = receive(sub);
-close all
-image = msg3.readImage;
-% %image = rgb2gray(image);
-% % Convert RGB image to chosen color space
+
+%%
 I = rgb2hsv(image);
+figure (2)
+imshow(image);
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min(1) = 0.393;
-channel1Max(1) = 0.619;
+channel1Min(1) = 0.422;
+channel1Max(1) = 0.504;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min(1) = 0.370;
+channel2Min(1) = 0.258;
 channel2Max(1) = 1.000;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min(1) = 0.445;
-channel3Max(1) = 0.785;
+channel3Min(1) = 0.000;
+channel3Max(1) = 1.000;
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min(2) = 0.213;
-channel1Max(2) = 0.281;
+channel1Min(2) = 0.263;
+channel1Max(2) = 0.424;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min(2) = 0.419;
-channel2Max(2) = 1.000;
+channel2Min(2) = 0.165;
+channel2Max(2) = 0.543;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min(2) = 0.377;
-channel3Max(2) = 0.785;
+channel3Min(2) = 0.367;
+channel3Max(2) = 0.590;
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min(3) = 0.065;
-channel1Max(3) = 0.100;
+channel1Min(3) = 0.099;
+channel1Max(3) = 0.184;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min(3) = 0.774;
+channel2Min(3) = 0.495;
 channel2Max(3) = 1.000;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min(3) = 0.694;
-channel3Max(3) = 0.751;
+channel3Min(3) = 0.574;
+channel3Max(3) = 0.697;
 
 % Define thresholds for channel 1 based on histogram settings
-channel1Min(4) = 0.104;
-channel1Max(4) = 0.176;
+channel1Min(4) = 0.044;
+channel1Max(4) = 0.088;
 
 % Define thresholds for channel 2 based on histogram settings
-channel2Min(4) = 0.528;
+channel2Min(4) = 0.564;
 channel2Max(4) = 1.000;
 
 % Define thresholds for channel 3 based on histogram settings
-channel3Min(4) = 0.691;
-channel3Max(4) = 0.770;
+channel3Min(4) = 0.516;
+channel3Max(4) = 0.713;
+
 
 
 boundary = cell(1,4);
@@ -76,7 +83,11 @@ for i=1:size(channel3Max,2)
 %     imshow(label2rgb(L, @jet, [.5 .5 .5]))
     %hold on
     % for k = 1:length(B)
-    boundary{i} = B{1};
+    if i==1
+        boundary{i} = B{5};
+    else
+        boundary{i} = B{1};
+    end
     mid(1,:,i) = mean(boundary{i});
 end
 
@@ -126,14 +137,14 @@ K = msg2.K;
     centers(1,:,i) = [depth xReal -yReal]
     cp = transl(centers(1,:,i));
     r =  troty(pi/2)*cp;
-    r2c = transl(227.5,0,577)*troty(pi/2);
+    r2c = transl(225,0,577)*troty(pi/2);
     Worldcenters(1,:,i) = (r(1:3,4) + r2c(1:3,4))';
 
  end
- basket = Worldcenters(:,:,1);
- green = Worldcenters(:,:,2);
- orange = Worldcenters(:,:,3);
- yellow = Worldcenters(:,:,4);
+ basket = Worldcenters(:,:,1)
+ green = Worldcenters(:,:,2)
+ orange = Worldcenters(:,:,3)
+ yellow = Worldcenters(:,:,4)
 
 %         x = (i - K(3))/K(1);
 %         y = (j - K(6))/K(5);
@@ -166,6 +177,16 @@ K = msg2.K;
 % r2c = transl(0.2275,0,0.577)*troty(pi/2);
 % xyz_World = r(1:3,4) + r2c(1:3,4);
 
+figure (2)
+hold on
+   scatter(mid(1,2,2),mid(1,1,2),'d','r')
+   scatter(mid(1,2,3),mid(1,1,3),'d','r')
+   scatter(mid(1,2,4),mid(1,1,4),'d','r')
+   scatter(mid(1,2,1),mid(1,1,1),'d','r')
+    text(mid(1,2,1),mid(1,1,1),num2str(centers(:,2:3,1)),'Color','k','LineWidth',3);
+    text(mid(1,2,2),mid(1,1,2),num2str(centers(:,2:3,2)),'Color','k','LineWidth',3);
+    text(mid(1,2,3),mid(1,1,3),num2str(centers(:,2:3,3)),'Color','k','LineWidth',3);
+    text(mid(1,2,4),mid(1,1,4),num2str(centers(:,2:3,4)),'Color','k','LineWidth',3);
 
 
 
