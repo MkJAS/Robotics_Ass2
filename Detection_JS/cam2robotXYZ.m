@@ -124,24 +124,28 @@ K = msg2.K;
  Camera_Principle_Point_X = [K(3)];
  Camera_Principle_Point_Y = [K(6)];
 
- centers = zeros(1,3,size(channel3Max,2));
+ camCentersReal = zeros(1,3,size(channel3Max,2));
  Worldcenters = zeros(1,3,size(channel3Max,2));
- depth = 489.5;
+ depth = 592.5;
  for i=1:size(channel3Max,2)
     
     x = mid(1,2,i) - Camera_Principle_Point_X;
     y = mid(1,1,i) - Camera_Principle_Point_Y;
      
-    xReal = (depth*x) / Camera_Focal_LengthX;
-    yReal = (depth*y) / Camera_Focal_LengthY;
-    centers(1,:,i) = [depth xReal -yReal]
-    cp = transl(centers(1,:,i));
-    r =  troty(pi/2)*cp;
-    r2c = transl(225,0,577)*troty(pi/2);
-    Worldcenters(1,:,i) = (r(1:3,4) + r2c(1:3,4))';
+    xCam = (depth*x) / Camera_Focal_LengthX;
+    yCam = (depth*y) / Camera_Focal_LengthY;
+    camCentersReal(1,:,i) = [xCam -yCam   -depth]
+    %rotate camera view 180 degrees ---- cameraX = RobotY  cameraY = -RobotX
+    axisAlignedRobot = [yCam xCam -depth];
+    cp = transl(axisAlignedRobot);
+    r2c = transl(335.5,0,528); %transform from robot to camera
+    t = r2c*cp;
+    Worldcenters(1,:,i) = t(1:3,4)';
 
  end
- basket = Worldcenters(:,:,1)
+ basket = Worldcenters(:,:,1);
+ basket(3) = basket(3) + 155; %raise basket coord cause wwant to be above it not at its centre on the ground
+ basket
  green = Worldcenters(:,:,2)
  orange = Worldcenters(:,:,3)
  yellow = Worldcenters(:,:,4)
@@ -183,10 +187,10 @@ hold on
    scatter(mid(1,2,3),mid(1,1,3),'d','r')
    scatter(mid(1,2,4),mid(1,1,4),'d','r')
    scatter(mid(1,2,1),mid(1,1,1),'d','r')
-    text(mid(1,2,1),mid(1,1,1),num2str(centers(:,2:3,1)),'Color','k','LineWidth',3);
-    text(mid(1,2,2),mid(1,1,2),num2str(centers(:,2:3,2)),'Color','k','LineWidth',3);
-    text(mid(1,2,3),mid(1,1,3),num2str(centers(:,2:3,3)),'Color','k','LineWidth',3);
-    text(mid(1,2,4),mid(1,1,4),num2str(centers(:,2:3,4)),'Color','k','LineWidth',3);
+    text(mid(1,2,1),mid(1,1,1),num2str(camCentersReal(:,1:2,1)),'Color','k','LineWidth',3);
+    text(mid(1,2,2),mid(1,1,2),num2str(camCentersReal(:,1:2,2)),'Color','k','LineWidth',3);
+    text(mid(1,2,3),mid(1,1,3),num2str(camCentersReal(:,1:2,3)),'Color','k','LineWidth',3);
+    text(mid(1,2,4),mid(1,1,4),num2str(camCentersReal(:,1:2,4)),'Color','k','LineWidth',3);
 
 
 

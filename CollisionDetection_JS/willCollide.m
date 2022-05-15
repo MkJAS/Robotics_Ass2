@@ -3,23 +3,23 @@ function [collision] = willCollide(robot, q, points)
     % robot = robot
     % q = desired q configuration to be checked
     % points = points that may be in collision
-    ellipses = cell(1, 6);
-    ellipse_param = zeros(5, 3, 6); %1st row centres, 2nd row radii, 3-5 is rotation matix
-    tr = zeros(4, 4, robot.n + 1);
+    ellipses = cell(1, 5);
+    ellipse_param = zeros(5, 3, 5); %1st row centres, 2nd row radii, 3-5 is rotation matix
+    tr = zeros(4, 4, robot.model.n + 1);
     tr(:, :, 1) = robot.base;
-    L = robot.links;
+    L = robot.model.links;
     collision = false;
 
-    for i = 1:robot.n
+    for i = 1:robot.model.n
         tr(:, :, i + 1) = tr(:, :, i) * trotz(q(i) + L(i).offset) * transl(0, 0, L(i).d) * transl(L(i).a, 0, 0) * trotx(L(i).alpha);
     end
 
-    for i = 1:5
+    for i = 1:5     %Create the ellipses for each link
 
         if i == 1 || i == 5
             centerPoint = [0, 0, 0];
-            z = (robot.links(i).d + robot.links(i).a);
-            radii = [0.08, 0.08, z];
+            z = (robot.model.links(i).d + robot.model.links(i).a);
+            radii = [0.06, 0.06, z];
             [X, Y, Z] = ellipsoid(centerPoint(1), centerPoint(2), centerPoint(3), radii(1), radii(2), radii(3));
             a = [X(:), Y(:), Z(:)];
             p1 = tr(1:3, 4, i);
@@ -36,8 +36,8 @@ function [collision] = willCollide(robot, q, points)
             ellipses{i} = b(:, 1:3);
         else
             centerPoint = [0, 0, 0];
-            z = (robot.links(i).d + robot.links(i).a);
-            radii = [0.08, 0.08, z];
+            z = (robot.model.links(i).d + robot.model.links(i).a);
+            radii = [0.06, 0.06, z];
             [X, Y, Z] = ellipsoid(centerPoint(1), centerPoint(2), centerPoint(3), radii(1), radii(2), radii(3));
             a = [X(:), Y(:), Z(:)];
             p1 = tr(1:3, 4, i);
@@ -57,7 +57,7 @@ function [collision] = willCollide(robot, q, points)
 
     end
 
-    for i = 1:6
+    for i = 1:5     %Now check if any points are within the above ellipses
         %         rot = ellipse_param(3:5,:,i);
         %         trans = ellipse_param(1,:,i);
         t = transl(ellipse_param(1, :, i)');

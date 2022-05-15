@@ -22,7 +22,7 @@ function varargout = GUI_Draft(varargin)
 
 % Edit the above text to modify the response to help GUI_Draft
 
-% Last Modified by GUIDE v2.5 13-May-2022 21:12:27
+% Last Modified by GUIDE v2.5 15-May-2022 14:21:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -87,7 +87,7 @@ function load_workspace_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % Add ground image and set the size of the world
 % cla
-fig = figure (1)
+fig = figure (1);
 %axes(handles.axes1);
 hold on
 
@@ -130,18 +130,8 @@ data.estop_count = estop_count;
 data.estopON = estopON;
 % data.fig = fig;
 data.stop = false;
+data.pcPoints = [10 10 10];
 %data.jointLimits = jointLimits;
-
-
-rosshutdown;        % Call this at the start just in case
-rosinit;            % Initialise connection
-[safetyStatePublisher,safetyStateMsg] = rospublisher('/dobot_magician/target_safety_status');
-safetyStateMsg.Data = 2;
-send(safetyStatePublisher,safetyStateMsg);
-
-pause(25);          % Long pause as robot needs to be fully initialised before starting
-
-fprintf('\nDobot is initialised with the current parameters\n');
 
 guidata(hObject,data);
 
@@ -186,28 +176,28 @@ delete(handles.figure1)
 
 
 % --- Executes on selection change in popupmenu1.
-function popupmenu1_Callback(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = get(hObject,'String') returns popupmenu1 contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from popupmenu1
-
-
-% --- Executes during object creation, after setting all properties.
-function popupmenu1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to popupmenu1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-     set(hObject,'BackgroundColor','white');
-end
-
-set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)', 'plot(membrane)', 'surf(peaks)'});
+% function popupmenu1_Callback(hObject, eventdata, handles)
+% % hObject    handle to popupmenu1 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    structure with handles and user data (see GUIDATA)
+% 
+% % Hints: contents = get(hObject,'String') returns popupmenu1 contents as cell array
+% %        contents{get(hObject,'Value')} returns selected item from popupmenu1
+% 
+% 
+% % --- Executes during object creation, after setting all properties.
+% function popupmenu1_CreateFcn(hObject, eventdata, handles)
+% % hObject    handle to popupmenu1 (see GCBO)
+% % eventdata  reserved - to be defined in a future version of MATLAB
+% % handles    empty - handles not created until after all CreateFcns called
+% 
+% % Hint: popupmenu controls usually have a white background on Windows.
+% %       See ISPC and COMPUTER.
+% if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+%      set(hObject,'BackgroundColor','white');
+% end
+% 
+% set(hObject, 'String', {'plot(rand(5))', 'plot(sin(1:0.01:25))', 'bar(1:.5:10)', 'plot(membrane)', 'surf(peaks)'});
 
 
 
@@ -224,7 +214,13 @@ val = get(hObject,'Value');
 val = round(val);
 q = handles.model.getpos();
 q(1) = deg2rad(val);
-handles.model.animate(q);
+collision = willCollide(handles.robot,q,handles.pcPoints);
+if collision == false
+    handles.model.animate(q);
+else
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -258,7 +254,13 @@ val = round(val);
 q = handles.model.getpos();
 q(2) = deg2rad(val);
 q(4) = -(pi/2 - q(2) - q(3));
-handles.model.animate(q);
+collision = willCollide(handles.robot,q,handles.pcPoints);
+if collision == false
+    handles.model.animate(q);
+else
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -291,7 +293,13 @@ val = round(val);
 q = handles.model.getpos();
 q(3) = deg2rad(val);
 q(4) = -(pi/2 - q(2) - q(3));
-handles.model.animate(q);
+collision = willCollide(handles.robot,q,handles.pcPoints);
+if collision == false
+    handles.model.animate(q);
+else
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -323,7 +331,13 @@ val = get(hObject,'Value');
 val = round(val);
 q = handles.model.getpos();
 q(5) = deg2rad(val);
-handles.model.animate(q);
+collision = willCollide(handles.robot,q,handles.pcPoints);
+if collision == false
+    handles.model.animate(q);
+else
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
 else
     msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
@@ -355,9 +369,15 @@ startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(1) = endPoint(1) + 0.01;
 newQ = XYZtoQ(endPoint);
-handles.model.animate(newQ);
+collision = willCollide(handles.robot,newQ,handles.pcPoints);
+if collision == false
+    handles.model.animate(newQ);
 else
-    msgbox('Warning! Please release E-stop and then resume');
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
 end
 
@@ -374,9 +394,15 @@ startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(1) = endPoint(1) - 0.01;
 newQ = XYZtoQ(endPoint);
-handles.model.animate(newQ);
+collision = willCollide(handles.robot,newQ,handles.pcPoints);
+if collision == false
+    handles.model.animate(newQ);
 else
-    msgbox('Warning! Please release E-stop and then resume');
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
 end
 
@@ -392,9 +418,15 @@ startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(2) = endPoint(2) - 0.01;
 newQ = XYZtoQ(endPoint);
-handles.model.animate(newQ);
+collision = willCollide(handles.robot,newQ,handles.pcPoints);
+if collision == false
+    handles.model.animate(newQ);
 else
-    msgbox('Warning! Please release E-stop and then resume');
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
 end
 
@@ -410,9 +442,15 @@ startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(2) = endPoint(2) + 0.01;
 newQ = XYZtoQ(endPoint);
-handles.model.animate(newQ);
+collision = willCollide(handles.robot,newQ,handles.pcPoints);
+if collision == false
+    handles.model.animate(newQ);
 else
-    msgbox('Warning! Please release E-stop and then resume');
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
 end
 
@@ -428,9 +466,15 @@ startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(3) = endPoint(3) - 0.01;
 newQ = XYZtoQ(endPoint);
-handles.model.animate(newQ);
+collision = willCollide(handles.robot,newQ,handles.pcPoints);
+if collision == false
+    handles.model.animate(newQ);
 else
-    msgbox('Warning! Please release E-stop and then resume');
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
 end
 
@@ -446,19 +490,20 @@ startPoint = startPoint(1:3,4);
 endPoint = startPoint;
 endPoint(3) = endPoint(3) + 0.01;
 newQ = XYZtoQ(endPoint);
-handles.model.animate(newQ);
+collision = willCollide(handles.robot,newQ,handles.pcPoints);
+if collision == false
+    handles.model.animate(newQ);
 else
-    msgbox('Warning! Please release E-stop and then resume');
+    cprintf('red','Possible collision detected! Aborting move!\n');
+    beep
+end
+else
+    msgbox("Error! Either E-stop engaged or Resume not selected!","Error","error");
     beep;
 end
 %^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^%
 %-------------------------------XYZ Buttons-----------------------------------------------------%
 %-----------------------------------------------------------------------------------------------%
-
-
-
-
-
 
 % --- Executes on button press in RotateRobot.
 function RotateRobot_Callback(hObject, eventdata, handles)
@@ -535,59 +580,6 @@ end
 %^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^%
 %------------------------------------E-STOP-----------------------------------------------------%
 %-----------------------------------------------------------------------------------------------%
-
-
-
-
-
-% % --- Executes on slider movement.
-% function slider1_Callback(hObject, eventdata, handles)
-% % hObject    handle to slider1 (see GCBO)
-% % eventdata  reserved - to be defined in a future version of MATLAB
-% % handles    structure with handles and user data (see GUIDATA)
-% 
-% sliderValue = get(handles.slider1, 'Value');
-% % get(hObject, 'Min', -135*pi/180);
-% % get(hObject, 'Max', 135*pi/180);
-% 
-% switch sliderValue
-%     case 1
-%         q1 = handles.model.getpos;
-%         qNext = q1-deg2rad([5 0 0 0 0]);
-%         handles.model.animate(qNext);
-%     case 2
-%         q1 = handles.model.getpos;
-%         qNext = q1+deg2rad([5 0 0 0 0]);
-%         handles.model.animate(qNext);
-% end
-% % q = handles.model.getpos;
-% % tr = handles.model.fkine(q);
-% % tr(1,4) = tr(1,4) + 0.01;
-% % newQ = handles.model.ikcon(tr,q);
-% % handles.model.animate(newQ);
-% % 
-% % q = handles.model.getpos;
-% % tr = handles.model.fkine(q);
-% % tr(1,4) = tr(1,4) - 0.01;
-% % newQ = handles.model.ikcon(tr,q);
-% % handles.model.animate(newQ);
-% 
-% % get(hObject, 'Value');
-% 
-% % Hints: get(hObject,'Value') returns position of slider
-% %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-% 
-% 
-% % --- Executes during object creation, after setting all properties.
-% function slider1_CreateFcn(hObject, eventdata, handles)
-% % hObject    handle to slider1 (see GCBO)
-% % eventdata  reserved - to be defined in a future version of MATLAB
-% % handles    empty - handles not created until after all CreateFcns called
-% 
-% % Hint: slider controls usually have a light gray background.
-% if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-%     set(hObject,'BackgroundColor',[.9 .9 .9]);
-% end
 
 % --- Executes during object creation, after setting all properties.
 function edit1_CreateFcn(hObject, eventdata, handles)
@@ -787,3 +779,20 @@ function getSelection_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 selection = handles.selection;
 disp(selection);
+
+
+% --- Executes on button press in spawnObstacle.
+function spawnObstacle_Callback(hObject, eventdata, handles)
+% hObject    handle to spawnObstacle (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+ptCloud = pcread('square.ply');
+cubePoints = ptCloud.Location;
+move = [0,0.3,0.3];
+cubePoints = cubePoints + repmat(move,size(cubePoints,1),1);
+figure (1)
+hold on
+PlaceObject('square.ply', move);
+handles.pcPoints = [handles.pcPoints; cubePoints];
+guidata(hObject,handles);
+% cube_h = plot3(cubePoints(:,1),cubePoints(:,2),cubePoints(:,3),'b.');

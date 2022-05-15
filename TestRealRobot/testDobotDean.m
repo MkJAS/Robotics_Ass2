@@ -23,8 +23,8 @@ fprintf('\nDobot is initialised\n');
 x = 0.184030471802;
 % 0 = -0.07  z
 z = -0.065;
-Yallow = [0.3 -0.033 z];
-Porple = [0.195 -0.169 z];
+Griin = [0.3 -0.033 z];
+Yallow = [0.195 -0.169 z];
 Oranj = [0.246 -0.08 z];
 Baskit = [0.287 0.093 0.09];
 zBaskit = Baskit(3);
@@ -33,7 +33,7 @@ zBaskit = Baskit(3);
 pause(1)
 
 %% Movement of the End Effector to Hover Over Object
-target = Yallow
+target = Griin
 targetAbove = target;
 targetAbove(3) =  target(3) + 0.05;
 % fpring(targetAbove);
@@ -126,7 +126,7 @@ toolStateMsg.Data = [1 state];
 send(toolStatePub,toolStateMsg);  % Send command to gripper
 %%
 %% Movement of the End Effector to Hover Over Object
-target = Porple
+target = Yallow
 targetAbove = target;
 targetAbove(3) =  target(3) + 0.05;
 % fpring(targetAbove);

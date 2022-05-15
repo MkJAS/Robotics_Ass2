@@ -52,6 +52,6 @@ q3r = (180 - beta);
 
 q4 = -(90 - q2 - q3r);
 
-q = deg2rad([q1 q2 q3r q4 0])
+q = deg2rad([q1 q2 q3r q4 0]);
 end
 
