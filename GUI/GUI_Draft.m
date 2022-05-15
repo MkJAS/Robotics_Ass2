@@ -802,7 +802,8 @@ move = [0,0.3,0.3];
 cubePoints = cubePoints + repmat(move,size(cubePoints,1),1);
 figure (1)
 hold on
-PlaceObject('square.ply', move);
+mesh_h = PlaceObject('square.ply', move);
+handles.cube = mesh_h;
 handles.pcPoints = [handles.pcPoints; cubePoints];
 guidata(hObject,handles);
 % cube_h = plot3(cubePoints(:,1),cubePoints(:,2),cubePoints(:,3),'b.');
@@ -839,22 +840,12 @@ guidata(hObject,handles);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 % --- Executes on button press in clearObjs.
 function clearObjs_Callback(hObject, eventdata, handles)
 % hObject    handle to clearObjs (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 try delete(handles.arm); end;
+try delete(handles.cube); end;
 handles.pcPoints = [10,10,10];
 guidata(hObject,handles);
