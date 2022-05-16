@@ -617,24 +617,56 @@ function getSelection_Callback(hObject, eventdata, handles)
     RotateRobot(handles.robot, -30);
 
     switch selection
+        %I had to take it all out of the function because of the
+        %handles.pcPoint variable. Because this is what changes while its
+        %waiting for example if the robot is going to get strawberry and
+        %then a hand comes in, handles.pcPoints needs to be updated. If
+        %this was packaged into a function there would be no way for the
+        %function to be given the updated pcPoints. Secondarly the while
+        %loops that wait for the arm/cube to be removed, cant be put into a
+        %function otherwise the data from this space here cant be sent to
+        %it, you'd have to call the function again but because its in a
+        %while loop its not possible
+        %Dean I know its ugly but dont change it without talking to me
+        %about it first, i really dont think there is any other way to do
+        %this
         case 'Strawberry'
-
-            if handles.countStrawberry == 0
+            if  handles.countStrawberry == 0
                 locationFinalStrawberry = [0.29, 0, 0];
-                PickupObject(handles.robot, handles.strawberry);
-                RotateRobot(handles.robot, 0);
-                PositionObject(handles.robot, locationFinalStrawberry, 'strawberry');
-            else
+                midPoint = handles.strawberry.location;
+                midPoint(3) = midPoint(3) + 0.02;
+%                 endPoint = midPoint;
+%                 endPoint(3) = endPoint(3) + 0.1;
+                endPoint = [0.25,0,midPoint(3)];
+                getThing(hObject, eventdata, handles,midPoint,endPoint,handles.strawberry,locationFinalStrawberry,'strawberry');
+                handles.countStrawberry = handles.countStrawberry + 1;
+            else 
                 disp("Item already picked up. Choose a different one");
-            end
-
-            handles.countStrawberry = handles.countStrawberry + 1;
-
+            end  
         case 'Grape'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             if handles.countGrape == 0
                 locationFinalGrape = [0.26, 0, 0];
-                PickupObject(handles.robot, handles.grape);
+                PickupObject(handles.robot, handles.grape,handles.pcPoints);
                 RotateRobot(handles.robot, 0);
                 PositionObject(handles.robot, locationFinalGrape, 'grape');
             else
@@ -647,7 +679,7 @@ function getSelection_Callback(hObject, eventdata, handles)
 
             if handles.countLego == 0
                 locationFinalLego = [0.23, 0, 0];
-                PickupObject(handles.robot, handles.lego);
+                PickupObject(handles.robot, handles.lego,handles.pcPoints);
                 RotateRobot(handles.robot, 0);
                 PositionObject(handles.robot, locationFinalLego, 'lego');
             else
@@ -698,16 +730,17 @@ function spawnArm_Callback(hObject, eventdata, handles)
         armPoints = repmat(move, size(armPoints, 1), 1);
         drawnow();
         pause(0.01);
-        handles.pcPoints = armPoints;
-        guidata(hObject, handles);
+        
     end
-
+    handles.pcPoints = armPoints;
+    guidata(hObject, handles);
     handles.arm = mesh_h;
     guidata(hObject, handles);
 end
 
 % --- Executes on button press in clearObjs.
 function clearObjs_Callback(hObject, eventdata, handles)
+    figure (1)
     try delete(handles.arm); end;
     try delete(handles.cube); end;
     handles.pcPoints = [10, 10, 10];

@@ -114,8 +114,7 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
     s = lspb(0, 1, steps); % Trapezoidal trajectory scalar.
 
     switch traj
-        case 1
-
+        case 1              %trajectory 1 = straight line
             for i = 1:steps
                 xyz(1, i) = (1 - s(i)) * startPoint(1) + s(i) * endPoint(1); % Points in x
                 xyz(2, i) = (1 - s(i)) * startPoint(2) + s(i) * endPoint(2); % Points in y
@@ -125,20 +124,19 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
                 theta(3, i) = 0; % Yaw angle
             end
 
-        case 2
+        case 2                  %trajectory 2 = curved line in z plane
             d2 = pi / steps;
-
-            for i = 1:steps
+            for i = 1:steps     
                 xyz(1, i) = (1 - s(i)) * startPoint(1) + s(i) * endPoint(1);
                 xyz(2, i) = (1 - s(i)) * startPoint(2) + s(i) * endPoint(2);
-                xyz(3, i) = startPoint(3) + 0.05 * sin(i * d2); %0.05 = height
+                r = pdist([startPoint';endPoint])/2;
+                xyz(3, i) = startPoint(3) + r * sin(i * d2); %0.05 = height
                 theta(1, i) = 0; % Roll angle
                 theta(2, i) = 0; % Pitch angle
                 theta(3, i) = 0; % Yaw angle
             end
 
-        case 3
-
+        case 3          %trajectory 3 = curved line in xy plane
             for i = 1:steps
                 d2 = pi / steps;
                 dx = endPoint(1) - startPoint(1);
@@ -147,11 +145,9 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
                 h = dx / 2 + startPoint(1);
                 k = dy / 2 + startPoint(2);
                 theta = atan2(k, h);
-
                 if theta < 0
                     theta = theta + 2 * pi;
                 end
-
                 xyz(1, i) = h + d / 2 * cos(pi / 2 + theta - delta * (i - 1));
                 xyz(2, i) = k + d / 2 * sin(pi / 2 + theta - delta * (i - 1));
                 xyz(3, i) = (1 - s(i)) * startPoint(3) + s(i) * endPoint(3);
@@ -220,10 +216,4 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
 
     %! uncomment for plot line on trajectory
     % plot3(xyz(1, :), xyz(2, :), xyz(3, :), 'k.', 'LineWidth', 1)
-
-    for i = 1:size(qMatrix, 1)
-        robot.model.animate(qMatrix(i, :))
-        pause(0.05);
-    end
-
 end
