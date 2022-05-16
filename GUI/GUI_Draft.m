@@ -618,36 +618,47 @@ function getSelection_Callback(hObject, eventdata, handles)
 
     switch selection
         case 'Strawberry'
-            handles.countStrawberry = handles.countStrawberry + 1;
 
             if handles.countStrawberry == 0
                 locationFinalStrawberry = [0.29, 0, 0];
                 PickupObject(handles.robot, handles.strawberry);
                 RotateRobot(handles.robot, 0);
                 PositionObject(handles.robot, locationFinalStrawberry, 'strawberry');
+            else
+                disp("Item already picked up. Choose a different one");
             end
 
+            handles.countStrawberry = handles.countStrawberry + 1;
+
         case 'Grape'
-            handles.countGrape = handles.countGrape + 1;
 
             if handles.countGrape == 0
                 locationFinalGrape = [0.26, 0, 0];
                 PickupObject(handles.robot, handles.grape);
                 RotateRobot(handles.robot, 0);
                 PositionObject(handles.robot, locationFinalGrape, 'grape');
+            else
+                disp("Item already picked up. Choose a different one");
             end
 
+            handles.countGrape = handles.countGrape + 1;
+
         case 'Lego'
-            handles.countLego = handles.countLego + 1;
 
             if handles.countLego == 0
                 locationFinalLego = [0.23, 0, 0];
                 PickupObject(handles.robot, handles.lego);
                 RotateRobot(handles.robot, 0);
                 PositionObject(handles.robot, locationFinalLego, 'lego');
+            else
+                disp("Item already picked up. Choose a different one");
             end
 
+            handles.countLego = handles.countLego + 1;
+
     end
+
+    guidata(hObject, handles);
 
 end
 
