@@ -87,6 +87,17 @@ function load_workspace_Callback(hObject, eventdata, handles)
     imageBlocks = load("image.mat");
     coords = cam2Robot(imageBlocks.image);
 
+    %? Adding Objects
+    locationStrawberry = [0.22, -0.2, heightDobot];
+    data.strawberry = Strawberry(locationStrawberry);
+    disp(data.strawberry.location)
+
+    locationGrape = [0.05, -0.18, heightDobot];
+    data.grape = Grape(locationGrape);
+
+    locationLego = [0.10, -0.25, heightDobot];
+    data.lego = Lego(locationLego);
+
     data = guidata(hObject);
     data.model = robot.model;
     data.robot = robot;
@@ -582,8 +593,8 @@ end
 
 % --- Executes during object creation, after setting all properties.
 function itemSelector_CreateFcn(hObject, eventdata, handles)
-    set(hObject, 'String', {'Red', 'Green', 'Blue'}); %change these values to names of whatever is being picked up
-    handles.selection = 'Red';
+    set(hObject, 'String', {'Strawberry', 'Grape', 'Lego'}); %change these values to names of whatever is being picked up
+    handles.selection = 'Red'; %! is this correct?
     guidata(hObject, handles);
 
     if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
@@ -599,6 +610,19 @@ function getSelection_Callback(hObject, eventdata, handles)
     % handles    structure with handles and user data (see GUIDATA)
     selection = handles.selection; %gets whatever is selected in drop down box as string
     disp(selection);
+
+    switch selection
+        case 'Strawberry'
+            disp(handles.strawberry.location);
+            locationFinalStrawberry = [0.29, 0, tableHeight];
+
+        case 'Grape'
+            locationFinalGrape = [0.26, 0, tableHeight];
+
+        case 'Lego'
+            locationFinalLego = [0.23, 0, tableHeight];
+    end
+
 end
 
 %todo -----------------------------------Collision & Lightcurtain Demoing---------------------------------------------------%

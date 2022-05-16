@@ -55,45 +55,45 @@ angleRotation = -60;
 AnimateRobots(robotDobot, robotDobot.qIntermediary);
 % RotateRobot(robotDobot, angleRotation);
 
-% % %%* Simulation movements
-% % %!strawberry
-% PickupObject(robotDobot, strawberry);
-% RotateRobot(robotDobot, 0);
-% PositionObject(robotDobot, locationFinalStrawberry, 'strawberry');
+% %%* Simulation movements
+% %!strawberry
+PickupObject(robotDobot, strawberry);
+RotateRobot(robotDobot, 0);
+PositionObject(robotDobot, locationFinalStrawberry, 'strawberry');
 
-% % !grape
-% RotateRobot(robotDobot, angleRotation);
-% PickupObject(robotDobot, grape);
-% RotateRobot(robotDobot, 0);
-% PositionObject(robotDobot, locationFinalGrape, 'grape');
+% !grape
+RotateRobot(robotDobot, angleRotation);
+PickupObject(robotDobot, grape);
+RotateRobot(robotDobot, 0);
+PositionObject(robotDobot, locationFinalGrape, 'grape');
 
-% % !lego
-% RotateRobot(robotDobot, angleRotation);
-% PickupObject(robotDobot, lego);
-% RotateRobot(robotDobot, 0);
-% PositionObject(robotDobot, locationFinalLego, 'lego');
+% !lego
+RotateRobot(robotDobot, angleRotation);
+PickupObject(robotDobot, lego);
+RotateRobot(robotDobot, 0);
+PositionObject(robotDobot, locationFinalLego, 'lego');
 
-% % !pill
-% RotateRobot(robotDobot, angleRotation);
-% PickupObject(robotDobot, pill);
-% RotateRobot(robotDobot, 0);
-% PositionObject(robotDobot, locationFinalPill, 'pill');
+% !pill
+RotateRobot(robotDobot, angleRotation);
+PickupObject(robotDobot, pill);
+RotateRobot(robotDobot, 0);
+PositionObject(robotDobot, locationFinalPill, 'pill');
 
-% RotateRobot(robotDobot, -15);
-% locationArm = [0.55, -0.2, tableHeight + 0.27];
-% PlaceObject('Arm.ply', locationArm);
+RotateRobot(robotDobot, -15);
+locationArm = [0.55, -0.2, tableHeight + 0.27];
+PlaceObject('Arm.ply', locationArm);
 
 % Camera Orbit
-axis vis3d
+% axis vis3d
 
-for i = 1:500
-    camorbit(1, 0, 'data', [0.05 0.05 1])
-    drawnow
-end
+% for i = 1:500
+%     camorbit(1, 0, 'data', [0.05 0.05 1])
+%     drawnow
+% end
 
-LightCurtain(tableHeight);
+% LightCurtain(tableHeight);
 
-for i = 1:500
-    camorbit(1, 0, 'data', [0.05 0.05 1])
-    drawnow
-end
+% for i = 1:500
+%     camorbit(1, 0, 'data', [0.05 0.05 1])
+%     drawnow
+% end
