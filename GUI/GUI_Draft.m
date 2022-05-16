@@ -658,7 +658,8 @@ function getSelection_Callback(hObject, eventdata, handles)
 
     end
 
-    guidata(hObject, handles);
+    RotateRobot(handles.robot, -30);
+    guidata(hObject, handles); %update object counts
 
 end
 
