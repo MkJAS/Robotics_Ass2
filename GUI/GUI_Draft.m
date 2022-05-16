@@ -88,15 +88,19 @@ function load_workspace_Callback(hObject, eventdata, handles)
     coords = cam2Robot(imageBlocks.image);
 
     %? Adding Objects
+    figure (1); % Spawns the robot environment in a separate figure
     data = guidata(hObject); % must stay above any changes to data
     locationStrawberry = [0.22, -0.2, heightDobot];
     data.strawberry = Strawberry(locationStrawberry);
+    data.countStrawberry = 0;
 
-    locationGrape = [0.05, -0.18, 0.1];
+    locationGrape = [0.05, -0.18, heightDobot];
     data.grape = Grape(locationGrape);
+    data.countGrape = 0;
 
     locationLego = [0.10, -0.25, heightDobot];
     data.lego = Lego(locationLego);
+    data.countLego = 0;
 
     data.model = robot.model;
     data.robot = robot;
@@ -610,25 +614,39 @@ function getSelection_Callback(hObject, eventdata, handles)
     selection = handles.selection; %gets whatever is selected in drop down box as string
     disp(selection);
     figure(1)
+    RotateRobot(handles.robot, -30);
 
     switch selection
         case 'Strawberry'
-            locationFinalStrawberry = [0.29, 0, 0];
-            PickupObject(handles.robot, handles.strawberry);
-            RotateRobot(handles.robot, 0);
-            PositionObject(handles.robot, locationFinalStrawberry, 'strawberry');
+            handles.countStrawberry = handles.countStrawberry + 1;
+
+            if handles.countStrawberry == 0
+                locationFinalStrawberry = [0.29, 0, 0];
+                PickupObject(handles.robot, handles.strawberry);
+                RotateRobot(handles.robot, 0);
+                PositionObject(handles.robot, locationFinalStrawberry, 'strawberry');
+            end
 
         case 'Grape'
-            locationFinalGrape = [0.26, 0, 0];
-            PickupObject(handles.robot, handles.grape);
-            RotateRobot(handles.robot, 0);
-            PositionObject(handles.robot, locationFinalGrape, 'grape');
+            handles.countGrape = handles.countGrape + 1;
+
+            if handles.countGrape == 0
+                locationFinalGrape = [0.26, 0, 0];
+                PickupObject(handles.robot, handles.grape);
+                RotateRobot(handles.robot, 0);
+                PositionObject(handles.robot, locationFinalGrape, 'grape');
+            end
 
         case 'Lego'
-            locationFinalLego = [0.23, 0, 0];
-            PickupObject(handles.robot, handles.lego);
-            RotateRobot(handles.robot, 0);
-            PositionObject(handles.robot, locationFinalLego, 'lego');
+            handles.countLego = handles.countLego + 1;
+
+            if handles.countLego == 0
+                locationFinalLego = [0.23, 0, 0];
+                PickupObject(handles.robot, handles.lego);
+                RotateRobot(handles.robot, 0);
+                PositionObject(handles.robot, locationFinalLego, 'lego');
+            end
+
     end
 
 end
