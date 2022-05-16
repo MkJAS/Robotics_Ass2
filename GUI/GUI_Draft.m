@@ -90,9 +90,9 @@ function load_workspace_Callback(hObject, eventdata, handles)
     %? Adding Objects
     data = guidata(hObject); % must stay above any changes to data
     locationStrawberry = [0.22, -0.2, heightDobot];
-    data.strawberry = Strawberry(locationStrawberry);;
+    data.strawberry = Strawberry(locationStrawberry);
 
-    locationGrape = [0.05, -0.18, heightDobot];
+    locationGrape = [0.05, -0.18, 0.1];
     data.grape = Grape(locationGrape);
 
     locationLego = [0.10, -0.25, heightDobot];
