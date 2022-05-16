@@ -88,9 +88,9 @@ function load_workspace_Callback(hObject, eventdata, handles)
     coords = cam2Robot(imageBlocks.image);
 
     %? Adding Objects
+    data = guidata(hObject); % must stay above any changes to data
     locationStrawberry = [0.22, -0.2, heightDobot];
-    data.strawberry = Strawberry(locationStrawberry);
-    disp(data.strawberry.location)
+    data.strawberry = Strawberry(locationStrawberry);;
 
     locationGrape = [0.05, -0.18, heightDobot];
     data.grape = Grape(locationGrape);
@@ -98,7 +98,6 @@ function load_workspace_Callback(hObject, eventdata, handles)
     locationLego = [0.10, -0.25, heightDobot];
     data.lego = Lego(locationLego);
 
-    data = guidata(hObject);
     data.model = robot.model;
     data.robot = robot;
     data.estop_count = 0;
@@ -594,7 +593,7 @@ end
 % --- Executes during object creation, after setting all properties.
 function itemSelector_CreateFcn(hObject, eventdata, handles)
     set(hObject, 'String', {'Strawberry', 'Grape', 'Lego'}); %change these values to names of whatever is being picked up
-    handles.selection = 'Red'; %! is this correct?
+    handles.selection = 'Strawberry'; % default selection
     guidata(hObject, handles);
 
     if ispc && isequal(get(hObject, 'BackgroundColor'), get(0, 'defaultUicontrolBackgroundColor'))
@@ -610,17 +609,26 @@ function getSelection_Callback(hObject, eventdata, handles)
     % handles    structure with handles and user data (see GUIDATA)
     selection = handles.selection; %gets whatever is selected in drop down box as string
     disp(selection);
+    figure(1)
 
     switch selection
         case 'Strawberry'
-            disp(handles.strawberry.location);
-            locationFinalStrawberry = [0.29, 0, tableHeight];
+            locationFinalStrawberry = [0.29, 0, 0];
+            PickupObject(handles.robot, handles.strawberry);
+            RotateRobot(handles.robot, 0);
+            PositionObject(handles.robot, locationFinalStrawberry, 'strawberry');
 
         case 'Grape'
-            locationFinalGrape = [0.26, 0, tableHeight];
+            locationFinalGrape = [0.26, 0, 0];
+            PickupObject(handles.robot, handles.grape);
+            RotateRobot(handles.robot, 0);
+            PositionObject(handles.robot, locationFinalGrape, 'grape');
 
         case 'Lego'
-            locationFinalLego = [0.23, 0, tableHeight];
+            locationFinalLego = [0.23, 0, 0];
+            PickupObject(handles.robot, handles.lego);
+            RotateRobot(handles.robot, 0);
+            PositionObject(handles.robot, locationFinalLego, 'lego');
     end
 
 end
