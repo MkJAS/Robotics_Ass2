@@ -4,14 +4,29 @@ function [q] = XYZtoQ(point)
 Ex = point(1);
 Ey = point(2);
 Ez = point(3);
-theta = atan(Ey/Ex);         %Angle of arm rotation from global x, assuming robot starts 0 deg facing x axis
+theta = atan2(Ex,Ey);         %Angle of arm rotation from global x, assuming robot starts 0 deg facing x axis
 
-Tx = 0.05*cos(theta);        %Joint4 from end effector in end effectors local coords
-Ty = 0.05*sin(theta);
+if theta>pi/2
+    theta = pi - theta;
+    theta = 2*pi - theta;
+end
+if theta>0 && theta<pi/2
+    theta = pi + theta;
+end
+if theta<-pi/2
+    theta = pi + theta;
+end
+if theta<0 && theta>-pi/2
+    theta = pi+theta;
+end
+
+
+Ty = 0.05*cos(theta);        %Joint4 from end effector in end effectors local coords
+Tx = 0.05*sin(theta);
 
 %Joint4 pos
-x = Ex - Tx;
-y = Ey - Ty;
+x = Ex + Tx;
+y = Ey + Ty;
 
 
 if Ex < 0
