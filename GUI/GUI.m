@@ -1,11 +1,11 @@
-function varargout = GUI_Draft(varargin)
+function varargout = GUI(varargin)
 %     clc;
     % Begin initialization code - DO NOT EDIT
     gui_Singleton = 1;
     gui_State = struct('gui_Name', mfilename, ...
         'gui_Singleton', gui_Singleton, ...
-        'gui_OpeningFcn', @GUI_Draft_OpeningFcn, ...
-        'gui_OutputFcn', @GUI_Draft_OutputFcn, ...
+        'gui_OpeningFcn', @GUI_OpeningFcn, ...
+        'gui_OutputFcn', @GUI_OutputFcn, ...
         'gui_LayoutFcn', [], ...
         'gui_Callback', []);
 
@@ -23,21 +23,21 @@ end
 
 % End initialization code - DO NOT EDIT
 
-% --- Executes just before GUI_Draft is made visible.
-function GUI_Draft_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before GUI is made visible.
+function GUI_OpeningFcn(hObject, eventdata, handles, varargin)
     % This function has no output args, see OutputFcn.
     % hObject    handle to figure
     % eventdata  reserved - to be defined in a future version of MATLAB
     % handles    structure with handles and user data (see GUIDATA)
-    % varargin   command line arguments to GUI_Draft (see VARARGIN)
+    % varargin   command line arguments to GUI (see VARARGIN)
 
-    % Choose default command line output for GUI_Draft
+    % Choose default command line output for GUI
     handles.output = hObject;
 
     % Update handles structure
     guidata(hObject, handles);
 
-    % This sets up the initial plot - only do when we are invisible so window can get raised using GUI_Draft.
+    % This sets up the initial plot - only do when we are invisible so window can get raised using GUI.
     if strcmp(get(hObject, 'Visible'), 'off')
         %plot(rand(5));
     end
@@ -48,7 +48,7 @@ function GUI_Draft_OpeningFcn(hObject, eventdata, handles, varargin)
 end
 
 % --- Outputs from this function are returned to the command line.
-function varargout = GUI_Draft_OutputFcn(hObject, eventdata, handles)
+function varargout = GUI_OutputFcn(hObject, eventdata, handles)
     % varargout  cell array for returning output args (see VARARGOUT);
     % hObject    handle to figure
     % handles    structure with handles and user data (see GUIDATA)
@@ -502,7 +502,7 @@ function plusZ_Callback(hObject, eventdata, handles)
 
 end
 
-% UIWAIT makes GUI_Draft wait for user response (see UIRESUME)
+% UIWAIT makes GUI wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
 %todo------------------------------------E-STOP-----------------------------------------------------%
