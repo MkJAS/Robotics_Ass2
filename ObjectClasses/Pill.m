@@ -6,6 +6,7 @@ classdef Pill < Item
     end
 
     properties
+        type = "pill";
         object;
         vertices;
     end

@@ -1,4 +1,4 @@
-function getThing(hObject, eventdata, handles,midPoint,endPoint,object,finalLoc,name)
+function getThing(hObject, eventdata, handles,midPoint,endPoint,object,name)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
                 qMatrix = RMRC(midPoint, 1, handles.robot);
@@ -47,7 +47,7 @@ function getThing(hObject, eventdata, handles,midPoint,endPoint,object,finalLoc,
                         animateRobot(handles.robot,qMatrix(i,:),object)
                     end 
                 end
-               PositionObject(handles.robot, finalLoc, name);
+%                PositionObject(handles.robot, finalLoc, name);
  
 %             handles.countStrawberry = handles.countStrawberry + 1;
             intPoint = endPoint;

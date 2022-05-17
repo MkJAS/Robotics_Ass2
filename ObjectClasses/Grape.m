@@ -6,6 +6,7 @@ classdef Grape < Item
     end
 
     properties
+        type = "grape";
         object;
         vertices;
     end

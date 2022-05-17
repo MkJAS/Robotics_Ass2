@@ -1,5 +1,5 @@
 function varargout = GUI_Draft(varargin)
-    clc;
+%     clc;
     % Begin initialization code - DO NOT EDIT
     gui_Singleton = 1;
     gui_State = struct('gui_Name', mfilename, ...
@@ -78,7 +78,7 @@ function load_workspace_Callback(hObject, eventdata, handles)
 
     %Add Safety Equipment
     PlaceObject('EmergencyButton.ply', [0.5, 0.5, heightDobot]);
-    PlaceObject('Basket.ply', [0.25, 0.025, heightDobot]);
+    PlaceObject('Basket.ply', [0.25, 0.17, heightDobot]);
     LightCurtain(heightDobot);
 
     robot = Dobot(transl(baseDobot));
@@ -99,7 +99,16 @@ function load_workspace_Callback(hObject, eventdata, handles)
     data.countGrape = 0;
 
     locationLego = [0.10, -0.25, heightDobot];
-    data.lego = Lego(locationLego);
+    data.bluelego = Lego(locationLego,'blue');
+
+    locationLego = [0.274, -0.007, heightDobot];
+    data.greenlego = Lego(locationLego,'green');
+
+    locationLego = [0.16, -0.147, heightDobot];
+    data.yellowlego = Lego(locationLego,'yellow');
+
+    locationLego = [0.215, -0.058, heightDobot];
+    data.orangelego = Lego(locationLego,'orange');
     data.countLego = 0;
 
     data.model = robot.model;
@@ -596,7 +605,7 @@ end
 
 % --- Executes during object creation, after setting all properties.
 function itemSelector_CreateFcn(hObject, eventdata, handles)
-    set(hObject, 'String', {'Strawberry', 'Grape', 'Lego'}); %change these values to names of whatever is being picked up
+    set(hObject, 'String', {'Strawberry', 'Grape', 'Lego','Warm Legos'}); %change these values to names of whatever is being picked up
     handles.selection = 'Strawberry'; % default selection
     guidata(hObject, handles);
 
@@ -614,83 +623,59 @@ function getSelection_Callback(hObject, eventdata, handles)
     selection = handles.selection; %gets whatever is selected in drop down box as string
     disp(selection);
     figure(1)
-    RotateRobot(handles.robot, -30);
-
+%     RotateRobot(handles.robot, -30);
+    endPoint = handles.objectPos.basket;
     switch selection
-        %I had to take it all out of the function because of the
-        %handles.pcPoint variable. Because this is what changes while its
-        %waiting for example if the robot is going to get strawberry and
-        %then a hand comes in, handles.pcPoints needs to be updated. If
-        %this was packaged into a function there would be no way for the
-        %function to be given the updated pcPoints. Secondarly the while
-        %loops that wait for the arm/cube to be removed, cant be put into a
-        %function otherwise the data from this space here cant be sent to
-        %it, you'd have to call the function again but because its in a
-        %while loop its not possible
-        %Dean I know its ugly but dont change it without talking to me
-        %about it first, i really dont think there is any other way to do
-        %this
         case 'Strawberry'
             if  handles.countStrawberry == 0
-                locationFinalStrawberry = [0.29, 0, 0];
                 midPoint = handles.strawberry.location;
                 midPoint(3) = midPoint(3) + 0.02;
-%                 endPoint = midPoint;
-%                 endPoint(3) = endPoint(3) + 0.1;
-                endPoint = [0.25,0,midPoint(3)];
-                getThing(hObject, eventdata, handles,midPoint,endPoint,handles.strawberry,locationFinalStrawberry,'strawberry');
+                endPoint(3) = midPoint(3);
+                endPoint(2) = endPoint(2) - 0.02;                           %adjust to side of basket
+                getThing(hObject, eventdata, handles,midPoint,endPoint,handles.strawberry,'strawberry');
                 handles.countStrawberry = handles.countStrawberry + 1;
             else 
                 disp("Item already picked up. Choose a different one");
             end  
+            RotateRobot(handles.robot, -30);
         case 'Grape'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             if handles.countGrape == 0
-                locationFinalGrape = [0.26, 0, 0];
-                PickupObject(handles.robot, handles.grape,handles.pcPoints);
-                RotateRobot(handles.robot, 0);
-                PositionObject(handles.robot, locationFinalGrape, 'grape');
+                midPoint = handles.grape.location;
+                midPoint(3) = midPoint(3) + 0.02;
+                endPoint(3) = midPoint(3);
+                endPoint(2) = endPoint(2) - 0.02;                           %adjust to side of basket
+                getThing(hObject, eventdata, handles,midPoint,endPoint,handles.grape,'grape');
+                handles.countGrape = handles.countGrape + 1;
             else
                 disp("Item already picked up. Choose a different one");
             end
-
-            handles.countGrape = handles.countGrape + 1;
-
+            RotateRobot(handles.robot, -30);
         case 'Lego'
-
             if handles.countLego == 0
-                locationFinalLego = [0.23, 0, 0];
-                PickupObject(handles.robot, handles.lego,handles.pcPoints);
-                RotateRobot(handles.robot, 0);
-                PositionObject(handles.robot, locationFinalLego, 'lego');
+                midPoint = handles.bluelego.location;
+                midPoint(3) = midPoint(3) + 0.02;
+                endPoint(3) = midPoint(3);
+                endPoint(2) = endPoint(2) - 0.02;                           %adjust to side of basket
+                getThing(hObject, eventdata, handles,midPoint,endPoint,handles.bluelego,'lego');
+                handles.countLego = handles.countLego + 1;
             else
                 disp("Item already picked up. Choose a different one");
             end
-
-            handles.countLego = handles.countLego + 1;
-
+            RotateRobot(handles.robot, -30);
+        case 'Warm Legos'
+                midPoint = handles.objectPos.orange;                       %get location of orange block from image scan
+                midPoint(3) = midPoint(3) + -midPoint(3) + 0.02;                 %ignore depth value from camera, set to 0 -0.0655 + -(-0.0665) = 0 
+                endPoint(3) = midPoint(3);
+                endPoint(2) = endPoint(2) - 0.02;                          %adjust to side of basket
+                getThing(hObject, eventdata, handles,midPoint,endPoint,handles.orangelego,'strawberry');
+                RotateRobot(handles.robot, -30);
+                midPoint = handles.objectPos.yellow;                       %get location of yellow block from image scan
+                midPoint(3) = midPoint(3) + -midPoint(3) + 0.02;                  %ignore depth value from camera, set to 0 -0.0655 + -(-0.0665) = 0
+                endPoint(3) = midPoint(3);
+                endPoint(2) = endPoint(2) - 0.02;  %adjust to side of basket
+                getThing(hObject, eventdata, handles,midPoint,endPoint,handles.yellowlego,'strawberry');
+                RotateRobot(handles.robot, -30);
     end
-
-    RotateRobot(handles.robot, -30);
     guidata(hObject, handles); %update object counts
 
 end
