@@ -685,7 +685,7 @@ end
 function spawnObstacle_Callback(hObject, eventdata, handles)
     ptCloud = pcread('square.ply');
     cubePoints = ptCloud.Location;
-    move = [0, 0.2, 0.2];
+    move = [0.2, 0.1, 0.2];
     cubePoints = cubePoints + repmat(move, size(cubePoints, 1), 1);
     figure (1)
     hold on

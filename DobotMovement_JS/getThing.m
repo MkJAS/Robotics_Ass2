@@ -10,7 +10,7 @@ function getThing(hObject, eventdata, handles,midPoint,endPoint,object,name)
                         printToConsole(1);
                         while(collision==true)
                             handles = guidata(hObject);
-                            collision = willCollide(robot, qMatrix(i,:), points);
+                            collision = willCollide(handles.robot, qMatrix(i,:),handles.pcPoints);
                             pause(0.01);
                         end
                     elseif intruder == true
@@ -33,7 +33,7 @@ function getThing(hObject, eventdata, handles,midPoint,endPoint,object,name)
                         printToConsole(1);
                         while(collision==true)
                             handles = guidata(hObject);
-                            collision = willCollide(robot, qMatrix(i,:), points);
+                            collision = willCollide(handles.robot, qMatrix(i,:),handles.pcPoints);
                             pause(0.01);
                         end
                     elseif intruder == true
@@ -61,7 +61,7 @@ function getThing(hObject, eventdata, handles,midPoint,endPoint,object,name)
                     printToConsole(1);
                     while(collision==true)
                         handles = guidata(hObject);
-                        collision = willCollide(robot, qMatrix(i,:), points);
+                        collision = willCollide(handles.robot, qMatrix(i,:),handles.pcPoints);
                         pause(0.01);
                     end 
                 elseif  intruder == true

@@ -6,89 +6,8 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
     startPoint = robot.model.fkine(robot.model.getpos());
     startPoint = startPoint(1:3, 4);
 
-    Ex = [startPoint(1) endPoint(1)];
-    Ey = [startPoint(2) endPoint(2)];
-    Ez = [startPoint(3) endPoint(3)];
 
-    %% Transform EE pose to Joint4 pose since thats what we are determining with James Poon
-    % for i=1:2
-    %     theta = atan(Ey(i)/Ex(i));        %Angle of arm rotation from global x, assuming robot starts 0 deg facing x axis
-    %
-    %     Tx = 0.05*cos(theta);       %Joint4 from end effector in end effectors local coords
-    %     Ty = 0.05*sin(theta);
-    %
-    %     %Joint4 pos
-    %     x(i) = Ex(i) - Tx;
-    %     y(i) = Ey(i) - Ty;
-    %
-    %
-    %     if Ex(i) < 0
-    %         x(i) = Ex(i) + Tx;
-    %     end
-    %     if Ey(i) < 0
-    %         y(i) = Ey(i) + Ty;
-    %     end
-    %     down = false;
-    %     z(i) = Ez(i) + 0.09;          %0.09 = end effector length
-    %     if z(i) - 0.138 < 0
-    %         z(i) = 0.138 - z(i);
-    %         down = true;
-    %     else
-    %         z(i) = z(i) - 0.138;         %0.138 = length from base to joint 2
-    %     end
-    %
-    %     %%%
-    % end
-    %     %James Poon calcs
-    %     l = (x(1)^2+y(1)^2)^0.5;
-    %     D = (l^2+z(1)^2)^0.5;
-    %
-    %     a2 = 0.135;             %Joint 2 link
-    %     a3 = 0.147;             %Joint 3 link
-    %
-    %
-    %     t2 = rad2deg(acos((a2^2 + D^2 - a3^2)/(2*a2*D)));
 
-    %     if down
-    %       t1 = 90 - rad2deg(atan(z(1)/l));
-    %       alpha = t1 + t2;
-    %       q2 =  (180 - alpha);
-    %     else
-    %       t1 = rad2deg(atan(z(1)/l));
-    %       alpha = t1 + t2;
-    %       q2 =  (90 - alpha);
-    %     end
-    %
-    %
-    %
-    %     beta = rad2deg( acos ( ( a2^2 + a3^2 - D^2) / (2*a2*a3) ) );
-    %
-    %     q1 = rad2deg(atan2(y(1),x(1)));
-    %
-
-    %
-    %     q3r = (180 - beta);
-    %
-    %     % q4 = (0 - q3r);
-    %
-    %     q4 = -(90 - q2 - q3r);
-    %
-    %
-    % %     robot.plot(deg2rad([q1 q2 q3r q4 0]))
-    %     % t = robot.fkine(robot.getpos());
-    %
-    %     % t(1:3,4)
-    %
-    %     q = deg2rad([q1 q2 q3r q4 0]);
-    %
-    % %     tr = zeros(4,4,robot.n+1);
-    % %     tr(:,:,1) = robot.base;
-    % %     L = robot.links;
-    % %     for i = 1 : robot.n
-    % %         tr(:,:,i+1) = tr(:,:,i) * trotz(q(i)+L(i).offset) * transl(0,0,L(i).d) * transl(L(i).a,0,0) * trotx(L(i).alpha);
-    % %     end
-    %
-    %
 
     %%
     % figure (1)
@@ -107,8 +26,8 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
     qdot = zeros(steps, 3); % Array for joint velocities
     theta = zeros(3, steps); % Array for roll-pitch-yaw angles
     xyz = zeros(3, steps); % Array for x-y-z trajectory
-    positionError = zeros(3, steps); % For plotting trajectory error
-    angleError = zeros(3, steps); % For plotting trajectory error
+%     positionError = zeros(3, steps); % For plotting trajectory error
+%     angleError = zeros(3, steps); % For plotting trajectory error
 
     % 1.3) Set up trajectory, initial pose
     s = lspb(0, 1, steps); % Trapezoidal trajectory scalar.

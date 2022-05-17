@@ -3,7 +3,7 @@ function  printToConsole(message)
 %   Detailed explanation goes here
 switch message
     case 1
-        cprintf('red', 'Possible collision detected! Aborting move!\n');
+        cprintf('red', 'Possible collision detected! Halting Operation!\n');
         beep
         cprintf('red', 'Waiting for obstacle to be removed\n');
     case 2
