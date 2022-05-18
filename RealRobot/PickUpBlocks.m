@@ -1,6 +1,6 @@
 % Helpful Terminal Commands
-sudo chmod 666 / dev / ttyUSB0;
-roslaunch dobot_magician_driver dobot_magician.launch
+% sudo chmod 666 / dev / ttyUSB0;
+% roslaunch dobot_magician_driver dobot_magician.launch
 
 close all;
 clear all;
