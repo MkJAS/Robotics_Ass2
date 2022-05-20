@@ -123,6 +123,12 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
 
     end
 
-    % plot3(xyz(1, :), xyz(2, :), xyz(3, :), 'k.', 'LineWidth', 1)     %! uncomment for plot line on trajectory
+    %! uncomment for plot line on trajectory and to animate within this function
+    % plot3(xyz(1, :), xyz(2, :), xyz(3, :), 'k.', 'LineWidth', 1)
+
+    % for i = 1:size(qMatrix, 1)
+    %     robot.model.animate(qMatrix(i, :))
+    %     pause(0.05);
+    % end
 
 end

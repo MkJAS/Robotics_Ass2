@@ -25,27 +25,27 @@ PlaceObject('EmergencyButton.ply', [0.5, 0.5, tableHeight]);
 
 % LightCurtain(tableHeight);
 
-locationCamera = [0.35, 0, tableHeight + 0.475];
-PlaceObject('Camera.ply', locationCamera);
+% locationCamera = [0.35, 0, tableHeight + 0.475];
+% PlaceObject('Camera.ply', locationCamera);
 
 %% Objects
-PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
+% PlaceObject('Basket.ply', [0.25, 0.025, tableHeight]);
 
-locationStrawberry = [0.22, -0.2, tableHeight];
-locationFinalStrawberry = [0.29, 0, tableHeight];
-strawberry = Strawberry(locationStrawberry);
+% locationStrawberry = [0.22, -0.2, tableHeight];
+% locationFinalStrawberry = [0.29, 0, tableHeight];
+% strawberry = Strawberry(locationStrawberry);
 
-locationGrape = [0.05, -0.18, tableHeight];
-locationFinalGrape = [0.26, 0, tableHeight];
-grape = Grape(locationGrape);
+% locationGrape = [0.05, -0.18, tableHeight];
+% locationFinalGrape = [0.26, 0, tableHeight];
+% grape = Grape(locationGrape);
 
-locationLego = [0.10, -0.25, tableHeight];
-locationFinalLego = [0.23, 0, tableHeight];
-lego = Lego(locationLego);
+% locationLego = [0.10, -0.25, tableHeight];
+% locationFinalLego = [0.23, 0, tableHeight];
+% lego = Lego(locationLego);
 
-locationPill = [0.17, -0.23, tableHeight];
-locationFinalPill = [0.2, 0, tableHeight];
-pill = Pill(locationPill);
+% locationPill = [0.17, -0.23, tableHeight];
+% locationFinalPill = [0.2, 0, tableHeight];
+% pill = Pill(locationPill);
 
 %% Robots
 robotDobot = Dobot(transl(baseDobot));
@@ -55,33 +55,50 @@ angleRotation = -60;
 AnimateRobots(robotDobot, robotDobot.qIntermediary);
 % RotateRobot(robotDobot, angleRotation);
 
-% %%* Simulation movements
-% %!strawberry
-PickupObject(robotDobot, strawberry);
-RotateRobot(robotDobot, 0);
-PositionObject(robotDobot, locationFinalStrawberry, 'strawberry');
+%% Final Video RMRC movement
+% location = [0.25 0 0.1];
+% location2 = [0.25 -0.2 0.];
+RMRC([0.2 0.2 tableHeight + 0.1], 2, robotDobot);
+RMRC([0.2 -0.2 tableHeight + 0.1], 2, robotDobot);
 
-% !grape
-RotateRobot(robotDobot, angleRotation);
-PickupObject(robotDobot, grape);
-RotateRobot(robotDobot, 0);
-PositionObject(robotDobot, locationFinalGrape, 'grape');
+% locationCurrent = robotDobot.model.fkine(robotDobot.model.getpos());
+% locationAdjusted = locationCurrent;
+% locationAdjusted(2) = locationAdjusted(2) + 0.05;
+% locationAdjusted(3) = locationAdjusted(3) + 0.05;
+% RMRC(locationAdjusted, 1, robotDobot);
+% locationCurrent = robotDobot.model.fkine(robotDobot.model.getpos());
+% locationAdjusted = locationCurrent;
+% locationAdjusted(2) = locationAdjusted(2) - 0.1;
+% locationAdjusted(3) = locationAdjusted(3) - 0.1;
+% RMRC(locationAdjusted, 1, robotDobot);
 
-% !lego
-RotateRobot(robotDobot, angleRotation);
-PickupObject(robotDobot, lego);
-RotateRobot(robotDobot, 0);
-PositionObject(robotDobot, locationFinalLego, 'lego');
+% % %%* Simulation movements
+% % %!strawberry
+% PickupObject(robotDobot, strawberry);
+% RotateRobot(robotDobot, 0);
+% PositionObject(robotDobot, locationFinalStrawberry, 'strawberry');
 
-% !pill
-RotateRobot(robotDobot, angleRotation);
-PickupObject(robotDobot, pill);
-RotateRobot(robotDobot, 0);
-PositionObject(robotDobot, locationFinalPill, 'pill');
+% % !grape
+% RotateRobot(robotDobot, angleRotation);
+% PickupObject(robotDobot, grape);
+% RotateRobot(robotDobot, 0);
+% PositionObject(robotDobot, locationFinalGrape, 'grape');
 
-RotateRobot(robotDobot, -15);
-locationArm = [0.55, -0.2, tableHeight + 0.27];
-PlaceObject('Arm.ply', locationArm);
+% % !lego
+% RotateRobot(robotDobot, angleRotation);
+% PickupObject(robotDobot, lego);
+% RotateRobot(robotDobot, 0);
+% PositionObject(robotDobot, locationFinalLego, 'lego');
+
+% % !pill
+% RotateRobot(robotDobot, angleRotation);
+% PickupObject(robotDobot, pill);
+% RotateRobot(robotDobot, 0);
+% PositionObject(robotDobot, locationFinalPill, 'pill');
+
+% RotateRobot(robotDobot, -15);
+% locationArm = [0.55, -0.2, tableHeight + 0.27];
+% PlaceObject('Arm.ply', locationArm);
 
 % Camera Orbit
 % axis vis3d
