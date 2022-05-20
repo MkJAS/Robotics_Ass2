@@ -114,3 +114,14 @@ RMRC([0.2 -0.2 tableHeight + 0.1], 2, robotDobot);
 %     camorbit(1, 0, 'data', [0.05 0.05 1])
 %     drawnow
 % end
+
+ptCloud = pcread('Basket.ply');
+pcshow(ptCloud);
+
+% Camera Orbit
+axis vis3d
+
+for i = 1:1000
+    camorbit(1, 0, 'data', [0.05 0.05 1])
+    drawnow
+end
