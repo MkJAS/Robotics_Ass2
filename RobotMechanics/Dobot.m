@@ -34,10 +34,10 @@ classdef Dobot < handle
             pause(0.001);
             name = ['Dobot', datestr(now, 'yyyymmddTHHMMSSFFF')];
             %     end
-            L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi/2, 'offset', 0, 'qlim', [-135 * pi / 180 135 * pi / 180]);
+            L(1) = Link('d', 0.138, 'a', 0, 'alpha', -pi / 2, 'offset', 0, 'qlim', [-135 * pi / 180 135 * pi / 180]);
             L(2) = Link('d', 0, 'a', 0.135, 'alpha', 0, 'offset', -pi / 2, 'qlim', [5 * pi / 180 80 * pi / 180]);
             L(3) = Link('d', 0, 'a', 0.147, 'alpha', pi, 'offset', 0, 'qlim', [-5 * pi / 180 85 * pi / 180]);
-            L(4) = Link('d', 0, 'a', 0.05, 'alpha', pi/2, 'offset', 0, 'qlim', [-pi / 2 pi / 2]);
+            L(4) = Link('d', 0, 'a', 0.05, 'alpha', pi / 2, 'offset', 0, 'qlim', [-pi / 2 pi / 2]);
             L(5) = Link('d', 0.09, 'a', 0, 'alpha', 0, 'offset', 0, 'qlim', [-85 * pi / 180 85 * pi / 180]);
             self.model = SerialLink(L, 'name', name, 'base', self.base);
         end
@@ -104,43 +104,6 @@ classdef Dobot < handle
             end
 
             self.jointLimits = [lowerLimit upperLimit];
-
-        end
-
-        function Spin(self)
-            %Function that animates a robot rotating to a desired joint state
-            %Takes a robot and the desired joint configuration.
-            % angle needs to be -135 -> 135 degrees
-            while (1)
-                % AnimateRobots(robot, robot.qIntermediary);
-
-                steps = 50;
-
-                qCurrent = self.model.getpos();
-                qTarget = qCurrent;
-                qTarget(1) = deg2rad(-135);
-
-                %Find q trajectory
-                qTrajectory = jtraj(qCurrent, qTarget, steps); %(current q, target q, steps)
-
-                for i = 1:steps
-                    self.model.animate(qTrajectory(i, :));
-                    drawnow();
-                end
-
-                qCurrent = self.model.getpos();
-                qTarget = qCurrent;
-                qTarget(1) = deg2rad(135);
-
-                %Find q trajectory
-                qTrajectory = jtraj(qCurrent, qTarget, steps); %(current q, target q, steps)
-
-                for i = 1:steps
-                    self.model.animate(qTrajectory(i, :));
-                    drawnow();
-                end
-
-            end
 
         end
 
