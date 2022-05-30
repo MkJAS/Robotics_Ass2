@@ -78,12 +78,12 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
     for i = 1:steps - 1
         T = robot.model.fkine(qMatrix(i, :)); % Get forward transformation at current joint state
         deltaX = xyz(:, i + 1) - T(1:3, 4); % Get position error from next waypoint
-        Rnext = rpy2r(theta(1, i + 1), theta(2, i + 1), theta(3, i + 1)); % Get next RPY angles, convert to rotation matrix
-        Rcurrent = T(1:3, 1:3); % Current end-effector rotation matrix
-        Rdot = (1 / deltaT) * (Rnext - Rcurrent); % Calculate rotation matrix error
-        S = Rdot * Rcurrent'; % Skew symmetric!
+%         Rnext = rpy2r(theta(1, i + 1), theta(2, i + 1), theta(3, i + 1)); % Get next RPY angles, convert to rotation matrix
+%         Rcurrent = T(1:3, 1:3); % Current end-effector rotation matrix
+%         Rdot = (1 / deltaT) * (Rnext - Rcurrent); % Calculate rotation matrix error
+%         S = Rdot * Rcurrent'; % Skew symmetric!
         linear_velocity = (1 / deltaT) * deltaX;
-        deltaTheta = tr2rpy(Rnext * Rcurrent'); % Convert rotation matrix to RPY angles
+%         deltaTheta = tr2rpy(Rnext * Rcurrent'); % Convert rotation matrix to RPY angles
         xdot = W * [linear_velocity]; % Calculate end-effector velocity to reach next waypoint.
         Jacobian = robot.model.jacob0(qMatrix(i, :)); % Get Jacobian at current joint state
         Jacobian = Jacobian(1:3, 1:3); %mask out rpy for Dontbot
@@ -97,7 +97,7 @@ function [qMatrix] = RMRC(endPoint, traj, robot)
         end
 
         invertedJacobian = inv(Jacobian' * Jacobian + lambda * eye(3)) * Jacobian'; % Damped Least Squares Inverse
-        qdot(i, :) = (invertedJacobian * xdot)'; % Solve the RMRC equation (you may need to transpose the         vector)
+        qdot(i, :) = (invertedJacobian * xdot)'; % Solve the RMRC equation (you may need to transpose the vector)
 
         qlim = robot.model.qlim;
 
